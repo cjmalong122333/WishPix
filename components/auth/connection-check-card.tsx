@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
 import { INITIAL_CONNECTION_CHECKS } from "@/lib/mock-data";
@@ -10,84 +10,125 @@ export function ConnectionCheckCard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const stayOnPage = searchParams.get("stay") === "1";
+  const forcedState = searchParams.get("state"); // "checking" | "ready" | null
+
+  const [autoReady, setAutoReady] = useState(false);
+
+  const isAllReady =
+    forcedState === "ready" || (forcedState !== "checking" && autoReady);
 
   useEffect(() => {
-    if (stayOnPage) return;
-    const timer = setTimeout(() => {
-      router.push("/dashboard");
-    }, 3200);
-    return () => clearTimeout(timer);
-  }, [router, stayOnPage]);
+    if (forcedState === "checking" || forcedState === "ready") {
+      return;
+    }
+
+    const readyTimer = setTimeout(() => {
+      setAutoReady(true);
+    }, 1600);
+
+    let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+    if (!stayOnPage) {
+      redirectTimer = setTimeout(() => {
+        router.push("/dashboard");
+      }, 3200);
+    }
+
+    return () => {
+      clearTimeout(readyTimer);
+      if (redirectTimer) clearTimeout(redirectTimer);
+    };
+  }, [forcedState, router, stayOnPage]);
+
+  const items: ConnectionCheckItem[] = INITIAL_CONNECTION_CHECKS.map((item) =>
+    isAllReady
+      ? {
+          ...item,
+          state: "online",
+          statusText: item.readyText,
+        }
+      : item
+  );
 
   return (
     <section
       aria-labelledby="system-check-heading"
       onClick={() => router.push("/dashboard")}
       title="Click to continue to Dashboard"
-      className="w-full bg-white rounded-[26px] sm:rounded-[30px] px-6 sm:px-9 pt-6 sm:pt-8 pb-7 sm:pb-9 shadow-[0_18px_42px_rgba(9,45,80,0.14)] cursor-pointer"
+      className="w-full rounded-[16px] bg-[#162F4D] border border-white/25 px-5 sm:px-6 pt-5 pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)] cursor-pointer"
     >
       {/* Card Top Brand */}
-      <p className="text-[21px] sm:text-[24px] font-bold text-[#004A7C] text-center tracking-tight mb-4 sm:mb-5">
+      <p className="text-[15px] sm:text-[16px] font-bold text-white text-center tracking-tight mb-3">
         WishPix
       </p>
 
       {/* Overline & Heading */}
-      <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] text-[#1D70B8] uppercase">
+      <p className="text-[9px] sm:text-[9.5px] font-semibold tracking-[0.14em] text-[#94A8BE] uppercase">
         SYSTEM CHECK
       </p>
       <h2
         id="system-check-heading"
-        className="text-[26px] sm:text-[30px] font-normal text-[#143350] tracking-tight mt-1 leading-tight"
+        className="text-[19px] sm:text-[21px] font-bold text-white tracking-tight mt-0.5 leading-snug"
       >
         Getting ready...
       </h2>
-      <p className="text-[11.5px] sm:text-[13px] text-[#7D8E9F] mt-1.5">
+      <p className="text-[10.5px] sm:text-[11px] text-[#8FA5BC] mt-1">
         Making sure everything is connected before starting
       </p>
 
+      {/* Divider Line */}
+      <hr className="border-t border-white/20 my-3.5" />
+
       {/* Connection Status Checklist */}
-      <ul className="mt-6 sm:mt-7 space-y-5 sm:space-y-6 pl-3">
-        {INITIAL_CONNECTION_CHECKS.map((item) => (
+      <ul className="space-y-3.5">
+        {items.map((item) => (
           <ConnectionRow key={item.id} item={item} />
         ))}
       </ul>
 
       {/* Bottom Note */}
-      <p className="text-[11px] sm:text-[12px] font-bold text-[#1D70B8] mt-7 sm:mt-8 pl-3">
-        This only takes a moment.
+      <p className="text-[9.5px] sm:text-[10px] font-medium text-[#B0C4D8] mt-4">
+        {isAllReady
+          ? "All systems are ready, redirecting to dashboard..."
+          : "This only takes a moment."}
       </p>
     </section>
   );
 }
 
 function ConnectionRow({ item }: { item: ConnectionCheckItem }) {
+  const isOnline = item.state === "online";
+
   return (
-    <li className="flex items-center gap-4">
-      <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
-        {item.state === "online" && (
-          <span className="w-5 h-5 rounded-full bg-[#15803D] flex items-center justify-center text-white">
-            <Check className="w-3.5 h-3.5 stroke-[3]" aria-hidden="true" />
+    <li className="flex items-center gap-3">
+      <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+        {isOnline && (
+          <span className="w-5 h-5 rounded-full bg-[#22C55E] flex items-center justify-center text-white shadow-[0_0_8px_rgba(34,197,94,0.45)]">
+            <Check className="w-3 h-3 stroke-[3]" aria-hidden="true" />
           </span>
         )}
         {item.state === "checking" && (
           <span
-            className="w-[19px] h-[19px] rounded-full border-2 border-[#CBD5E1] border-t-[#1E293B] border-r-[#1E293B] animate-spin"
+            className="w-5 h-5 rounded-full border-[1.75px] border-[#94A8BE] border-t-white animate-spin"
             aria-hidden="true"
           />
         )}
         {item.state === "waiting" && (
           <span
-            className="w-[19px] h-[19px] rounded-full border-[1.75px] border-[#94A3B8]"
+            className="w-5 h-5 rounded-full border-[1.75px] border-[#94A8BE]/80"
             aria-hidden="true"
           />
         )}
       </div>
 
       <div className="leading-tight">
-        <p className="text-[12.5px] sm:text-[13.5px] font-bold text-[#1E3B58]">
+        <p className="text-[11.5px] sm:text-[12px] font-bold text-white">
           {item.label}
         </p>
-        <p className="text-[11px] sm:text-[12px] text-[#7D8E9F] mt-0.5">
+        <p
+          className={`text-[10px] sm:text-[10.5px] mt-0.5 font-medium ${
+            isOnline ? "text-[#22C55E]" : "text-[#8FA5BC]"
+          }`}
+        >
           {item.statusText}
         </p>
       </div>

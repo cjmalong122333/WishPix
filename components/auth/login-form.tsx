@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { Lock, User } from "lucide-react";
 
 export function LoginForm() {
   const router = useRouter();
@@ -36,90 +36,102 @@ export function LoginForm() {
   return (
     <section
       aria-labelledby="login-heading"
-      className="w-full bg-white rounded-[26px] sm:rounded-[30px] px-6 sm:px-9 pt-7 sm:pt-9 pb-7 sm:pb-9 shadow-[0_18px_42px_rgba(9,45,80,0.14)]"
+      className="w-full rounded-[16px] bg-[#0D223B] border border-[#1E3A5F]/80 px-5 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)]"
     >
-      <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] text-[#1D70B8] uppercase">
-        EDUCATOR ACCESS
-      </p>
       <h2
         id="login-heading"
-        className="text-[26px] sm:text-[30px] font-normal text-[#143350] tracking-tight mt-1 leading-tight"
+        className="text-[17px] sm:text-[18px] font-bold text-white tracking-tight leading-snug"
       >
         Welcome back
       </h2>
-      <p className="text-[11.5px] sm:text-[13px] text-[#7D8E9F] mt-1.5">
-        Sign in to securely manage your daycare kiosk.
+      <p className="text-[11px] sm:text-[11.5px] text-[#94A8BE] mt-1">
+        Sign in to run activities on your daycare kiosk.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-6 sm:mt-7 space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="mt-4 space-y-3.5" noValidate>
+        {/* Username Field */}
         <div>
           <label
             htmlFor="educator-username"
-            className="block text-[11.5px] sm:text-[12.5px] font-semibold text-[#1E3B58] mb-1.5"
+            className="block text-[11px] sm:text-[11.5px] font-bold text-white mb-1.5"
           >
-            Educator ID / Username
+            Username
           </label>
-          <input
-            id="educator-username"
-            name="username"
-            type="text"
-            autoComplete="username"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              if (hasSubmitError) setHasSubmitError(false);
-            }}
-            placeholder="Enter your Username"
-            className="w-full rounded-[11px] border border-[#DCE4EE] bg-white px-4 py-3 text-[13px] sm:text-[14px] text-[#143350] placeholder:text-[#98A6B5] focus:border-[#1D70B8] focus:outline-none focus:ring-2 focus:ring-[#1D70B8]/15 transition"
-          />
+          <div className="relative flex items-center">
+            <User
+              className="pointer-events-none absolute left-3.5 w-3.5 h-3.5 text-[#7C93AC]"
+              aria-hidden="true"
+            />
+            <input
+              id="educator-username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                if (hasSubmitError) setHasSubmitError(false);
+              }}
+              placeholder="Enter your username"
+              className="w-full rounded-[8px] border border-[#1C3654] bg-[#081729] pl-9 pr-3.5 py-2.5 text-[12px] sm:text-[12.5px] text-white placeholder:text-[#6E849E] focus:border-[#0284C7] focus:outline-none focus:ring-2 focus:ring-[#0284C7]/25 transition"
+            />
+          </div>
         </div>
 
+        {/* Password Field */}
         <div>
           <label
             htmlFor="educator-password"
-            className="block text-[11.5px] sm:text-[12.5px] font-semibold text-[#1E3B58] mb-1.5"
+            className="block text-[11px] sm:text-[11.5px] font-bold text-white mb-1.5"
           >
             Password
           </label>
-          <input
-            id="educator-password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (hasSubmitError) setHasSubmitError(false);
-            }}
-            placeholder="Enter your password"
-            className="w-full rounded-[11px] border border-[#DCE4EE] bg-white px-4 py-3 text-[13px] sm:text-[14px] text-[#143350] placeholder:text-[#98A6B5] focus:border-[#1D70B8] focus:outline-none focus:ring-2 focus:ring-[#1D70B8]/15 transition"
-          />
-        </div>
+          <div className="relative flex items-center">
+            <Lock
+              className="pointer-events-none absolute left-3.5 w-3.5 h-3.5 text-[#7C93AC]"
+              aria-hidden="true"
+            />
+            <input
+              id="educator-password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (hasSubmitError) setHasSubmitError(false);
+              }}
+              placeholder="Enter your password"
+              className="w-full rounded-[8px] border border-[#1C3654] bg-[#081729] pl-9 pr-3.5 py-2.5 text-[12px] sm:text-[12.5px] text-white placeholder:text-[#6E849E] focus:border-[#0284C7] focus:outline-none focus:ring-2 focus:ring-[#0284C7]/25 transition"
+            />
+          </div>
 
-        {hasError ? (
-          <div
-            role="alert"
-            aria-live="polite"
-            className="pt-1 pb-0.5 text-center"
-          >
-            <p className="text-[11.5px] sm:text-[12.5px] font-normal text-[#EF4444]">
+          {hasError && (
+            <p
+              role="alert"
+              aria-live="polite"
+              className="mt-1.5 text-[10.5px] sm:text-[11px] font-medium text-[#EF4444]"
+            >
               Incorrect username or password. Try again.
             </p>
-          </div>
-        ) : (
-          <div className="pt-2" />
-        )}
+          )}
+        </div>
 
+        {/* Login Button */}
         <button
           type="submit"
-          className="w-full rounded-[12px] bg-[#004A7C] hover:bg-[#003D66] active:scale-[0.99] text-white font-semibold text-[13px] sm:text-[14px] py-3.5 sm:py-4 px-4 shadow-[0_6px_16px_rgba(0,74,124,0.24)] flex items-center justify-center gap-2 transition cursor-pointer"
+          className="w-full rounded-[8px] bg-[#03588C] hover:bg-[#0468A4] active:scale-[0.99] text-white font-bold text-[12.5px] sm:text-[13px] py-2.5 sm:py-3 px-4 shadow-[0_0_16px_rgba(2,132,199,0.35)] border border-[#0284C7]/40 flex items-center justify-center transition cursor-pointer"
         >
-          <span>Login</span>
-          <ArrowRight className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
+          Login
         </button>
+
+        {/* Bottom Credential Recovery Note */}
+        <p className="text-[10px] sm:text-[10.5px] text-[#7D93AB] text-center pt-0.5">
+          Contact your System Administrator for credential recovery.
+        </p>
       </form>
     </section>
   );

@@ -2,187 +2,128 @@ import React from "react";
 
 export function WishPixHero() {
   return (
-    <div className="relative flex flex-col items-center pt-3 pb-4 sm:py-6 px-4 select-none">
-      {/* Brand Title */}
-      <h1 className="text-[32px] sm:text-[38px] lg:text-[44px] font-bold tracking-tight text-[#034677] leading-none mb-3 sm:mb-5">
-        WishPix
-      </h1>
+    <div className="flex flex-col items-center text-center select-none">
+      {/* Top Overline */}
+      <p className="text-[9.5px] sm:text-[11px] lg:text-[12px] font-bold tracking-[0.16em] text-[#155E95] uppercase mb-3.5 lg:mb-5">
+        LOCAL. SECURE. MADE FOR TEACHERS.
+      </p>
 
-      {/* Child & Kiosk Vector Illustration (Scales from mobile to desktop) */}
-      <div className="relative w-[225px] h-[172px] sm:w-[275px] sm:h-[210px] lg:w-[330px] lg:h-[252px] flex items-center justify-center my-1">
+      {/* Dark Rounded Square Badge with Teacher & Classroom Kiosk Illustration */}
+      <div className="w-[104px] h-[96px] sm:w-[120px] sm:h-[110px] lg:w-[152px] lg:h-[140px] rounded-[16px] lg:rounded-[22px] bg-[#0B1F35] shadow-[0_12px_28px_rgba(9,30,54,0.28)] border border-white/10 flex items-center justify-center p-2.5 lg:p-3.5">
         <svg
-          viewBox="0 0 240 185"
+          viewBox="0 0 120 108"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow-[0_4px_12px_rgba(3,70,119,0.1)]"
+          className="w-full h-full"
           role="img"
-          aria-label="Illustration of a child next to the WishPix Kiosk"
+          aria-label="Illustration of a teacher presenting beside a WishPix interactive display"
         >
-          {/* Floor Oval Shadow */}
-          <ellipse
-            cx="116"
-            cy="168"
-            rx="88"
-            ry="8.5"
-            fill="#DAE6F4"
-            opacity="0.88"
-          />
-
-          {/* ==================== CHILD FIGURE (LEFT) ==================== */}
-          {/* Right Arm (reaching toward kiosk) */}
-          <path
-            d="M89 96 C102 103, 108 111, 114 108 C121 103, 129 94, 134 91 C138 89, 143 93, 139 98 C133 105, 122 117, 114 120 C107 122, 98 113, 87 106 Z"
-            fill="#DF9A73"
-          />
-
-          {/* Torso / Blue Overall Suit */}
-          <path
-            d="M66 92 C66 85, 96 85, 96 92 L99 138 C99 144, 63 144, 63 138 Z"
-            fill="#2478B4"
-          />
-          {/* Lighter Blue Top Bib Accent */}
-          <path
-            d="M67 93 C69 87, 93 87, 95 93 L98 104 C88 109, 74 109, 64 104 Z"
-            fill="#4396D0"
-          />
-          {/* White Neck Collar */}
-          <path
-            d="M72 87 C76 92, 86 92, 90 87 L88 83 C84 86, 78 86, 74 83 Z"
-            fill="#F6FAFE"
-          />
-
-          {/* Left Arm (bent in front) */}
-          <path
-            d="M66 94 C57 102, 53 113, 57 119 C60 123, 69 119, 73 111 C75 107, 70 102, 66 94 Z"
-            fill="#DF9A73"
-          />
-
-          {/* Seated Crossed Legs / Knees */}
+          {/* ==================== INTERACTIVE MONITOR (RIGHT) ==================== */}
           <rect
-            x="58"
-            y="133"
-            width="18"
-            height="25"
-            rx="9"
-            transform="rotate(12 58 133)"
-            fill="#0A4873"
+            x="57"
+            y="28"
+            width="43"
+            height="30"
+            rx="2.5"
+            fill="#1E3A5F"
+            stroke="#38BDF8"
+            strokeWidth="1.2"
           />
-          <rect
-            x="83"
-            y="136"
-            width="18"
-            height="25"
-            rx="9"
-            transform="rotate(-14 83 136)"
-            fill="#0A4873"
-          />
-          {/* Left & Right Shoes */}
-          <rect x="52" y="155" width="22" height="12" rx="6" fill="#064B78" />
-          <rect x="85" y="155" width="22" height="12" rx="6" fill="#064B78" />
+          <rect x="59.5" y="30.5" width="38" height="24" rx="1.5" fill="#E0F2FE" />
 
-          {/* Child Head */}
-          <ellipse cx="81" cy="64" rx="19.5" ry="21" fill="#DF9A73" />
-          {/* Child Hair (Dark Navy Swept Style) */}
+          {/* Left Video Tile on Monitor */}
+          <rect x="61.5" y="32.5" width="15" height="20" rx="1.5" fill="#7DD3FC" />
+          <circle cx="69" cy="39" r="3.2" fill="#9A3412" />
           <path
-            d="M61.5 62 C60 44, 73 36, 86 38 C96 40, 101 49, 100 61 C97 54, 92 49, 88 47 C82 54, 71 57, 61.5 62 Z"
-            fill="#0D3C5C"
+            d="M64 49 C64 44.5, 74 44.5, 74 49 L74 52.5 L64 52.5 Z"
+            fill="#0284C7"
           />
-          {/* Eyes */}
-          <circle cx="74.5" cy="63.5" r="2" fill="#16324A" />
-          <circle cx="87.5" cy="63.5" r="2" fill="#16324A" />
-          {/* Smile */}
+
+          {/* 4 Small Student Tiles on Right of Monitor */}
+          <rect x="78.5" y="32.5" width="8" height="9" rx="1" fill="#FDE68A" />
+          <circle cx="82.5" cy="36.5" r="2" fill="#D97706" />
+          <rect x="88" y="32.5" width="8" height="9" rx="1" fill="#FECDD3" />
+          <circle cx="92" cy="36.5" r="2" fill="#E11D48" />
+          <rect x="78.5" y="43.5" width="8" height="9" rx="1" fill="#BBF7D0" />
+          <circle cx="82.5" cy="47.5" r="2" fill="#15803D" />
+          <rect x="88" y="43.5" width="8" height="9" rx="1" fill="#DDD6FE" />
+          <circle cx="92" cy="47.5" r="2" fill="#6D28D9" />
+
+          {/* Monitor Stand */}
+          <rect x="75.5" y="58" width="6" height="4.5" fill="#475569" />
+          <rect x="69" y="62" width="19" height="2" rx="1" fill="#64748B" />
+
+          {/* ==================== TEACHER DESK (LOWER RIGHT) ==================== */}
+          <rect x="53" y="64" width="50" height="4" rx="1.5" fill="#5EEAD4" />
+          <rect x="56" y="68" width="44" height="5.5" fill="#2DD4BF" />
+          <rect x="57" y="73.5" width="2.8" height="23.5" fill="#5EEAD4" />
+          <rect x="96" y="73.5" width="2.8" height="23.5" fill="#5EEAD4" />
+
+          {/* ==================== TEACHER FIGURE (LEFT) ==================== */}
+          <circle cx="38" cy="14.5" r="5" fill="#6B3410" />
           <path
-            d="M76 70.5 Q81 75.5 86 70.5"
-            stroke="#7B3E26"
-            strokeWidth="2.3"
+            d="M30 23 C30 16, 48 16, 48 23 C48 27, 46 31, 39 31 C32 31, 30 27, 30 23 Z"
+            fill="#78350F"
+          />
+          <ellipse cx="39.5" cy="26" rx="7.2" ry="7.8" fill="#FDBA8C" />
+          <path
+            d="M32 23.5 C33.5 17.5, 44.5 17.5, 46.8 23 C43 20.5, 36.5 20.5, 32 23.5 Z"
+            fill="#78350F"
+          />
+          <circle cx="37" cy="25.8" r="1" fill="#1E293B" />
+          <circle cx="42" cy="25.8" r="1" fill="#1E293B" />
+          <path
+            d="M37.5 29 Q39.5 31 41.5 29"
+            stroke="#9A3412"
+            strokeWidth="1.2"
             strokeLinecap="round"
             fill="none"
           />
 
-          {/* ==================== WISHPIX KIOSK (RIGHT) ==================== */}
-          {/* Kiosk Upper Body Cabinet */}
-          <rect
-            x="133"
-            y="39"
-            width="47"
-            height="86"
-            rx="8"
-            fill="#145D91"
-          />
-          {/* Subtle Top Bezel Cap */}
+          <rect x="37.2" y="33" width="4.6" height="4.5" rx="2" fill="#FDBA8C" />
+          <path d="M33 37 L46 37 L45 58 L34 58 Z" fill="#99F6E4" />
+          <path d="M36.5 38.5 L42.5 38.5 L39.5 43 Z" fill="#2DD4BF" />
+
           <path
-            d="M133 47 C133 42.5, 136.5 39, 141 39 L172 39 C176.5 39, 180 42.5, 180 47 L180 52 L133 52 Z"
-            fill="#2B74A7"
+            d="M29 38.5 C29 37, 33 36.5, 35.5 37 L36.5 59 L28.5 59 Z"
+            fill="#0284C7"
+          />
+          <path
+            d="M43.5 37 C46 36.5, 49.5 37, 49.5 38.5 L50 59 L42.5 59 Z"
+            fill="#0284C7"
           />
 
-          {/* Kiosk White Display Screen */}
-          <rect
-            x="140"
-            y="49"
-            width="33"
-            height="39"
-            rx="4.5"
-            fill="#F7FBFF"
+          <path
+            d="M29.5 38.5 L24.5 57.5 L28.2 58.5 L32 41 Z"
+            fill="#0284C7"
+          />
+          <circle cx="25.8" cy="59.5" r="2.2" fill="#FDBA8C" />
+
+          <path
+            d="M48 39 L57 46 L55 49.5 L46.5 43.5 Z"
+            fill="#0284C7"
+          />
+          <circle cx="57.5" cy="46.5" r="2.2" fill="#FDBA8C" />
+
+          <path
+            d="M30.5 58 L48 58 L46.5 92 L41 92 L39.2 68 L37.5 92 L32 92 Z"
+            fill="#0F766E"
           />
 
-          {/* Screen Inner Avatar Silhouette & Checkmark */}
-          <circle cx="156.5" cy="57.5" r="3.2" fill="#82B1D6" />
-          <path
-            d="M148.5 69 C148.5 64, 164.5 64, 164.5 69 L164.5 79 L148.5 79 Z"
-            fill="#C7E0F4"
-          />
-          {/* Bold Checkmark on Screen */}
-          <path
-            d="M151.5 70.5 L155.5 74.5 L163 65.5"
-            stroke="#064A7A"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {/* Kiosk Mic / Sensor Dot & Speaker Slot */}
-          <circle cx="156.5" cy="94" r="1.8" fill="#B8D6EE" />
-          <rect
-            x="148"
-            y="102"
-            width="17"
-            height="3.5"
-            rx="1.75"
-            fill="#0A3F66"
-          />
-
-          {/* 3 Small Grille Lines */}
-          <rect x="150" y="109" width="13" height="2" rx="1" fill="#BDD7EE" />
-          <rect x="150" y="113" width="13" height="2" rx="1" fill="#BDD7EE" />
-          <rect x="150" y="117" width="13" height="2" rx="1" fill="#BDD7EE" />
-
-          {/* Lower Pedestal / Sticker Output Stand */}
-          <path
-            d="M138 125 L175 125 L181 160 L132 160 Z"
-            fill="#145D91"
-          />
-          {/* White Thermal Sticker Paper Sheet Feeding Out */}
-          <path
-            d="M142 125 L171 125 L175 158 L138 158 Z"
-            fill="#F3F8FE"
-          />
-          {/* Kiosk Heavy Base Foot */}
-          <rect
-            x="128"
-            y="157"
-            width="57"
-            height="9"
-            rx="4.5"
-            fill="#064B78"
-          />
+          <ellipse cx="34.2" cy="94.5" rx="3.5" ry="1.8" fill="#FDBA8C" />
+          <ellipse cx="44.2" cy="94.5" rx="3.5" ry="1.8" fill="#FDBA8C" />
         </svg>
       </div>
 
-      {/* Taglines */}
-      <p className="text-[10px] sm:text-[11px] lg:text-[12px] font-bold tracking-[0.15em] text-[#1A73B8] uppercase text-center mt-2">
-        LOCAL. SECURE. MADE FOR EDUCATORS.
-      </p>
-      <p className="text-[11.5px] sm:text-[13px] lg:text-[14px] text-[#607792] text-center mt-1.5 font-normal">
+      {/* Main Blue Title */}
+      <h1 className="mt-3.5 lg:mt-5 text-[20px] sm:text-[24px] lg:text-[30px] font-extrabold tracking-tight text-[#0077C8] leading-[1.2]">
+        Welcome to the WishPix
+        <br />
+        Teacher App
+      </h1>
+
+      {/* Subtitle */}
+      <p className="mt-1 lg:mt-2 text-[11.5px] sm:text-[13px] lg:text-[14.5px] font-medium text-[#1D78C1]">
         Small voices. Big imagination.
       </p>
     </div>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #cfe2f6;
-  --foreground: #143350;
+  --background: #f2f6fa;
+  --foreground: #0f253e;
 }
 
 @theme inline {
@@ -15,4 +15,95 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+@keyframes orbit-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes float-pulse {
+  0%,
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.06) translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes ring-ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.65;
+  }
+  70% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.wishpix-orbit-ring {
+  animation: orbit-spin 1.35s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 8s;
+  }
+}
+
+.wishpix-orbit-reverse {
+  animation: orbit-spin-reverse 2.4s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+.wishpix-float-pulse {
+  animation: float-pulse 2.6s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.wishpix-ring-ripple {
+  animation: ring-ripple 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.2;
+  }
+}
+
+.wishpix-shimmer {
+  animation: shimmer-slide 1.8s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }

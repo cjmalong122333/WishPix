@@ -26,7 +26,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         router.replace(pathname, { scroll: false });
       }
     } else {
-      setIsMobileManualOpen(true);
+      setIsMobileManualOpen((prev) => !prev);
     }
   };
 
@@ -38,8 +38,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="relative flex-1 flex min-h-screen w-full bg-[#CFE2F6]">
-      {/* Responsive Sidebar (Docked on Desktop lg+, Slide-Over Drawer on Mobile/Tablet) */}
+    <div className="relative flex-1 flex min-h-screen w-full bg-[#F2F6FA] text-[#0F253E]">
+      {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
       <NavigationDrawer
         isOpen={isMobileDrawerOpen}
         isDesktopSidebarOpen={effectiveDesktopSidebarOpen}
@@ -52,8 +52,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         {/* Top Educator App Bar */}
         <TopNavbar kiosk={KIOSK_INFO} onOpenMenu={handleToggleMenu} />
 
-        {/* Main Dashboard Scrollable Content */}
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        {/* Main Responsive Content Container */}
+        <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           {children}
         </main>
       </div>

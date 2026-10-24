@@ -1,75 +1,57 @@
 import React from "react";
-import { BarChart2, Layers, Play, Printer } from "lucide-react";
-import type { StatMetric } from "@/types/kiosk";
+import { BarChart2, Calendar, Play, Printer } from "lucide-react";
+import type { StatAccentVariant, StatMetric } from "@/types/kiosk";
 
 interface MetricStatCardProps {
   metric: StatMetric;
 }
 
+const BADGE_STYLES: Record<StatAccentVariant, string> = {
+  blue: "bg-[#E6F2FF] text-[#0077C8]",
+  purple: "bg-[#F3E8FF] text-[#9333EA]",
+  indigo: "bg-[#EEF2FF] text-[#4F46E5]",
+  green: "bg-[#DCFCE7] text-[#15803D]",
+};
+
 export function MetricStatCard({ metric }: MetricStatCardProps) {
-  const isPurple = metric.variant === "purple";
-
-  const subtitleColor =
-    metric.id === "active-session"
-      ? "text-[#7D8E9F] font-normal"
-      : metric.id === "total-prints"
-        ? "text-[#045A94] font-semibold"
-        : "text-[#1A73B8] font-medium";
-
   return (
-    <article className="relative overflow-hidden rounded-[16px] sm:rounded-[18px] bg-white px-4 sm:px-5 py-4 sm:py-5 shadow-[0_4px_14px_rgba(3,70,119,0.06)] hover:shadow-[0_8px_22px_rgba(3,70,119,0.1)] transition">
-      {/* Subtle Top Gradient Accent Line */}
-      <div
-        aria-hidden="true"
-        className={`absolute top-0 left-0 right-0 h-[3px] ${
-          isPurple
-            ? "bg-gradient-to-r from-[#5D55E7] via-[#9A94F7] to-transparent"
-            : "bg-gradient-to-r from-[#1E6FA8] via-[#6BA9D6] to-transparent"
-        }`}
-      />
+    <article className="rounded-[14px] bg-white border border-[#E6EDF5] px-3.5 sm:px-4 py-3.5 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="text-[11px] sm:text-[11.5px] font-medium text-[#64748B] leading-snug">
+          {metric.label}
+        </h3>
 
-      {/* Soft Radial Glow in Bottom Right */}
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute -bottom-6 right-4 w-28 h-24 rounded-full blur-2xl ${
-          isPurple ? "bg-[#E2DFFE]/75" : "bg-[#D5E9FA]/80"
-        }`}
-      />
-
-      <div className="relative flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-[11.5px] sm:text-[12.5px] font-semibold text-[#5A6F85]">
-            {metric.label}
-          </h3>
-          <p className="text-[23px] sm:text-[27px] font-extrabold text-[#004A7C] tracking-tight leading-none mt-2 sm:mt-2.5">
-            {metric.value}
-          </p>
-          <p className={`text-[11px] sm:text-[12px] mt-2 sm:mt-2.5 ${subtitleColor}`}>
-            {metric.subtitle}
-          </p>
-        </div>
-
-        {/* Tinted Icon Box */}
+        {/* Tinted Pill Icon Box */}
         <div
-          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] flex items-center justify-center shadow-[0_4px_10px_rgba(15,45,80,0.08)] flex-shrink-0 ${
-            isPurple
-              ? "bg-[#EAE8FE] text-[#5B53E6]"
-              : "bg-[#DCEBFA] text-[#216EA3]"
+          className={`w-7 h-6 rounded-[8px] flex items-center justify-center flex-shrink-0 ${
+            BADGE_STYLES[metric.variant]
           }`}
         >
           {metric.icon === "layers" && (
-            <Layers className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[2]" aria-hidden="true" />
+            <Calendar className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           )}
           {metric.icon === "printer" && (
-            <Printer className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[2]" aria-hidden="true" />
+            <Printer className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           )}
           {metric.icon === "play" && (
-            <Play className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[2]" aria-hidden="true" />
+            <Play
+              className="w-3.5 h-3.5 stroke-[2.2] fill-current"
+              aria-hidden="true"
+            />
           )}
           {metric.icon === "chart" && (
-            <BarChart2 className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[2]" aria-hidden="true" />
+            <BarChart2 className="w-3.5 h-3.5 stroke-[2.4]" aria-hidden="true" />
           )}
         </div>
+      </div>
+
+      <div className="mt-2">
+        <p className="text-[19px] sm:text-[21px] font-extrabold text-[#0F253E] tracking-tight leading-none">
+          {metric.value}
+        </p>
+        <p className="text-[10px] sm:text-[10.5px] text-[#94A3B8] mt-1.5">
+          {metric.subtitle}
+        </p>
       </div>
     </article>
   );

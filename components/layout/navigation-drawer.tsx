@@ -48,21 +48,21 @@ export function NavigationDrawer({
       {isDesktopSidebarOpen && (
         <aside
           aria-label="Desktop sidebar navigation"
-          className="hidden lg:flex w-[275px] xl:w-[290px] shrink-0 min-h-screen bg-[#004E82] text-white flex-col justify-between border-r border-[#003E68] select-none"
+          className="hidden lg:flex w-[265px] xl:w-[280px] shrink-0 min-h-screen bg-[#0D223B] text-white flex-col justify-between border-r border-white/10 select-none"
         >
           <SidebarContent kiosk={kiosk} />
         </aside>
       )}
 
-      {/* Slide-Over Modal Drawer on Mobile/Tablet (< lg) or when explicitly opened via ?nav=open */}
+      {/* Slide-Over Modal Drawer on Mobile/Tablet (< lg) */}
       {isOpen && (
         <div
           className="fixed inset-0 z-50 flex lg:hidden"
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile navigation menu"
+          aria-label="Navigation menu"
         >
-          <aside className="relative z-10 w-[80%] max-w-[300px] h-full bg-[#004E82] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,25,45,0.4)] overflow-y-auto">
+          <aside className="relative z-10 w-[82%] max-w-[290px] h-full bg-[#0D223B] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none">
             <SidebarContent
               kiosk={kiosk}
               onNavigate={onCloseMobile}
@@ -75,7 +75,7 @@ export function NavigationDrawer({
           <div
             onClick={onCloseMobile}
             aria-hidden="true"
-            className="flex-1 bg-[#10253A]/45 backdrop-blur-[1px] cursor-pointer"
+            className="flex-1 bg-[#09192C]/50 backdrop-blur-[1px] cursor-pointer"
           />
         </div>
       )}
@@ -101,14 +101,14 @@ function SidebarContent({
       <div>
         {/* Top Brand Header */}
         <div className="px-5 pt-5 pb-3.5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-[12px] bg-white text-[#004E82] flex items-center justify-center shadow-xs flex-shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-[10px] bg-[#0077C8] text-white flex items-center justify-center shadow-xs flex-shrink-0">
               <WandSparkles
-                className="w-5 h-5 stroke-[2.2]"
+                className="w-4 h-4 stroke-[2.2]"
                 aria-hidden="true"
               />
             </div>
-            <span className="text-[18px] font-bold tracking-tight text-white">
+            <span className="text-[17px] font-extrabold tracking-tight text-white">
               WishPix
             </span>
           </div>
@@ -118,7 +118,7 @@ function SidebarContent({
               type="button"
               onClick={onClose}
               aria-label="Close navigation drawer"
-              className="p-1.5 rounded-lg text-sky-200 hover:bg-white/10 hover:text-white transition cursor-pointer lg:hidden"
+              className="p-1.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition cursor-pointer lg:hidden"
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -126,41 +126,41 @@ function SidebarContent({
         </div>
 
         {/* Connected Kiosk Status Card */}
-        <div className="mx-3.5 mt-1 rounded-[13px] bg-[#165F91] border border-[#2C78AA] px-3.5 py-3 flex items-center justify-between gap-2.5">
+        <div className="mx-3.5 mt-1 rounded-[12px] bg-[#163252] border border-white/10 px-3.5 py-3 flex items-center justify-between gap-2.5">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-[10px] bg-[#2970A0] flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-[9px] bg-[#1E446E] flex items-center justify-center flex-shrink-0">
               <Monitor
-                className="w-4 h-4 text-white/90 stroke-[1.85]"
+                className="w-4 h-4 text-[#38BDF8] stroke-[1.85]"
                 aria-hidden="true"
               />
             </div>
             <div className="min-w-0 leading-tight">
-              <p className="text-[8.5px] font-semibold uppercase tracking-[0.12em] text-[#9BC6E6]">
+              <p className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-[#8AB8DA]">
                 CONNECTED KIOSK
               </p>
-              <p className="text-[12.5px] font-bold text-white truncate mt-0.5">
+              <p className="text-[12px] font-bold text-white truncate mt-0.5">
                 {kiosk.roomName}
               </p>
-              <p className="text-[10px] text-[#B3D6F0] mt-0.5">
+              <p className="text-[10px] text-[#22C55E] font-medium mt-0.5">
                 {kiosk.isOnline ? "Online" : "Offline"}
               </p>
             </div>
           </div>
 
           <span
-            className="w-2.5 h-2.5 rounded-full bg-[#4ADE80] flex-shrink-0"
+            className="w-2.5 h-2.5 rounded-full bg-[#22C55E] flex-shrink-0"
             aria-hidden="true"
           />
         </div>
 
         {/* Categorized Navigation Links */}
         <nav
-          className="mt-5 space-y-5 px-3.5 pb-6"
+          className="mt-5 space-y-4 px-3.5 pb-6"
           aria-label="Educator sections"
         >
           {NAVIGATION_SECTIONS.map((section) => (
             <div key={section.id}>
-              <p className="px-2.5 text-[9.5px] font-semibold uppercase tracking-[0.15em] text-[#8AB8DA] mb-1.5">
+              <p className="px-2.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7D97B2] mb-1.5">
                 {section.title}
               </p>
               <ul className="space-y-1">
@@ -171,19 +171,13 @@ function SidebarContent({
 
                   return (
                     <li key={item.id} className="relative">
-                      {isActive && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute -left-3.5 top-1/2 -translate-y-1/2 w-[3.5px] h-5 rounded-r-full bg-[#38BDF8]"
-                        />
-                      )}
                       <Link
                         href={item.href}
                         onClick={onNavigate}
-                        className={`flex items-center justify-between rounded-[11px] px-3.5 py-2.5 text-[12.5px] transition ${
+                        className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition ${
                           isActive
-                            ? "bg-white text-[#004E82] font-bold shadow-xs"
-                            : "text-[#D4E7F7] hover:bg-white/10 hover:text-white font-normal"
+                            ? "bg-[#0077C8] text-white font-bold shadow-xs"
+                            : "text-[#CBD5E1] hover:bg-white/10 hover:text-white font-medium"
                         }`}
                       >
                         <span className="flex items-center gap-3">
@@ -192,7 +186,7 @@ function SidebarContent({
                         </span>
 
                         {item.badge !== undefined && (
-                          <span className="w-[19px] h-[19px] rounded-full bg-[#F87171] text-white text-[10px] font-bold flex items-center justify-center leading-none">
+                          <span className="w-[18px] h-[18px] rounded-full bg-[#EF4444] text-white text-[10px] font-bold flex items-center justify-center leading-none">
                             {item.badge}
                           </span>
                         )}
@@ -207,15 +201,15 @@ function SidebarContent({
       </div>
 
       {/* Bottom Teacher / System Version Footer */}
-      <div className="border-t border-white/15 px-4 py-4 flex items-center gap-3 bg-[#00497A]">
-        <div className="w-9 h-9 rounded-full bg-[#1E6798] border border-white/15 text-white text-[11px] font-bold flex items-center justify-center flex-shrink-0">
-          WP
+      <div className="border-t border-white/10 px-4 py-3.5 flex items-center gap-3 bg-[#09192C]">
+        <div className="w-8 h-8 rounded-full bg-[#004E89] text-white text-[11px] font-bold flex items-center justify-center flex-shrink-0">
+          {kiosk.educatorInitials}
         </div>
         <div className="leading-tight min-w-0">
           <p className="text-[12px] font-bold text-white truncate">
-            WishPix Teacher
+            {kiosk.educatorName} • Educator
           </p>
-          <p className="text-[10px] text-[#8AB8DA] mt-0.5">
+          <p className="text-[10px] text-[#7D97B2] mt-0.5">
             {kiosk.systemVersion}
           </p>
         </div>
@@ -232,7 +226,7 @@ function NavIcon({
   isActive: boolean;
 }) {
   const className = `w-4 h-4 flex-shrink-0 ${
-    isActive ? "text-[#004E82] stroke-[2.2]" : "text-[#9EC7E6] stroke-[1.75]"
+    isActive ? "text-white stroke-[2.2]" : "text-[#94A8BE] stroke-[1.8]"
   }`;
 
   switch (name) {

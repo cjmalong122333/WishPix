@@ -1,49 +1,88 @@
-import React from "react";
-import { Monitor } from "lucide-react";
-import type { KioskInfo } from "@/types/kiosk";
+"use client";
+
+import React, { useState } from "react";
+import { Volume2 } from "lucide-react";
+import { KIOSK_STATUS_PILLS } from "@/lib/mock-data";
+import type { KioskHardwareStatus, KioskInfo } from "@/types/kiosk";
 
 interface KioskStatusBannerProps {
   kiosk: KioskInfo;
 }
 
 export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
+  const [activeStatus, setActiveStatus] =
+    useState<KioskHardwareStatus>("online");
+
+  const currentPill =
+    KIOSK_STATUS_PILLS.find((p) => p.id === activeStatus) ??
+    KIOSK_STATUS_PILLS[0];
+
   return (
     <section
       aria-label="Kiosk Status"
-      className="w-full rounded-[16px] sm:rounded-[20px] bg-gradient-to-br from-[#035388] via-[#014573] to-[#00385F] px-4 sm:px-6 lg:px-7 py-4 sm:py-5 lg:py-6 text-white shadow-[0_8px_22px_rgba(0,56,95,0.22)]"
+      className="relative overflow-hidden w-full rounded-[18px] bg-[#0F233A] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)]"
     >
-      <p className="text-[9.5px] sm:text-[10.5px] font-semibold tracking-[0.15em] text-[#B4D4EE] uppercase">
-        KIOSK STATUS • {kiosk.roomName.toUpperCase()}
-      </p>
+      {/* Subtle Blue Radial Glow in Bottom-Right */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-10 -right-8 w-44 h-44 rounded-full bg-[#0284C7]/25 blur-2xl"
+      />
 
-      <div className="mt-2.5 sm:mt-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
-          {/* Frosted Glass Monitor Icon Box */}
-          <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-[12px] sm:rounded-[14px] bg-[#2D709E]/80 border border-white/25 shadow-[0_4px_10px_rgba(0,0,0,0.12)] flex items-center justify-center flex-shrink-0">
-            <Monitor
-              className="w-5 h-5 sm:w-6 sm:h-6 text-white/95 stroke-[1.75]"
-              aria-hidden="true"
-            />
-          </div>
-
-          {/* Status Text */}
-          <h2 className="text-[18px] sm:text-[22px] lg:text-[25px] font-normal tracking-wide leading-[1.2] text-white uppercase">
-            WAITING FOR{" "}
-            <br className="sm:hidden" />
-            TEACHER
-          </h2>
-        </div>
-
-        {/* Online Pill */}
-        <div className="rounded-[10px] sm:rounded-[12px] bg-white border-[1.5px] border-[#22C55E] px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 shadow-xs flex-shrink-0">
-          <span
-            className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#16A34A]"
+      {/* Top Row: Megaphone + Room Label & Online Pill */}
+      <div className="relative flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <Volume2
+            className="w-4 h-4 text-[#38BDF8] stroke-[2] flex-shrink-0"
             aria-hidden="true"
           />
-          <span className="text-[11px] sm:text-[12.5px] font-bold text-[#15803D]">
-            {kiosk.isOnline ? "Online" : "Offline"}
-          </span>
+          <p className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.12em] text-[#CBD5E1] uppercase truncate">
+            KIOSK STATUS • {kiosk.roomName.toUpperCase()}
+          </p>
         </div>
+
+        {/* Status Pill Badge */}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#113934] border border-[#22C55E]/35 px-2.5 py-0.5 text-[10px] font-semibold text-[#4ADE80] flex-shrink-0">
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${currentPill.dotColor}`}
+            aria-hidden="true"
+          />
+          <span>{currentPill.label}</span>
+        </span>
+      </div>
+
+      {/* Main Heading & Description */}
+      <div className="relative mt-2.5">
+        <h2 className="text-[16px] sm:text-[18px] font-extrabold tracking-wide text-white uppercase leading-snug">
+          {kiosk.statusHeading}
+        </h2>
+        <p className="text-[11px] sm:text-[11.5px] text-[#94A8BE] mt-1 leading-relaxed max-w-md">
+          {kiosk.statusDescription}
+        </p>
+      </div>
+
+      {/* 5 Hardware Status Pills Row */}
+      <div className="relative mt-3.5 flex flex-wrap items-center gap-1.5">
+        {KIOSK_STATUS_PILLS.map((pill) => {
+          const isSelected = pill.id === activeStatus;
+          return (
+            <button
+              key={pill.id}
+              type="button"
+              onClick={() => setActiveStatus(pill.id)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium transition cursor-pointer ${
+                isSelected
+                  ? "bg-[#1B3552] border border-white/40 text-white shadow-xs"
+                  : "bg-[#162C46]/90 border border-white/10 text-[#94A8BE] hover:text-white"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${pill.dotColor}`}
+                aria-hidden="true"
+              />
+              <span>{pill.label}</span>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
