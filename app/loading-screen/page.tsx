@@ -49,7 +49,7 @@ function LoadingScreenContent() {
     <div
       onClick={() => router.push("/login")}
       title="Click anywhere to proceed to Login"
-      className="relative flex-1 min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-[#C7D6EB] via-[#A8BBD3] to-[#8F969E] overflow-hidden cursor-pointer select-none py-8"
+      className="wishpix-page-transition relative flex-1 min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-[#C7D6EB] via-[#A8BBD3] to-[#8F969E] overflow-hidden cursor-pointer select-none py-8"
     >
       {/* Subtle Ambient Background Glows */}
       <div

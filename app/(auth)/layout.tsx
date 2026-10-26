@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { WandSparkles } from "lucide-react";
 import { WishPixHero } from "@/components/auth/wishpix-hero";
+import { PageTransition } from "@/components/layout/page-transition";
 
 export default function AuthLayout({
   children,
@@ -28,7 +29,11 @@ export default function AuthLayout({
 
         {/* Right Column on Desktop / Bottom on Mobile: Dark Navy Card */}
         <div className="w-full max-w-[420px] lg:max-w-[450px] mx-auto lg:col-span-6 mt-4 sm:mt-5 lg:mt-0 flex flex-col items-center">
-          <main className="w-full">{children}</main>
+          <main className="wishpix-page-stage w-full">
+            <Suspense fallback={<div className="w-full min-h-[240px]" />}>
+              <PageTransition>{children}</PageTransition>
+            </Suspense>
+          </main>
 
           {/* Mobile/Tablet Brand Mark below Card */}
           <div className="mt-4 flex lg:hidden items-center justify-center gap-1.5 select-none">

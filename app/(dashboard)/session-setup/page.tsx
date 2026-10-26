@@ -232,7 +232,7 @@ export default function SessionSetupPage() {
       {/* Responsive Split Layout: Stacked on Mobile, 2-Column on Desktop (lg+) */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column: Active Step Content */}
-        <div className="lg:col-span-7 space-y-4">
+        <div key={`step-${currentStep}`} className="wishpix-step-transition lg:col-span-7 space-y-4">
           {/* STEP 1: ACTIVITY SETUP */}
           {currentStep === 1 && (
             <section

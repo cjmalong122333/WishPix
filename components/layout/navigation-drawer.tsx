@@ -83,7 +83,7 @@ export function NavigationDrawer({
           aria-modal="true"
           aria-label="Navigation menu"
         >
-          <aside className="relative z-10 w-[82%] max-w-[290px] h-full bg-[#085081] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none transition-colors duration-200">
+          <aside className="wishpix-drawer-slide relative z-10 w-[82%] max-w-[290px] h-full bg-[#085081] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none transition-colors duration-200">
             <SidebarContent
               kiosk={kiosk}
               onNavigate={onCloseMobile}
@@ -96,7 +96,7 @@ export function NavigationDrawer({
           <div
             onClick={onCloseMobile}
             aria-hidden="true"
-            className="flex-1 bg-[#09192C]/50 backdrop-blur-[1px] cursor-pointer"
+            className="wishpix-backdrop-fade flex-1 bg-[#09192C]/50 backdrop-blur-[1px] cursor-pointer"
           />
         </div>
       )}
@@ -199,10 +199,10 @@ function SidebarContent({
                       <Link
                         href={item.href}
                         onClick={onNavigate}
-                        className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition ${
+                        className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition-all duration-200 ease-out active:scale-[0.98] ${
                           isActive
                             ? "bg-white text-[#085081] font-bold shadow-xs"
-                            : "text-white/90 hover:bg-white/10 hover:text-white font-medium"
+                            : "text-white/90 hover:bg-white/10 hover:translate-x-0.5 hover:text-white font-medium"
                         }`}
                       >
                         <span className="flex items-center gap-3">

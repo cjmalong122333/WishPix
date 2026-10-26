@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { TopNavbar } from "@/components/layout/top-navbar";
 import { NavigationDrawer } from "@/components/layout/navigation-drawer";
+import { PageTransition } from "@/components/layout/page-transition";
 import { KIOSK_INFO } from "@/lib/mock-data";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
@@ -53,8 +54,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <TopNavbar kiosk={KIOSK_INFO} onOpenMenu={handleToggleMenu} />
 
         {/* Main Responsive Content Container */}
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-          {children}
+        <main className="wishpix-page-stage flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+          <PageTransition>{children}</PageTransition>
         </main>
       </div>
     </div>
