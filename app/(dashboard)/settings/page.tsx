@@ -1,32 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Check, Volume2 } from "lucide-react";
 import { THEME_SWATCHES } from "@/lib/mock-data";
+import {
+  useAppSettings,
+  type DisplayThemeId,
+} from "@/components/providers/app-settings-provider";
+
+const SWATCH_LABEL_FILIPINO: Record<string, string> = {
+  "deep-blue": "Deep Blue",
+  ocean: "Ocean",
+  midnight: "Midnight",
+  slate: "Slate",
+};
 
 export default function SettingsPage() {
-  const [displayLanguage, setDisplayLanguage] = useState<
-    "English" | "Filipino"
-  >("English");
-  const [volume, setVolume] = useState<number>(70);
-  const [selectedSwatchId, setSelectedSwatchId] =
-    useState<string>("deep-blue");
-  const [autoSleepEnabled, setAutoSleepEnabled] = useState<boolean>(true);
-  const [autoSleepDuration, setAutoSleepDuration] =
-    useState<string>("15 minutes");
-  const [autoLogoutEnabled, setAutoLogoutEnabled] = useState<boolean>(true);
-  const [autoLogoutDuration, setAutoLogoutDuration] =
-    useState<string>("30 minutes");
+  const {
+    displayLanguage,
+    setDisplayLanguage,
+    themeId,
+    setThemeId,
+    volume,
+    setVolume,
+    autoSleepEnabled,
+    setAutoSleepEnabled,
+    autoSleepDuration,
+    setAutoSleepDuration,
+    autoLogoutEnabled,
+    setAutoLogoutEnabled,
+    autoLogoutDuration,
+    setAutoLogoutDuration,
+    t,
+  } = useAppSettings();
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Page Title */}
       <div>
         <h1 className="text-[20px] sm:text-[24px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
-          Settings
+          {t("Settings", "Mga Setting")}
         </h1>
         <p className="text-[11px] sm:text-[13px] text-[#64748B] mt-0.5">
-          Language, audio, display and system preferences.
+          {t(
+            "Language, audio, display and system preferences.",
+            "Mga kagustuhan sa wika, audio, display at sistema."
+          )}
         </p>
       </div>
 
@@ -42,19 +61,25 @@ export default function SettingsPage() {
               id="language-settings-heading"
               className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
             >
-              Language
+              {t("Language", "Wika")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Interface language for the teacher application.
+              {t(
+                "Interface language for the teacher application.",
+                "Wika ng interface para sa aplikasyon ng guro."
+              )}
             </p>
           </div>
 
           <div className="pt-3.5">
             <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
-              Display language
+              {t("Display language", "Wika ng display")}
             </p>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Navigation and page titles update immediately.
+              {t(
+                "Navigation and page titles update immediately.",
+                "Agad na mag-a-update ang nabigasyon at mga pamagat ng pahina."
+              )}
             </p>
 
             <div
@@ -95,10 +120,10 @@ export default function SettingsPage() {
               id="audio-settings-heading"
               className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
             >
-              Audio
+              {t("Audio", "Audio")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Kiosk speaker output.
+              {t("Kiosk speaker output.", "Lakas ng tunog sa speaker ng kiosk.")}
             </p>
           </div>
 
@@ -109,10 +134,13 @@ export default function SettingsPage() {
                   htmlFor="kiosk-volume-slider"
                   className="block text-[12px] sm:text-[13px] font-bold text-[#0F253E]"
                 >
-                  Volume
+                  {t("Volume", "Lakas ng Tunog")}
                 </label>
                 <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-                  Applies to the kiosk speaker.
+                  {t(
+                    "Applies to the kiosk speaker.",
+                    "Inilalapat sa speaker ng kiosk."
+                  )}
                 </p>
               </div>
 
@@ -133,7 +161,8 @@ export default function SettingsPage() {
                 max={100}
                 value={volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-full h-2 rounded-lg bg-[#CBD5E1] accent-[#0F253E] cursor-pointer"
+                style={{ accentColor: "var(--wp-primary-dark)" }}
+                className="w-full h-2 rounded-lg bg-[#CBD5E1] cursor-pointer"
               />
             </div>
           </div>
@@ -149,10 +178,13 @@ export default function SettingsPage() {
               id="display-settings-heading"
               className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
             >
-              Display
+              {t("Display", "Display")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Theme colors for this application.
+              {t(
+                "Theme colors for this application.",
+                "Mga kulay ng tema para sa aplikasyong ito."
+              )}
             </p>
           </div>
 
@@ -162,21 +194,21 @@ export default function SettingsPage() {
             className="pt-4 pb-1 flex items-center justify-center sm:justify-around gap-4 sm:gap-6"
           >
             {THEME_SWATCHES.map((swatch) => {
-              const isSelected = selectedSwatchId === swatch.id;
+              const isSelected = themeId === swatch.id;
               return (
                 <button
                   key={swatch.id}
                   type="button"
                   role="radio"
                   aria-checked={isSelected}
-                  onClick={() => setSelectedSwatchId(swatch.id)}
+                  onClick={() => setThemeId(swatch.id as DisplayThemeId)}
                   className="flex flex-col items-center gap-1.5 cursor-pointer group"
                 >
                   <span
                     style={{ backgroundColor: swatch.hex }}
                     className={`w-11 h-11 sm:w-12 sm:h-12 rounded-[12px] flex items-center justify-center transition ${
                       isSelected
-                        ? "ring-2 ring-[#0F253E] ring-offset-2"
+                        ? "ring-2 ring-[#0F253E] ring-offset-2 scale-105"
                         : "opacity-90 group-hover:opacity-100"
                     }`}
                   >
@@ -194,7 +226,10 @@ export default function SettingsPage() {
                         : "font-medium text-[#64748B]"
                     }`}
                   >
-                    {swatch.label}
+                    {t(
+                      swatch.label,
+                      SWATCH_LABEL_FILIPINO[swatch.id] ?? swatch.label
+                    )}
                   </span>
                 </button>
               );
@@ -212,10 +247,13 @@ export default function SettingsPage() {
               id="system-settings-heading"
               className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
             >
-              System
+              {t("System", "Sistema")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Power and security behavior.
+              {t(
+                "Power and security behavior.",
+                "Gawi sa kuryente at seguridad."
+              )}
             </p>
           </div>
 
@@ -225,10 +263,13 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
-                    Auto sleep
+                    {t("Auto sleep", "Auto sleep")}
                   </p>
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-                    Put the kiosk to sleep when idle.
+                    {t(
+                      "Put the kiosk to sleep when idle.",
+                      "Patulugin ang kiosk kapag hindi ginagamit."
+                    )}
                   </p>
                 </div>
 
@@ -258,10 +299,16 @@ export default function SettingsPage() {
                   onChange={(e) => setAutoSleepDuration(e.target.value)}
                   className="w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#0F253E] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
                 >
-                  <option value="5 minutes">5 minutes</option>
-                  <option value="15 minutes">15 minutes</option>
-                  <option value="30 minutes">30 minutes</option>
-                  <option value="1 hour">1 hour</option>
+                  <option value="5 minutes">
+                    {t("5 minutes", "5 minuto")}
+                  </option>
+                  <option value="15 minutes">
+                    {t("15 minutes", "15 minuto")}
+                  </option>
+                  <option value="30 minutes">
+                    {t("30 minutes", "30 minuto")}
+                  </option>
+                  <option value="1 hour">{t("1 hour", "1 oras")}</option>
                 </select>
               </div>
             </div>
@@ -271,10 +318,13 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
-                    Auto logout
+                    {t("Auto logout", "Auto logout")}
                   </p>
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-                    Sign out after a period of no activity.
+                    {t(
+                      "Sign out after a period of no activity.",
+                      "Mag-sign out pagkatapos ng walang aktibidad."
+                    )}
                   </p>
                 </div>
 
@@ -304,10 +354,14 @@ export default function SettingsPage() {
                   onChange={(e) => setAutoLogoutDuration(e.target.value)}
                   className="w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#0F253E] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
                 >
-                  <option value="15 minutes">15 minutes</option>
-                  <option value="30 minutes">30 minutes</option>
-                  <option value="1 hour">1 hour</option>
-                  <option value="Never">Never</option>
+                  <option value="15 minutes">
+                    {t("15 minutes", "15 minuto")}
+                  </option>
+                  <option value="30 minutes">
+                    {t("30 minutes", "30 minuto")}
+                  </option>
+                  <option value="1 hour">{t("1 hour", "1 oras")}</option>
+                  <option value="Never">{t("Never", "Hindi kailanman")}</option>
                 </select>
               </div>
             </div>

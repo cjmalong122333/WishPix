@@ -30,13 +30,14 @@ import {
   SESSION_ACTIVITIES,
   SESSION_THEMES,
 } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { SafetyRuleMode, ThemeOption } from "@/types/kiosk";
 
 const SETUP_STEPS = [
-  { number: 1, label: "Activity" },
-  { number: 2, label: "Theme" },
-  { number: 3, label: "Safety" },
-  { number: 4, label: "Start" },
+  { number: 1, labelEn: "Activity", labelFil: "Aktibidad" },
+  { number: 2, labelEn: "Theme", labelFil: "Tema" },
+  { number: 3, labelEn: "Safety", labelFil: "Kaligtasan" },
+  { number: 4, labelEn: "Start", labelFil: "Simulan" },
 ];
 
 const AVAILABLE_LANGUAGES = ["English", "Filipino", "Taglish"] as const;
@@ -44,6 +45,8 @@ const AVAILABLE_LANGUAGES = ["English", "Filipino", "Taglish"] as const;
 export default function SessionSetupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useAppSettings();
+
   const initialStepParam = Number(searchParams.get("step"));
   const initialStep =
     initialStepParam >= 1 && initialStepParam <= 4 ? initialStepParam : 1;
@@ -83,26 +86,26 @@ export default function SessionSetupPage() {
     (sub) => sub.id === selectedSubOptionId
   );
 
-  const selectedTheme = SESSION_THEMES.find((t) => t.id === selectedThemeId);
+  const selectedTheme = SESSION_THEMES.find((tItem) => tItem.id === selectedThemeId);
 
   const activitySummaryLabel = selectedActivity
     ? selectedSubOption
       ? `${selectedActivity.summaryTitle ?? selectedActivity.title} - ${selectedSubOption.title}`
       : (selectedActivity.summaryTitle ?? selectedActivity.title)
-    : "Not selected";
+    : t("Not selected", "Hindi pa napili");
 
   const activityReviewLabel = selectedActivity
     ? selectedSubOption
       ? `${selectedActivity.title} - ${selectedSubOption.title}`
       : selectedActivity.title
-    : "Not selected";
+    : t("Not selected", "Hindi pa napili");
 
   const themeSummaryLabel =
     selectedThemeId === "custom"
       ? customThemeText.trim() || "Custom Theme"
       : selectedTheme
         ? selectedTheme.title
-        : "Not selected";
+        : t("Not selected", "Hindi pa napili");
 
   const handleSelectActivity = (activityId: string) => {
     setSelectedActivityId(activityId);
@@ -163,15 +166,18 @@ export default function SessionSetupPage() {
       <div className="flex items-start justify-between gap-3">
         <div>
           <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
-            Session Setup
+            {t("Session Setup", "Pag-setup ng Sesyon")}
           </h1>
           <p className="text-[11px] sm:text-[13px] text-[#64748B] mt-0.5">
-            Choose activity, theme and safety, then start.
+            {t(
+              "Choose activity, theme and safety, then start.",
+              "Pumili ng aktibidad, tema at kaligtasan, pagkatapos ay magsimula."
+            )}
           </p>
         </div>
 
         <span className="rounded-full bg-[#E6F2FF] border border-[#B9DCFF] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] flex-shrink-0">
-          Step {currentStep} of 4
+          {t(`Step ${currentStep} of 4`, `Hakbang ${currentStep} ng 4`)}
         </span>
       </div>
 
@@ -215,7 +221,9 @@ export default function SessionSetupPage() {
                   step.number
                 )}
               </span>
-              <span className="truncate">{step.label}</span>
+              <span className="truncate">
+                {t(step.labelEn, step.labelFil)}
+              </span>
             </button>
           );
         })}
@@ -227,16 +235,22 @@ export default function SessionSetupPage() {
         <div className="lg:col-span-7 space-y-4">
           {/* STEP 1: ACTIVITY SETUP */}
           {currentStep === 1 && (
-            <section aria-labelledby="activity-setup-heading" className="space-y-3.5">
+            <section
+              aria-labelledby="activity-setup-heading"
+              className="space-y-3.5"
+            >
               <div>
                 <h2
                   id="activity-setup-heading"
                   className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
                 >
-                  Activity Setup
+                  {t("Activity Setup", "Pag-setup ng Aktibidad")}
                 </h2>
                 <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-                  Choose how children will use the kiosk.
+                  {t(
+                    "Choose how children will use the kiosk.",
+                    "Piliin kung paano gagamitin ng mga bata ang kiosk."
+                  )}
                 </p>
               </div>
 
@@ -318,7 +332,7 @@ export default function SessionSetupPage() {
                 })}
               </div>
 
-              {/* Sub-Options Card (e.g., Single Object Coloring, Scene Coloring, Pattern Coloring) */}
+              {/* Sub-Options Card */}
               {selectedActivity?.subOptions &&
                 selectedActivity.subOptions.length > 0 && (
                   <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-3 sm:p-4 space-y-2.5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
@@ -374,11 +388,13 @@ export default function SessionSetupPage() {
                   id="theme-setup-heading"
                   className="text-[14px] sm:text-[16px] font-extrabold text-[#005A9C]"
                 >
-                  Theme Setup
+                  {t("Theme Setup", "Pag-setup ng Tema")}
                 </h2>
                 <p className="text-[11px] sm:text-[12px] text-[#64748B] mt-0.5 leading-relaxed">
-                  Pick the learning topic. It is pushed to the kiosk when you
-                  continue.
+                  {t(
+                    "Pick the learning topic. It is pushed to the kiosk when you continue.",
+                    "Piliin ang paksa ng pag-aaral. Ipapadala ito sa kiosk kapag nagpatuloy ka."
+                  )}
                 </p>
               </div>
 
@@ -457,16 +473,22 @@ export default function SessionSetupPage() {
 
           {/* STEP 3: SAFETY SETUP */}
           {currentStep === 3 && (
-            <section aria-labelledby="safety-setup-heading" className="space-y-3.5">
+            <section
+              aria-labelledby="safety-setup-heading"
+              className="space-y-3.5"
+            >
               <div>
                 <h2
                   id="safety-setup-heading"
                   className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
                 >
-                  Safety Setup
+                  {t("Safety Setup", "Pag-setup ng Kaligtasan")}
                 </h2>
                 <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-                  Child Safe Mode decides what the kiosk will accept.
+                  {t(
+                    "Child Safe Mode decides what the kiosk will accept.",
+                    "Ang Child Safe Mode ang magpapasya kung ano ang tatanggapin ng kiosk."
+                  )}
                 </p>
               </div>
 
@@ -539,10 +561,13 @@ export default function SessionSetupPage() {
                 <div className="pt-3 border-t border-[#EDF2F7] space-y-3.5">
                   <div className="flex items-baseline gap-2">
                     <span className="text-[11.5px] sm:text-[12.5px] font-extrabold text-[#005A9C]">
-                      Optional
+                      {t("Optional", "Opsyonal")}
                     </span>
                     <span className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8]">
-                      Fine-tune the rules.
+                      {t(
+                        "Fine-tune the rules.",
+                        "I-customize ang mga panuntunan."
+                      )}
                     </span>
                   </div>
 
@@ -555,7 +580,7 @@ export default function SessionSetupPage() {
                       Custom Blocked Words
                     </label>
                     <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
-                      Always rejected
+                      {t("Always rejected", "Palaging hinaharang")}
                     </p>
                     <div className="mt-1.5 flex items-center gap-2">
                       <input
@@ -576,7 +601,7 @@ export default function SessionSetupPage() {
                         type="button"
                         onClick={handleAddBlockedWord}
                         aria-label="Add blocked word"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:bg-[#083E66] text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:opacity-95 text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
@@ -616,7 +641,7 @@ export default function SessionSetupPage() {
                       Custom Allowed Words
                     </label>
                     <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
-                      Always accepted
+                      {t("Always accepted", "Palaging tinatanggap")}
                     </p>
                     <div className="mt-1.5 flex items-center gap-2">
                       <input
@@ -637,7 +662,7 @@ export default function SessionSetupPage() {
                         type="button"
                         onClick={handleAddAllowedWord}
                         aria-label="Add allowed word"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:bg-[#083E66] text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:opacity-95 text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
@@ -674,7 +699,10 @@ export default function SessionSetupPage() {
                       Language Restrictions
                     </p>
                     <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
-                      Languages the kiosk will listen for
+                      {t(
+                        "Languages the kiosk will listen for",
+                        "Mga wikang pakikinggan ng kiosk"
+                      )}
                     </p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       {AVAILABLE_LANGUAGES.map((lang) => {
@@ -708,15 +736,15 @@ export default function SessionSetupPage() {
                       className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2 text-[11px] sm:text-[12px] font-semibold text-[#64748B] transition cursor-pointer"
                     >
                       <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>Back</span>
+                      <span>{t("Back", "Bumalik")}</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setCurrentStep(4)}
-                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:bg-[#083E66] text-white px-4 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-4 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
                     >
-                      <span>Save Settings</span>
+                      <span>{t("Save Settings", "I-save ang Setting")}</span>
                       <ArrowRight
                         className="w-3.5 h-3.5 stroke-[2.5]"
                         aria-hidden="true"
@@ -730,26 +758,35 @@ export default function SessionSetupPage() {
 
           {/* STEP 4: START SESSION */}
           {currentStep === 4 && (
-            <section aria-labelledby="start-session-heading" className="space-y-3.5">
+            <section
+              aria-labelledby="start-session-heading"
+              className="space-y-3.5"
+            >
               <div>
                 <h2
                   id="start-session-heading"
                   className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
                 >
-                  Start Session
+                  {t("Start Session", "Simulan ang Sesyon")}
                 </h2>
                 <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-                  Review what will be sent to the kiosk.
+                  {t(
+                    "Review what will be sent to the kiosk.",
+                    "Suriin ang ipapadala sa kiosk."
+                  )}
                 </p>
               </div>
 
               <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 space-y-3.5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
                 <div>
                   <h3 className="text-[14px] sm:text-[16px] font-extrabold text-[#005A9C]">
-                    Start Session
+                    {t("Start Session", "Simulan ang Sesyon")}
                   </h3>
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
-                    Review what will be sent to the kiosk.
+                    {t(
+                      "Review what will be sent to the kiosk.",
+                      "Suriin ang ipapadala sa kiosk."
+                    )}
                   </p>
                 </div>
 
@@ -761,7 +798,7 @@ export default function SessionSetupPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                        ACTIVITY TYPE
+                        {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                       </p>
                       <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
                         {activityReviewLabel}
@@ -773,7 +810,7 @@ export default function SessionSetupPage() {
                     onClick={() => setCurrentStep(1)}
                     className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
                   >
-                    Edit
+                    {t("Edit", "Baguhin")}
                   </button>
                 </div>
 
@@ -785,7 +822,7 @@ export default function SessionSetupPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                        THEME
+                        {t("THEME", "TEMA")}
                       </p>
                       <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
                         {themeSummaryLabel}
@@ -797,7 +834,7 @@ export default function SessionSetupPage() {
                     onClick={() => setCurrentStep(2)}
                     className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
                   >
-                    Edit
+                    {t("Edit", "Baguhin")}
                   </button>
                 </div>
 
@@ -809,7 +846,7 @@ export default function SessionSetupPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                        SAFETY RULES
+                        {t("SAFETY RULES", "PANUNTUNAN SA KALIGTASAN")}
                       </p>
                       <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
                         {safetyMode}
@@ -821,7 +858,7 @@ export default function SessionSetupPage() {
                     onClick={() => setCurrentStep(3)}
                     className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
                   >
-                    Edit
+                    {t("Edit", "Baguhin")}
                   </button>
                 </div>
 
@@ -833,19 +870,19 @@ export default function SessionSetupPage() {
                     className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#64748B] transition cursor-pointer"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>Back</span>
+                    <span>{t("Back", "Bumalik")}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => router.push("/live-session?session=active")}
-                    className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-[#0B5384] hover:bg-[#083E66] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(11,83,132,0.25)] transition cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(11,83,132,0.25)] transition cursor-pointer"
                   >
                     <Play
                       className="w-3.5 h-3.5 fill-white text-white"
                       aria-hidden="true"
                     />
-                    <span>Start Session</span>
+                    <span>{t("Start Session", "Simulan ang Sesyon")}</span>
                   </button>
                 </div>
               </div>
@@ -862,10 +899,10 @@ export default function SessionSetupPage() {
             id="session-summary-heading"
             className="text-[14px] sm:text-[15.5px] font-extrabold text-[#005A9C]"
           >
-            Session Summary
+            {t("Session Summary", "Buod ng Sesyon")}
           </h2>
           <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-            Sent to kiosk on start
+            {t("Sent to kiosk on start", "Ipapadala sa kiosk sa pagsisimula")}
           </p>
 
           <div className="mt-3.5 divide-y divide-[#EEF2F6]">
@@ -877,7 +914,7 @@ export default function SessionSetupPage() {
               />
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                  ACTIVITY TYPE
+                  {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                 </p>
                 <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                   {activitySummaryLabel}
@@ -893,11 +930,11 @@ export default function SessionSetupPage() {
               />
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                  THEME
+                  {t("THEME", "TEMA")}
                 </p>
                 <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                   {currentStep === 1 && selectedThemeId === "animals"
-                    ? "Not selected"
+                    ? t("Not selected", "Hindi pa napili")
                     : themeSummaryLabel}
                 </p>
               </div>
@@ -911,7 +948,7 @@ export default function SessionSetupPage() {
               />
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                  SAFETY RULES
+                  {t("SAFETY RULES", "PANUNTUNAN SA KALIGTASAN")}
                 </p>
                 <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                   {safetyMode}
@@ -927,7 +964,7 @@ export default function SessionSetupPage() {
               />
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                  LANGUAGES
+                  {t("LANGUAGES", "MGA WIKA")}
                 </p>
                 <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                   {selectedLanguages.join(", ")}
@@ -943,7 +980,10 @@ export default function SessionSetupPage() {
               aria-hidden="true"
             />
             <span className="text-[11px] sm:text-[11.5px] font-semibold text-[#15803D]">
-              {KIOSK_INFO.roomName} kiosk is online
+              {t(
+                `${KIOSK_INFO.roomName} kiosk is online`,
+                `Online ang kiosk sa ${KIOSK_INFO.roomName}`
+              )}
             </span>
           </div>
         </section>
@@ -958,15 +998,15 @@ export default function SessionSetupPage() {
             className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#64748B] transition cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Back</span>
+            <span>{t("Back", "Bumalik")}</span>
           </button>
 
           <button
             type="button"
             onClick={handleNext}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0077C8] hover:bg-[#0267AD] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.25)] transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0077C8] hover:opacity-95 text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.25)] transition cursor-pointer"
           >
-            <span>Continue</span>
+            <span>{t("Continue", "Magpatuloy")}</span>
             <ArrowRight
               className="w-3.5 h-3.5 stroke-[2.5]"
               aria-hidden="true"

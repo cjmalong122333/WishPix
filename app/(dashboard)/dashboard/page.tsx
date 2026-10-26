@@ -1,19 +1,30 @@
+"use client";
+
 import React from "react";
 import { KioskStatusBanner } from "@/components/dashboard/kiosk-status-banner";
 import { MetricStatCard } from "@/components/dashboard/metric-stat-card";
 import { QuickActionsPanel } from "@/components/dashboard/quick-actions-panel";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import { DASHBOARD_METRICS, KIOSK_INFO } from "@/lib/mock-data";
 
 export default function DashboardPage() {
+  const { t } = useAppSettings();
+
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Greeting Header */}
       <div>
         <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
-          Good morning, {KIOSK_INFO.educatorName}
+          {t(
+            `Good morning, ${KIOSK_INFO.educatorName}`,
+            `Magandang umaga, ${KIOSK_INFO.educatorName}`
+          )}
         </h1>
         <p className="text-[11.5px] sm:text-[13px] text-[#64748B] mt-0.5">
-          Here&apos;s what&apos;s happening at your kiosk today.
+          {t(
+            "Here's what's happening at your kiosk today.",
+            "Narito ang nangyayari sa iyong kiosk ngayong araw."
+          )}
         </p>
       </div>
 
@@ -27,13 +38,13 @@ export default function DashboardPage() {
             id="todays-summary-heading"
             className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
           >
-            TODAY&apos;S SUMMARY
+            {t("TODAY'S SUMMARY", "BUOD NGAYONG ARAW")}
           </h2>
           <button
             type="button"
             className="text-[11px] sm:text-[12px] font-semibold text-[#0077C8] hover:underline cursor-pointer"
           >
-            Refresh
+            {t("Refresh", "I-refresh")}
           </button>
         </div>
 

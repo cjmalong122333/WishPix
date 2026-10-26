@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { Download, FileText, Trash2 } from "lucide-react";
 import { REPORT_TYPES } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { GeneratedReportItem } from "@/types/kiosk";
 
 export default function ReportsPage() {
+  const { t } = useAppSettings();
   const [selectedReportType, setSelectedReportType] = useState<
     "session" | "research"
   >("session");
@@ -57,13 +59,16 @@ export default function ReportsPage() {
       {/* Top White Insights Header Card */}
       <section className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
         <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#0077C8]">
-          INSIGHTS
+          {t("INSIGHTS", "MGA INSIGHT")}
         </p>
         <h1 className="text-[18px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#0F253E] tracking-tight mt-1">
-          Reports
+          {t("Reports", "Mga Ulat")}
         </h1>
         <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-          Generate and research evaluation reports.
+          {t(
+            "Generate and research evaluation reports.",
+            "Gumawa ng mga ulat sa sesyon at pagsusuri sa pananaliksik."
+          )}
         </p>
       </section>
 
@@ -78,10 +83,10 @@ export default function ReportsPage() {
             id="generate-report-heading"
             className="text-[13.5px] sm:text-[15px] font-extrabold text-[#0F253E]"
           >
-            Generate a Report
+            {t("Generate a Report", "Gumawa ng Ulat")}
           </h2>
           <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-            Select a report type.
+            {t("Select a report type.", "Pumili ng uri ng ulat.")}
           </p>
 
           <div className="mt-3.5 space-y-2.5 sm:space-y-3">
@@ -108,7 +113,7 @@ export default function ReportsPage() {
                   </p>
                   <p
                     className={`text-[10.5px] sm:text-[11.5px] mt-0.5 leading-relaxed ${
-                      isSelected ? "text-[#1D70B8]" : "text-[#64748B]"
+                      isSelected ? "text-[#0077C8]" : "text-[#64748B]"
                     }`}
                   >
                     {report.description}
@@ -121,9 +126,9 @@ export default function ReportsPage() {
           <button
             type="button"
             onClick={handleGenerateReport}
-            className="mt-4 w-full rounded-[11px] bg-[#0077C8] hover:bg-[#0267AD] active:scale-[0.99] text-white py-2.5 sm:py-3 px-4 text-[12px] sm:text-[13px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.22)] transition cursor-pointer"
+            className="mt-4 w-full rounded-[11px] bg-[#0077C8] hover:opacity-95 active:scale-[0.99] text-white py-2.5 sm:py-3 px-4 text-[12px] sm:text-[13px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.22)] transition cursor-pointer"
           >
-            Generate Report
+            {t("Generate Report", "Gumawa ng Ulat")}
           </button>
         </section>
 
@@ -138,10 +143,13 @@ export default function ReportsPage() {
                 id="recent-reports-heading"
                 className="text-[13.5px] sm:text-[15px] font-extrabold text-[#0F253E]"
               >
-                Recent Reports
+                {t("Recent Reports", "Mga Kamakailang Ulat")}
               </h2>
               <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-                Generated reports will appear here.
+                {t(
+                  "Generated reports will appear here.",
+                  "Makikita rito ang mga ginawang ulat."
+                )}
               </p>
             </div>
 
@@ -152,7 +160,7 @@ export default function ReportsPage() {
                 className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#64748B] hover:text-[#E11D48] transition cursor-pointer"
               >
                 <Trash2 className="w-3 h-3" aria-hidden="true" />
-                <span>Clear</span>
+                <span>{t("Clear", "Burahin")}</span>
               </button>
             )}
           </div>
@@ -164,10 +172,13 @@ export default function ReportsPage() {
                 aria-hidden="true"
               />
               <p className="mt-3 text-[12px] sm:text-[13px] font-bold text-[#475569]">
-                Nothing generated yet
+                {t("Nothing generated yet", "Wala pang nagagawang ulat")}
               </p>
               <p className="mt-1 text-[10.5px] sm:text-[11.5px] text-[#94A3B8]">
-                Use the form above to generate your first report.
+                {t(
+                  "Use the form above to generate your first report.",
+                  "Gamitin ang form sa itaas upang gumawa ng iyong unang ulat."
+                )}
               </p>
             </div>
           ) : (
@@ -200,7 +211,7 @@ export default function ReportsPage() {
                     className="inline-flex items-center gap-1 rounded-[9px] bg-white hover:bg-[#F0F7FF] border border-[#CBD5E1] px-2.5 py-1.5 text-[10.5px] font-bold text-[#0077C8] transition flex-shrink-0 cursor-pointer"
                   >
                     <Download className="w-3 h-3" aria-hidden="true" />
-                    <span>Export</span>
+                    <span>{t("Export", "I-export")}</span>
                   </button>
                 </article>
               ))}

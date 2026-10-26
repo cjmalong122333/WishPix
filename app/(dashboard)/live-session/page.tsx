@@ -18,9 +18,11 @@ import {
   LIVE_GENERATION_FEED,
   LIVE_STATUS_STAGES,
 } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 
 export default function LiveSessionPage() {
   const searchParams = useSearchParams();
+  const { t } = useAppSettings();
   const initialActive = searchParams.get("session") === "active";
 
   const [isSessionActive, setIsSessionActive] = useState(initialActive);
@@ -31,7 +33,7 @@ export default function LiveSessionPage() {
       {/* Top Dark Navy Live Session Monitor Banner */}
       <section
         aria-label="Live Session Monitor"
-        className="relative overflow-hidden rounded-[18px] bg-[#0F233A] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)]"
+        className="relative overflow-hidden rounded-[18px] bg-[#0F233A] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
@@ -46,7 +48,8 @@ export default function LiveSessionPage() {
               aria-hidden="true"
             />
             <p className="text-[9.5px] sm:text-[10.5px] font-bold tracking-[0.12em] text-[#CBD5E1] uppercase truncate">
-              LIVE SESSION • {KIOSK_INFO.roomName.toUpperCase()}
+              {t("LIVE SESSION", "LIVE NA SESYON")} •{" "}
+              {KIOSK_INFO.roomName.toUpperCase()}
             </p>
           </div>
 
@@ -56,7 +59,7 @@ export default function LiveSessionPage() {
                 className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"
                 aria-hidden="true"
               />
-              <span>Active session</span>
+              <span>{t("Active session", "Aktibong sesyon")}</span>
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3A2E1E] border border-[#F59E0B]/40 px-2.5 py-0.5 text-[10px] font-semibold text-[#FBBF24] flex-shrink-0">
@@ -64,20 +67,22 @@ export default function LiveSessionPage() {
                 className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]"
                 aria-hidden="true"
               />
-              <span>No active session</span>
+              <span>{t("No active session", "Walang aktibong sesyon")}</span>
             </span>
           )}
         </div>
 
-        {/* Heading, Description & CTA (Stacked on Mobile, Inline Row on Desktop) */}
+        {/* Heading, Description & CTA */}
         <div className="relative mt-2.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <h1 className="text-[16px] sm:text-[20px] font-extrabold text-white tracking-tight">
-              Live Session Monitor
+              {t("Live Session Monitor", "Monitor ng Live na Sesyon")}
             </h1>
             <p className="text-[11px] sm:text-[12.5px] text-[#94A8BE] mt-1 leading-relaxed max-w-xl">
-              Watch children use the kiosk in real time and manage safety
-              filters.
+              {t(
+                "Watch children use the kiosk in real time and manage safety filters.",
+                "Subaybayan ang paggamit ng mga bata sa kiosk nang real-time at pamahalaan ang safety filters."
+              )}
             </p>
           </div>
 
@@ -85,27 +90,27 @@ export default function LiveSessionPage() {
             <button
               type="button"
               onClick={() => setIsSessionActive(false)}
-              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#1E3A5F] hover:bg-[#274B7A] border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-white/15 hover:bg-white/25 border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
             >
               <Pause className="w-3.5 h-3.5 fill-white text-white" />
-              <span>Pause Session</span>
+              <span>{t("Pause Session", "I-pause ang Sesyon")}</span>
             </button>
           ) : (
             <Link
               href="/session-setup"
-              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#0077C8] hover:bg-[#0267AD] text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,119,200,0.3)] transition flex-shrink-0"
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#0077C8] hover:opacity-95 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,119,200,0.3)] transition flex-shrink-0"
             >
               <Play
                 className="w-3.5 h-3.5 fill-white text-white"
                 aria-hidden="true"
               />
-              <span>Start Session</span>
+              <span>{t("Start Session", "Simulan ang Sesyon")}</span>
             </Link>
           )}
         </div>
       </section>
 
-      {/* Responsive Content Grid: Stacked on Mobile, 2 Columns on Desktop (lg+) */}
+      {/* Responsive Content Grid */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column on Desktop: Status Pipeline + Queue */}
         <div className="space-y-4 lg:col-span-5">
@@ -119,7 +124,7 @@ export default function LiveSessionPage() {
                 id="current-status-heading"
                 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
               >
-                CURRENT STATUS
+                {t("CURRENT STATUS", "KASALUKUYANG STATUS")}
               </h2>
               <span className="rounded-full bg-[#F1F5F9] px-2.5 py-0.5 text-[10px] font-bold text-[#475569]">
                 {isSessionActive
@@ -143,7 +148,7 @@ export default function LiveSessionPage() {
                     <div
                       className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center transition ${
                         isActive
-                          ? "bg-[#0066FF] text-white shadow-[0_2px_8px_rgba(0,102,255,0.35)]"
+                          ? "bg-[#0077C8] text-white shadow-xs"
                           : "bg-[#F1F5F9] text-[#94A3B8] group-hover:bg-[#E2E8F0]"
                       }`}
                     >
@@ -174,10 +179,10 @@ export default function LiveSessionPage() {
                 id="current-queue-heading"
                 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
               >
-                CURRENT QUEUE
+                {t("CURRENT QUEUE", "KASALUKUYANG PILA")}
               </h2>
               <span className="text-[10.5px] sm:text-[11px] font-medium text-[#94A3B8]">
-                0 children waiting
+                {t("0 children waiting", "0 bata ang naghihintay")}
               </span>
             </div>
 
@@ -187,15 +192,21 @@ export default function LiveSessionPage() {
                 aria-hidden="true"
               />
               <p className="mt-2 text-[11.5px] sm:text-[12.5px] font-bold text-[#334E68]">
-                No children in the queue
+                {t("No children in the queue", "Walang bata sa pila")}
               </p>
               <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#94A3B8]">
-                Kiosk is ready for the next participant.
+                {t(
+                  "Kiosk is ready for the next participant.",
+                  "Handa na ang kiosk para sa susunod na kalahok."
+                )}
               </p>
             </div>
 
             <p className="mt-2.5 text-center text-[9.5px] sm:text-[10.5px] italic text-[#94A3B8]">
-              Children are numbered by position only. No names are stored.
+              {t(
+                "Children are numbered by position only. No names are stored.",
+                "Naka-numero lamang ang mga bata ayon sa pila. Walang pangalang iniimbak."
+              )}
             </p>
           </section>
         </div>
@@ -207,10 +218,10 @@ export default function LiveSessionPage() {
               id="live-feed-heading"
               className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
             >
-              LIVE GENERATION FEED
+              {t("LIVE GENERATION FEED", "LIVE GENERATION FEED")}
             </h2>
             <span className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8]">
-              Updated live
+              {t("Updated live", "Live na ina-update")}
             </span>
           </div>
 
@@ -299,7 +310,7 @@ export default function LiveSessionPage() {
                         className="inline-flex items-center gap-1 rounded-full bg-[#F43F5E] hover:bg-[#E11D48] text-white px-3 py-1 text-[10px] sm:text-[11px] font-bold shadow-xs transition"
                       >
                         <Eye className="w-3 h-3" aria-hidden="true" />
-                        <span>Review</span>
+                        <span>{t("Review", "Suriin")}</span>
                       </Link>
                     </div>
                   )}

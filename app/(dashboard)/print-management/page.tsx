@@ -13,9 +13,11 @@ import {
   Volume2,
 } from "lucide-react";
 import { KIOSK_INFO, REPRINT_HISTORY } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { PrinterHardwareState, ReprintItem } from "@/types/kiosk";
 
 export default function PrintManagementPage() {
+  const { t } = useAppSettings();
   const [printerState, setPrinterState] =
     useState<PrinterHardwareState>("ready");
   const [reprintItems, setReprintItems] =
@@ -51,28 +53,31 @@ export default function PrintManagementPage() {
       <section className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
         <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#0077C8]">
           <Printer className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
-          <span>HARDWARE</span>
+          <span>{t("HARDWARE", "KAGAMITAN")}</span>
         </div>
         <h1 className="text-[18px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#0F253E] tracking-tight mt-1">
-          Print Management
+          {t("Print Management", "Pamamahala ng Print")}
         </h1>
         <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-          Monitor printing and reprint earlier activities.
+          {t(
+            "Monitor printing and reprint earlier activities.",
+            "Subaybayan ang pag-print at muling i-print ang mga naunang aktibidad."
+          )}
         </p>
       </section>
 
       {/* Dark Navy Connected Kiosk Banner */}
       <section
         aria-label="Connected Kiosk"
-        className="relative overflow-hidden rounded-[16px] bg-[#0F233A] px-4 sm:px-5 py-4 text-white flex items-center justify-between gap-3 shadow-[0_8px_24px_rgba(15,35,58,0.16)]"
+        className="relative overflow-hidden rounded-[16px] bg-[#0F233A] px-4 sm:px-5 py-4 text-white flex items-center justify-between gap-3 shadow-[0_8px_24px_rgba(15,35,58,0.16)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -bottom-10 -right-8 w-40 h-40 rounded-full bg-[#0284C7]/20 blur-2xl"
         />
         <div className="relative min-w-0">
-          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] text-[#8AB8DA]">
-            CONNECTED KIOSK
+          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] text-white/75">
+            {t("CONNECTED KIOSK", "KONEKTADONG KIOSK")}
           </p>
           <div className="flex items-center gap-2 mt-0.5">
             <h2 className="text-[15px] sm:text-[17px] font-extrabold text-white truncate">
@@ -83,30 +88,33 @@ export default function PrintManagementPage() {
               aria-hidden="true"
             />
           </div>
-          <p className="text-[10.5px] sm:text-[12px] text-[#94A8BE] mt-0.5">
-            Online &amp; ready for classroom tasks
+          <p className="text-[10.5px] sm:text-[12px] text-white/75 mt-0.5">
+            {t(
+              "Online & ready for classroom tasks",
+              "Online at handa para sa mga gawain sa klase"
+            )}
           </p>
         </div>
 
-        <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] bg-[#1C3857] border border-white/10 text-[#38BDF8] flex items-center justify-center flex-shrink-0">
+        <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] bg-white/10 border border-white/10 text-white/90 flex items-center justify-center flex-shrink-0">
           <Volume2 className="w-4 h-4 stroke-[2]" aria-hidden="true" />
         </div>
       </section>
 
-      {/* Print Counters: Today full-width + 2-col on Mobile, 3 Columns on Desktop */}
+      {/* Print Counters */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {/* Today's Prints */}
-        <article className="col-span-2 lg:col-span-1 rounded-[16px] bg-white border border-[#E6EDF5] border-r-[4px] border-r-[#0088E8] p-4 sm:p-5 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
+        <article className="col-span-2 lg:col-span-1 rounded-[16px] bg-white border border-[#E6EDF5] border-r-[4px] border-r-[#0077C8] p-4 sm:p-5 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
           <div>
             <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]">
-              TODAY&apos;S PRINTS
+              {t("TODAY'S PRINTS", "PRINT NGAYONG ARAW")}
             </p>
             <p className="text-[24px] sm:text-[28px] font-extrabold text-[#0F253E] leading-none mt-1.5">
               {todaysPrints}
             </p>
             <p className="text-[10px] sm:text-[11px] font-semibold text-[#0077C8] flex items-center gap-1 mt-2">
               <Clock className="w-3 h-3" aria-hidden="true" />
-              <span>Since 7:00 AM</span>
+              <span>{t("Since 7:00 AM", "Mula 7:00 AM")}</span>
             </p>
           </div>
 
@@ -118,20 +126,20 @@ export default function PrintManagementPage() {
         {/* Weekly Prints */}
         <article className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
           <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]">
-            WEEKLY PRINTS
+            {t("WEEKLY PRINTS", "LINGGUHANG PRINT")}
           </p>
           <p className="text-[20px] sm:text-[24px] font-extrabold text-[#0F253E] leading-none mt-2">
             312
           </p>
           <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-2">
-            Last 7 days
+            {t("Last 7 days", "Nakaraang 7 araw")}
           </p>
         </article>
 
         {/* Monthly Prints */}
         <article className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
           <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]">
-            MONTHLY PRINTS
+            {t("MONTHLY PRINTS", "BUWANANG PRINT")}
           </p>
           <p className="text-[20px] sm:text-[24px] font-extrabold text-[#0F253E] leading-none mt-2">
             1,096
@@ -142,7 +150,7 @@ export default function PrintManagementPage() {
         </article>
       </div>
 
-      {/* Responsive Split Grid: Stacked on Mobile, 2 Columns on Desktop (lg+) */}
+      {/* Responsive Split Grid */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column: Printer Status + Print Queue */}
         <div className="space-y-4 lg:col-span-5">
@@ -155,10 +163,13 @@ export default function PrintManagementPage() {
               id="printer-status-heading"
               className="text-[13px] sm:text-[14.5px] font-extrabold text-[#0F253E]"
             >
-              Printer Status
+              {t("Printer Status", "Status ng Printer")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
-              Kiosk printer • connected over USB
+              {t(
+                "Kiosk printer • connected over USB",
+                "Printer ng kiosk • nakakonekta sa USB"
+              )}
             </p>
 
             {/* 4 Status Selector Pills */}
@@ -176,7 +187,7 @@ export default function PrintManagementPage() {
                   className="w-2 h-2 rounded-full bg-[#22C55E]"
                   aria-hidden="true"
                 />
-                <span>Ready</span>
+                <span>{t("Ready", "Handa")}</span>
               </button>
 
               <button
@@ -189,7 +200,7 @@ export default function PrintManagementPage() {
                 }`}
               >
                 <RotateCw className="w-3 h-3" aria-hidden="true" />
-                <span>Printing</span>
+                <span>{t("Printing", "Nagpi-print")}</span>
               </button>
 
               <button
@@ -202,7 +213,7 @@ export default function PrintManagementPage() {
                 }`}
               >
                 <AlertTriangle className="w-3 h-3" aria-hidden="true" />
-                <span>Error</span>
+                <span>{t("Error", "Error")}</span>
               </button>
 
               <button
@@ -215,14 +226,16 @@ export default function PrintManagementPage() {
                 }`}
               >
                 <Ban className="w-3 h-3" aria-hidden="true" />
-                <span>No Paper</span>
+                <span>{t("No Paper", "Walang Papel")}</span>
               </button>
             </div>
 
             {/* Paper Tray Low Alert Box */}
             <div className="mt-4 rounded-[12px] bg-[#FFFBEB] border border-[#FDE68A] p-3.5">
               <div className="flex items-center justify-between text-[11px] sm:text-[12px]">
-                <span className="font-bold text-[#0F253E]">Paper tray</span>
+                <span className="font-bold text-[#0F253E]">
+                  {t("Paper tray", "Lalagyan ng papel")}
+                </span>
                 <span className="font-extrabold text-[#D97706]">
                   18% - Low
                 </span>
@@ -245,7 +258,10 @@ export default function PrintManagementPage() {
                   aria-hidden="true"
                 />
                 <span>
-                  About 36 sheets left. Refill before the next session.
+                  {t(
+                    "About 36 sheets left. Refill before the next session.",
+                    "Humigit-kumulang 36 piraso na lang. Dagdagan bago ang susunod na sesyon."
+                  )}
                 </span>
               </p>
             </div>
@@ -261,10 +277,12 @@ export default function PrintManagementPage() {
                 id="print-queue-heading"
                 className="text-[13px] sm:text-[14.5px] font-extrabold text-[#0F253E]"
               >
-                Print Queue
+                {t("Print Queue", "Pila ng Print")}
               </h2>
               <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#94A3B8]">
-                {queuedJobTitle ? "1 job active" : "Nothing waiting"}
+                {queuedJobTitle
+                  ? t("1 job active", "1 aktibong print")
+                  : t("Nothing waiting", "Walang naghihintay")}
               </span>
             </div>
 
@@ -279,7 +297,7 @@ export default function PrintManagementPage() {
                 </p>
               ) : (
                 <p className="mt-2 text-[11px] sm:text-[12px] font-medium text-[#94A3B8]">
-                  The print queue is empty.
+                  {t("The print queue is empty.", "Walang laman ang pila ng print.")}
                 </p>
               )}
             </div>
@@ -297,15 +315,18 @@ export default function PrintManagementPage() {
                 id="reprint-output-heading"
                 className="text-[13.5px] sm:text-[15px] font-extrabold text-[#0F253E]"
               >
-                Reprint Output
+                {t("Reprint Output", "I-reprint ang Output")}
               </h2>
               <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
-                Reprint any earlier activity sheet.
+                {t(
+                  "Reprint any earlier activity sheet.",
+                  "Muling i-print ang alinmang naunang activity sheet."
+                )}
               </p>
             </div>
 
             <span className="rounded-full bg-[#F1F5F9] px-3 py-1 text-[10px] sm:text-[11px] font-bold text-[#475569] flex-shrink-0">
-              {reprintItems.length} items
+              {reprintItems.length} {t("items", "item")}
             </span>
           </div>
 
@@ -358,7 +379,7 @@ export default function PrintManagementPage() {
                     className="inline-flex items-center gap-1 rounded-[9px] bg-[#F0F7FF] hover:bg-[#E0EFFE] border border-[#B9DCFF] px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] transition flex-shrink-0 cursor-pointer"
                   >
                     <RotateCcw className="w-3 h-3 stroke-[2.2]" />
-                    <span>Reprint</span>
+                    <span>{t("Reprint", "I-reprint")}</span>
                   </button>
                 </div>
               );

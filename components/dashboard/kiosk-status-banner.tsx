@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Volume2 } from "lucide-react";
 import { KIOSK_STATUS_PILLS } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { KioskHardwareStatus, KioskInfo } from "@/types/kiosk";
 
 interface KioskStatusBannerProps {
@@ -10,6 +11,7 @@ interface KioskStatusBannerProps {
 }
 
 export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
+  const { t } = useAppSettings();
   const [activeStatus, setActiveStatus] =
     useState<KioskHardwareStatus>("online");
 
@@ -20,7 +22,7 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
   return (
     <section
       aria-label="Kiosk Status"
-      className="relative overflow-hidden w-full rounded-[18px] bg-[#0F233A] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)]"
+      className="relative overflow-hidden w-full rounded-[18px] bg-[#0F233A] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)] transition-colors duration-200"
     >
       {/* Subtle Blue Radial Glow in Bottom-Right */}
       <div
@@ -36,7 +38,8 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
             aria-hidden="true"
           />
           <p className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.12em] text-[#CBD5E1] uppercase truncate">
-            KIOSK STATUS • {kiosk.roomName.toUpperCase()}
+            {t("KIOSK STATUS", "STATUS NG KIOSK")} •{" "}
+            {kiosk.roomName.toUpperCase()}
           </p>
         </div>
 
@@ -53,10 +56,13 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
       {/* Main Heading & Description */}
       <div className="relative mt-2.5">
         <h2 className="text-[16px] sm:text-[18px] font-extrabold tracking-wide text-white uppercase leading-snug">
-          {kiosk.statusHeading}
+          {t(kiosk.statusHeading, "NAGHIHINTAY SA GURO")}
         </h2>
         <p className="text-[11px] sm:text-[11.5px] text-[#94A8BE] mt-1 leading-relaxed max-w-md">
-          {kiosk.statusDescription}
+          {t(
+            kiosk.statusDescription,
+            "Walang aktibidad na tumatakbo. Piliin kung ano ang susunod na gagawin ng mga bata."
+          )}
         </p>
       </div>
 
@@ -71,8 +77,8 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
               onClick={() => setActiveStatus(pill.id)}
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium transition cursor-pointer ${
                 isSelected
-                  ? "bg-[#1B3552] border border-white/40 text-white shadow-xs"
-                  : "bg-[#162C46]/90 border border-white/10 text-[#94A8BE] hover:text-white"
+                  ? "bg-white/20 border border-white/40 text-white shadow-xs"
+                  : "bg-black/20 border border-white/10 text-white/75 hover:text-white"
               }`}
             >
               <span

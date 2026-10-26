@@ -11,9 +11,11 @@ import {
   Square,
 } from "lucide-react";
 import { QUICK_ACTIONS } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { QuickActionItem } from "@/types/kiosk";
 
 export function QuickActionsPanel() {
+  const { t } = useAppSettings();
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const handleActionClick = (action: QuickActionItem) => {
@@ -29,10 +31,13 @@ export function QuickActionsPanel() {
           id="quick-actions-heading"
           className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
         >
-          QUICK ACTIONS
+          {t("QUICK ACTIONS", "MABILISANG AKSYON")}
         </h2>
         <p className="text-[10.5px] sm:text-[12px] text-[#94A3B8] mt-0.5">
-          Control the current session.
+          {t(
+            "Control the current session.",
+            "Kontrolin ang kasalukuyang sesyon."
+          )}
         </p>
       </div>
 
@@ -54,7 +59,7 @@ export function QuickActionsPanel() {
               <Link
                 key={action.id}
                 href={action.href ?? "/session-setup"}
-                className="w-full rounded-[14px] bg-[#0077C8] hover:bg-[#0267AD] active:scale-[0.99] px-4 py-3.5 sm:py-4 text-white shadow-[0_6px_16px_rgba(0,119,200,0.22)] flex items-center justify-between gap-3 transition"
+                className="w-full rounded-[14px] bg-[#0077C8] hover:opacity-95 active:scale-[0.99] px-4 py-3.5 sm:py-4 text-white shadow-[0_6px_16px_rgba(0,119,200,0.22)] flex items-center justify-between gap-3 transition"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-9 h-9 rounded-[10px] bg-white/20 flex items-center justify-center flex-shrink-0">
@@ -65,9 +70,9 @@ export function QuickActionsPanel() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-[13px] sm:text-[14px] font-bold text-white leading-snug">
-                      {action.title}
+                      {t(action.title, "Simulan ang Sesyon")}
                     </p>
-                    <p className="text-[10.5px] sm:text-[11.5px] text-[#BAE0FD] truncate mt-0.5">
+                    <p className="text-[10.5px] sm:text-[11.5px] text-white/80 truncate mt-0.5">
                       {action.description}
                     </p>
                   </div>
@@ -137,13 +142,18 @@ export function QuickActionsPanel() {
           <span className="text-[#94A3B8] font-bold" aria-hidden="true">
             &gt;
           </span>
-          <span>Next: decide which activity to run.</span>
+          <span>
+            {t(
+              "Next: decide which activity to run.",
+              "Susunod: piliin kung aling aktibidad ang patatakbuhin."
+            )}
+          </span>
         </p>
         <Link
           href="/session-setup"
           className="text-[10.5px] sm:text-[12px] font-bold text-[#0077C8] hover:underline inline-flex items-center gap-1 flex-shrink-0"
         >
-          <span>Plan activity</span>
+          <span>{t("Plan activity", "Planuhin ang aktibidad")}</span>
           <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
         </Link>
       </div>

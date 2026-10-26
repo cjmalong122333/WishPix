@@ -1,8 +1,60 @@
 @import "tailwindcss";
 
-:root {
+:root,
+html[data-theme="deep-blue"] {
   --background: #f2f6fa;
   --foreground: #0f253e;
+  --wp-sidebar-bg: #085081;
+  --wp-sidebar-card: #1d6393;
+  --wp-sidebar-avatar: #35749f;
+  --wp-sidebar-muted: #8ec2e6;
+  --wp-banner-bg: #0f233a;
+  --wp-primary: #0077c8;
+  --wp-primary-hover: #0267ad;
+  --wp-primary-dark: #0b5384;
+  --wp-primary-soft: #ebf5ff;
+}
+
+html[data-theme="ocean"] {
+  --background: #eff8f7;
+  --foreground: #0d2e2b;
+  --wp-sidebar-bg: #0f6d66;
+  --wp-sidebar-card: #19827a;
+  --wp-sidebar-avatar: #27968d;
+  --wp-sidebar-muted: #a3ebe4;
+  --wp-banner-bg: #0b4b46;
+  --wp-primary: #14827b;
+  --wp-primary-hover: #0f6d66;
+  --wp-primary-dark: #0d5c56;
+  --wp-primary-soft: #e6f7f5;
+}
+
+html[data-theme="midnight"] {
+  --background: #f1f4f9;
+  --foreground: #18263a;
+  --wp-sidebar-bg: #2b4465;
+  --wp-sidebar-card: #3b5980;
+  --wp-sidebar-avatar: #4d6d96;
+  --wp-sidebar-muted: #adc6e5;
+  --wp-banner-bg: #1d2f47;
+  --wp-primary: #3b5980;
+  --wp-primary-hover: #2e4769;
+  --wp-primary-dark: #253b59;
+  --wp-primary-soft: #edf2f8;
+}
+
+html[data-theme="slate"] {
+  --background: #f2f5f7;
+  --foreground: #1e2930;
+  --wp-sidebar-bg: #3f515c;
+  --wp-sidebar-card: #546875;
+  --wp-sidebar-avatar: #667b89;
+  --wp-sidebar-muted: #bfd0db;
+  --wp-banner-bg: #2b3840;
+  --wp-primary: #546875;
+  --wp-primary-hover: #43545f;
+  --wp-primary-dark: #374650;
+  --wp-primary-soft: #eef2f5;
 }
 
 @theme inline {
@@ -15,6 +67,79 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Theme-aware overrides for brand utility classes across all pages */
+html[data-theme="ocean"] .bg-\[\#F2F6FA\],
+html[data-theme="midnight"] .bg-\[\#F2F6FA\],
+html[data-theme="slate"] .bg-\[\#F2F6FA\] {
+  background-color: var(--background) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#085081\],
+html[data-theme="midnight"] .bg-\[\#085081\],
+html[data-theme="slate"] .bg-\[\#085081\] {
+  background-color: var(--wp-sidebar-bg) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#1D6393\],
+html[data-theme="midnight"] .bg-\[\#1D6393\],
+html[data-theme="slate"] .bg-\[\#1D6393\] {
+  background-color: var(--wp-sidebar-card) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#35749F\],
+html[data-theme="midnight"] .bg-\[\#35749F\],
+html[data-theme="slate"] .bg-\[\#35749F\] {
+  background-color: var(--wp-sidebar-avatar) !important;
+}
+
+html[data-theme="ocean"] .text-\[\#085081\],
+html[data-theme="midnight"] .text-\[\#085081\],
+html[data-theme="slate"] .text-\[\#085081\] {
+  color: var(--wp-sidebar-bg) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#0F233A\],
+html[data-theme="midnight"] .bg-\[\#0F233A\],
+html[data-theme="slate"] .bg-\[\#0F233A\] {
+  background-color: var(--wp-banner-bg) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#0077C8\],
+html[data-theme="midnight"] .bg-\[\#0077C8\],
+html[data-theme="slate"] .bg-\[\#0077C8\] {
+  background-color: var(--wp-primary) !important;
+}
+
+html[data-theme="ocean"] .bg-\[\#0B5384\],
+html[data-theme="midnight"] .bg-\[\#0B5384\],
+html[data-theme="slate"] .bg-\[\#0B5384\],
+html[data-theme="ocean"] .bg-\[\#004E89\],
+html[data-theme="midnight"] .bg-\[\#004E89\],
+html[data-theme="slate"] .bg-\[\#004E89\] {
+  background-color: var(--wp-primary-dark) !important;
+}
+
+html[data-theme="ocean"] .text-\[\#0077C8\],
+html[data-theme="midnight"] .text-\[\#0077C8\],
+html[data-theme="slate"] .text-\[\#0077C8\],
+html[data-theme="ocean"] .text-\[\#005A9C\],
+html[data-theme="midnight"] .text-\[\#005A9C\],
+html[data-theme="slate"] .text-\[\#005A9C\],
+html[data-theme="ocean"] .text-\[\#0066B2\],
+html[data-theme="midnight"] .text-\[\#0066B2\],
+html[data-theme="slate"] .text-\[\#0066B2\] {
+  color: var(--wp-primary) !important;
+}
+
+html[data-theme="ocean"] .border-\[\#0077C8\],
+html[data-theme="midnight"] .border-\[\#0077C8\],
+html[data-theme="slate"] .border-\[\#0077C8\],
+html[data-theme="ocean"] .border-\[\#0B5384\],
+html[data-theme="midnight"] .border-\[\#0B5384\],
+html[data-theme="slate"] .border-\[\#0B5384\] {
+  border-color: var(--wp-primary) !important;
 }
 
 @keyframes orbit-spin {

@@ -16,10 +16,12 @@ import {
   ANALYTICS_WEEKLY_USAGE,
   THEME_DISTRIBUTION,
 } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 
 type TimeRange = "daily" | "weekly" | "monthly";
 
 export default function AnalyticsPage() {
+  const { t } = useAppSettings();
   const [timeRange, setTimeRange] = useState<TimeRange>("daily");
 
   const usageData =
@@ -44,10 +46,13 @@ export default function AnalyticsPage() {
       <div className="flex items-start justify-between gap-3">
         <div>
           <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
-            Analytics
+            {t("Analytics", "Pagsusuri (Analytics)")}
           </h1>
           <p className="text-[11px] sm:text-[13px] text-[#64748B] mt-0.5">
-            Usage, success rate and blocked requests.
+            {t(
+              "Usage, success rate and blocked requests.",
+              "Paggamit, antas ng tagumpay at mga hinarang na kahilingan."
+            )}
           </p>
         </div>
 
@@ -56,17 +61,17 @@ export default function AnalyticsPage() {
             className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"
             aria-hidden="true"
           />
-          <span>Live Kiosk</span>
+          <span>{t("Live Kiosk", "Live na Kiosk")}</span>
         </span>
       </div>
 
-      {/* 6 KPI Summary Cards: 2x3 on Mobile, 3x2 on Desktop */}
+      {/* 6 KPI Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {/* 1. Most Used Theme */}
         <article className="rounded-[15px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Most Used Theme
+              {t("Most Used Theme", "Pinakaginagamit na Tema")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#EBF5FF] text-[#0077C8] flex items-center justify-center flex-shrink-0">
               <GraduationCap className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -86,7 +91,7 @@ export default function AnalyticsPage() {
         <article className="rounded-[15px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Most Used Activity
+              {t("Most Used Activity", "Pinakaginagamit na Aktibidad")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#F3E8FF] text-[#9333EA] flex items-center justify-center flex-shrink-0">
               <Palette className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -106,7 +111,7 @@ export default function AnalyticsPage() {
         <article className="rounded-[15px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Total Prints
+              {t("Total Prints", "Kabuuang Print")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#EBF5FF] text-[#0077C8] flex items-center justify-center flex-shrink-0">
               <Printer className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -117,7 +122,7 @@ export default function AnalyticsPage() {
               3,259
             </p>
             <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-1.5">
-              All time
+              {t("All time", "Lahat ng panahon")}
             </p>
           </div>
         </article>
@@ -126,7 +131,7 @@ export default function AnalyticsPage() {
         <article className="rounded-[15px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Total Generations
+              {t("Total Generations", "Kabuuang Nalikha")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#F3E8FF] text-[#9333EA] flex items-center justify-center flex-shrink-0">
               <WandSparkles className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -137,16 +142,16 @@ export default function AnalyticsPage() {
               3,864
             </p>
             <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-1.5">
-              All time
+              {t("All time", "Lahat ng panahon")}
             </p>
           </div>
         </article>
 
-        {/* 5. Blocked Requests (Amber Border Card) */}
+        {/* 5. Blocked Requests */}
         <article className="rounded-[15px] bg-white border border-[#FDE68A] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(217,119,6,0.04)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Blocked Requests
+              {t("Blocked Requests", "Hinarang na Kahilingan")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#FEF3C7] text-[#D97706] flex items-center justify-center flex-shrink-0">
               <Ban className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -157,16 +162,16 @@ export default function AnalyticsPage() {
               115
             </p>
             <p className="text-[10px] sm:text-[11px] font-semibold text-[#D97706] mt-1.5">
-              Rejected by Safety
+              {t("Rejected by Safety", "Tinanggihan ng Safety")}
             </p>
           </div>
         </article>
 
-        {/* 6. Success Rate (Green Border Card) */}
+        {/* 6. Success Rate */}
         <article className="rounded-[15px] bg-white border border-[#BBF7D0] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(22,163,74,0.04)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#64748B]">
-              Success Rate
+              {t("Success Rate", "Antas ng Tagumpay")}
             </span>
             <div className="w-7 h-7 rounded-[8px] bg-[#DCFCE7] text-[#15803D] flex items-center justify-center flex-shrink-0">
               <ShieldCheck className="w-3.5 h-3.5 stroke-[2.2]" />
@@ -177,7 +182,7 @@ export default function AnalyticsPage() {
               97.1%
             </p>
             <p className="text-[10px] sm:text-[11px] font-semibold text-[#15803D] mt-1.5">
-              Passing safety
+              {t("Passing safety", "Pumasa sa safety")}
             </p>
           </div>
         </article>
@@ -194,10 +199,13 @@ export default function AnalyticsPage() {
               id="usage-over-time-heading"
               className="text-[14px] sm:text-[16px] font-extrabold text-[#0F253E] leading-snug"
             >
-              Usage Over Time
+              {t("Usage Over Time", "Paggamit sa Paglipas ng Panahon")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Pictures generated and printed
+              {t(
+                "Pictures generated and printed",
+                "Mga larawang nalikha at na-print"
+              )}
             </p>
           </div>
 
@@ -263,15 +271,13 @@ export default function AnalyticsPage() {
                   key={point.label}
                   className="flex-1 h-full flex items-end justify-center gap-1 sm:gap-1.5"
                 >
-                  {/* Generations Bar */}
                   <div
                     title={`${point.label} Generations: ${point.generations}`}
                     style={{ height: `${genHeightPercent}%` }}
                     className={`w-2.5 sm:w-4 rounded-t-[4px] transition-all ${
-                      point.isCurrent ? "bg-[#0066FF]" : "bg-[#0F253E]"
+                      point.isCurrent ? "bg-[#0077C8]" : "bg-[#0F253E]"
                     }`}
                   />
-                  {/* Prints Bar */}
                   <div
                     title={`${point.label} Prints: ${point.prints}`}
                     style={{ height: `${printHeightPercent}%` }}
@@ -289,7 +295,7 @@ export default function AnalyticsPage() {
                 <span
                   className={`text-[9.5px] sm:text-[11px] ${
                     point.isCurrent
-                      ? "font-extrabold text-[#0066FF]"
+                      ? "font-extrabold text-[#0077C8]"
                       : point.label === "Oct 10"
                         ? "font-bold text-[#0F253E]"
                         : "font-medium text-[#94A3B8]"
@@ -303,7 +309,7 @@ export default function AnalyticsPage() {
         </div>
       </section>
 
-      {/* Bottom 2 Cards: Stacked on Mobile, Side-by-Side on Desktop */}
+      {/* Bottom 2 Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Theme Distribution Card */}
         <section
@@ -314,10 +320,10 @@ export default function AnalyticsPage() {
             id="theme-distribution-heading"
             className="text-[13.5px] sm:text-[15px] font-extrabold text-[#0F253E]"
           >
-            Theme Distribution
+            {t("Theme Distribution", "Distribusyon ng Tema")}
           </h2>
           <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-            Share of all generations
+            {t("Share of all generations", "Bahagi sa lahat ng nalikha")}
           </p>
 
           <div className="mt-4 flex items-center justify-between gap-4 sm:gap-6">
@@ -361,7 +367,7 @@ export default function AnalyticsPage() {
                   7
                 </span>
                 <span className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.12em] text-[#94A3B8] mt-1">
-                  THEMES
+                  {t("THEMES", "TEMA")}
                 </span>
               </div>
             </div>
@@ -400,10 +406,10 @@ export default function AnalyticsPage() {
               id="activity-mix-heading"
               className="text-[13.5px] sm:text-[15px] font-extrabold text-[#0F253E]"
             >
-              Activity Mix
+              {t("Activity Mix", "Kombinasyon ng Aktibidad")}
             </h2>
             <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
-              Sessions by activity type
+              {t("Sessions by activity type", "Mga sesyon ayon sa uri")}
             </p>
           </div>
 

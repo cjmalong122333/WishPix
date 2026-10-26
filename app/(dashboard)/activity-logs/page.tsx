@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronDown, Download, History } from "lucide-react";
 import { ACTIVITY_LOGS_DATA } from "@/lib/mock-data";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
 
 const PAGE_SIZE = 8;
 
@@ -25,6 +26,7 @@ const THEME_FILTERS = [
 ];
 
 export default function ActivityLogsPage() {
+  const { t } = useAppSettings();
   const [activityFilter, setActivityFilter] = useState("All activities");
   const [themeFilter, setThemeFilter] = useState("All themes");
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,13 +87,16 @@ export default function ActivityLogsPage() {
       <section className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
         <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#0077C8]">
           <History className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
-          <span>INSIGHTS</span>
+          <span>{t("INSIGHTS", "MGA INSIGHT")}</span>
         </div>
         <h1 className="text-[18px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#0F253E] tracking-tight mt-1">
-          Activity Logs
+          {t("Activity Logs", "Talaan ng Aktibidad")}
         </h1>
         <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
-          Historical usage without any child names.
+          {t(
+            "Historical usage without any child names.",
+            "Talaan ng paggamit nang walang pangalan ng mga bata."
+          )}
         </p>
       </section>
 
@@ -103,20 +108,20 @@ export default function ActivityLogsPage() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-[12.5px] sm:text-[14px] font-extrabold text-[#0F253E]">
-              Historical usage
+              {t("Historical usage", "Kasaysayan ng paggamit")}
             </h2>
             <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-0.5">
-              {totalRecords} records
+              {totalRecords} {t("records", "rekord")}
             </p>
           </div>
 
           <button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:bg-[#083E66] text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
-            <span>Export CSV</span>
+            <span>{t("Export CSV", "I-export ang CSV")}</span>
           </button>
         </div>
 
@@ -127,7 +132,7 @@ export default function ActivityLogsPage() {
               htmlFor="activity-filter"
               className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] mb-1"
             >
-              ACTIVITY
+              {t("ACTIVITY", "AKTIBIDAD")}
             </label>
             <div className="relative">
               <select
@@ -157,7 +162,7 @@ export default function ActivityLogsPage() {
               htmlFor="theme-filter"
               className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] mb-1"
             >
-              THEME
+              {t("THEME", "TEMA")}
             </label>
             <div className="relative">
               <select
@@ -184,7 +189,7 @@ export default function ActivityLogsPage() {
         </div>
       </section>
 
-      {/* Log Record Cards: Single Column on Mobile, 2-Column Grid on Desktop */}
+      {/* Log Record Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3">
         {paginatedRecords.map((record) => {
           const isSuccess = record.safetyStatus === "Success";
@@ -201,7 +206,7 @@ export default function ActivityLogsPage() {
               key={record.id}
               className="rounded-[14px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.02)]"
             >
-              {/* Top Row: Date/Time + Status Badges */}
+              {/* Top Row */}
               <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#F1F5F9]">
                 <p className="text-[11px] sm:text-[12px] text-[#64748B]">
                   <span className="font-extrabold text-[#0F253E]">
@@ -236,11 +241,11 @@ export default function ActivityLogsPage() {
                 </div>
               </div>
 
-              {/* Bottom Row: Theme & Activity Type */}
+              {/* Bottom Row */}
               <div className="pt-2.5 grid grid-cols-2 gap-3">
                 <div>
                   <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                    THEME
+                    {t("THEME", "TEMA")}
                   </p>
                   <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                     {record.theme}
@@ -249,7 +254,7 @@ export default function ActivityLogsPage() {
 
                 <div>
                   <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
-                    ACTIVITY TYPE
+                    {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                   </p>
                   <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
                     {record.activityType}
@@ -264,12 +269,13 @@ export default function ActivityLogsPage() {
       {/* Pagination Footer Card */}
       <div className="rounded-[14px] bg-white border border-[#E6EDF5] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.02)]">
         <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B]">
-          Showing{" "}
+          {t("Showing", "Ipinapakita")}{" "}
           <span className="font-semibold text-[#0F253E]">
             {totalRecords === 0 ? 0 : startIndex + 1}–
             {Math.min(startIndex + PAGE_SIZE, totalRecords)}
           </span>{" "}
-          of <span className="font-semibold text-[#0F253E]">{totalRecords}</span>
+          {t("of", "ng")}{" "}
+          <span className="font-semibold text-[#0F253E]">{totalRecords}</span>
         </p>
 
         <div className="flex items-center gap-2">
@@ -279,7 +285,7 @@ export default function ActivityLogsPage() {
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             className="rounded-[9px] border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F1F5F9] disabled:opacity-45 disabled:pointer-events-none px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-semibold text-[#64748B] transition cursor-pointer"
           >
-            Previous
+            {t("Previous", "Nakaraan")}
           </button>
 
           <button
@@ -288,7 +294,7 @@ export default function ActivityLogsPage() {
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             className="rounded-[9px] border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] disabled:opacity-45 disabled:pointer-events-none px-3.5 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#0F253E] transition cursor-pointer"
           >
-            Next
+            {t("Next", "Susunod")}
           </button>
         </div>
       </div>
