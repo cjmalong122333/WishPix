@@ -48,7 +48,7 @@ export function NavigationDrawer({
       {isDesktopSidebarOpen && (
         <aside
           aria-label="Desktop sidebar navigation"
-          className="hidden lg:flex w-[265px] xl:w-[280px] shrink-0 min-h-screen bg-[#0D223B] text-white flex-col justify-between border-r border-white/10 select-none"
+          className="hidden lg:flex w-[265px] xl:w-[280px] shrink-0 min-h-screen bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none"
         >
           <SidebarContent kiosk={kiosk} />
         </aside>
@@ -62,7 +62,7 @@ export function NavigationDrawer({
           aria-modal="true"
           aria-label="Navigation menu"
         >
-          <aside className="relative z-10 w-[82%] max-w-[290px] h-full bg-[#0D223B] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none">
+          <aside className="relative z-10 w-[82%] max-w-[290px] h-full bg-[#085081] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none">
             <SidebarContent
               kiosk={kiosk}
               onNavigate={onCloseMobile}
@@ -102,7 +102,7 @@ function SidebarContent({
         {/* Top Brand Header */}
         <div className="px-5 pt-5 pb-3.5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-[10px] bg-[#0077C8] text-white flex items-center justify-center shadow-xs flex-shrink-0">
+            <div className="w-9 h-9 rounded-[10px] bg-white text-[#085081] flex items-center justify-center shadow-xs flex-shrink-0">
               <WandSparkles
                 className="w-4 h-4 stroke-[2.2]"
                 aria-hidden="true"
@@ -118,7 +118,7 @@ function SidebarContent({
               type="button"
               onClick={onClose}
               aria-label="Close navigation drawer"
-              className="p-1.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition cursor-pointer lg:hidden"
+              className="p-1.5 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition cursor-pointer lg:hidden"
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -126,29 +126,27 @@ function SidebarContent({
         </div>
 
         {/* Connected Kiosk Status Card */}
-        <div className="mx-3.5 mt-1 rounded-[12px] bg-[#163252] border border-white/10 px-3.5 py-3 flex items-center justify-between gap-2.5">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-[9px] bg-[#1E446E] flex items-center justify-center flex-shrink-0">
-              <Monitor
-                className="w-4 h-4 text-[#38BDF8] stroke-[1.85]"
-                aria-hidden="true"
-              />
-            </div>
+        <div className="mx-3.5 mt-1 rounded-[12px] bg-[#1D6393] border border-white/15 px-3.5 py-3 flex items-start justify-between gap-2.5">
+          <div className="flex items-start gap-2.5 min-w-0">
+            <Monitor
+              className="w-4 h-4 text-[#B9E2FE] stroke-[1.9] mt-1 flex-shrink-0"
+              aria-hidden="true"
+            />
             <div className="min-w-0 leading-tight">
-              <p className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-[#8AB8DA]">
+              <p className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-[#9ED1F5]">
                 CONNECTED KIOSK
               </p>
-              <p className="text-[12px] font-bold text-white truncate mt-0.5">
+              <p className="text-[12.5px] font-bold text-white truncate mt-0.5">
                 {kiosk.roomName}
               </p>
-              <p className="text-[10px] text-[#22C55E] font-medium mt-0.5">
+              <p className="text-[10.5px] text-[#9ED1F5] font-medium mt-0.5">
                 {kiosk.isOnline ? "Online" : "Offline"}
               </p>
             </div>
           </div>
 
           <span
-            className="w-2.5 h-2.5 rounded-full bg-[#22C55E] flex-shrink-0"
+            className="w-2.5 h-2.5 rounded-full bg-[#34D399] mt-1 flex-shrink-0"
             aria-hidden="true"
           />
         </div>
@@ -160,7 +158,7 @@ function SidebarContent({
         >
           {NAVIGATION_SECTIONS.map((section) => (
             <div key={section.id}>
-              <p className="px-2.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7D97B2] mb-1.5">
+              <p className="px-2.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#8EC2E6] mb-1.5">
                 {section.title}
               </p>
               <ul className="space-y-1">
@@ -176,8 +174,8 @@ function SidebarContent({
                         onClick={onNavigate}
                         className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition ${
                           isActive
-                            ? "bg-[#0077C8] text-white font-bold shadow-xs"
-                            : "text-[#CBD5E1] hover:bg-white/10 hover:text-white font-medium"
+                            ? "bg-white text-[#085081] font-bold shadow-xs"
+                            : "text-[#E2F1FC] hover:bg-white/10 hover:text-white font-medium"
                         }`}
                       >
                         <span className="flex items-center gap-3">
@@ -186,7 +184,7 @@ function SidebarContent({
                         </span>
 
                         {item.badge !== undefined && (
-                          <span className="w-[18px] h-[18px] rounded-full bg-[#EF4444] text-white text-[10px] font-bold flex items-center justify-center leading-none">
+                          <span className="w-[19px] h-[19px] rounded-full bg-[#EF4444] text-white text-[10px] font-bold flex items-center justify-center leading-none">
                             {item.badge}
                           </span>
                         )}
@@ -201,15 +199,15 @@ function SidebarContent({
       </div>
 
       {/* Bottom Teacher / System Version Footer */}
-      <div className="border-t border-white/10 px-4 py-3.5 flex items-center gap-3 bg-[#09192C]">
-        <div className="w-8 h-8 rounded-full bg-[#004E89] text-white text-[11px] font-bold flex items-center justify-center flex-shrink-0">
-          {kiosk.educatorInitials}
+      <div className="px-4 py-4 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-[#35749F] text-white text-[10.5px] font-bold flex items-center justify-center flex-shrink-0">
+          WP
         </div>
         <div className="leading-tight min-w-0">
           <p className="text-[12px] font-bold text-white truncate">
-            {kiosk.educatorName} • Educator
+            WishPix Teacher
           </p>
-          <p className="text-[10px] text-[#7D97B2] mt-0.5">
+          <p className="text-[10px] text-[#8EC2E6] mt-0.5">
             {kiosk.systemVersion}
           </p>
         </div>
@@ -226,7 +224,7 @@ function NavIcon({
   isActive: boolean;
 }) {
   const className = `w-4 h-4 flex-shrink-0 ${
-    isActive ? "text-white stroke-[2.2]" : "text-[#94A8BE] stroke-[1.8]"
+    isActive ? "text-[#085081] stroke-[2.2]" : "text-[#B6D9F2] stroke-[1.85]"
   }`;
 
   switch (name) {

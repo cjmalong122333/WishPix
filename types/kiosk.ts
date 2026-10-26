@@ -86,14 +86,56 @@ export interface KioskInfo {
   educatorInitials: string;
   notificationCount: number;
   systemVersion: string;
+  firmwareVersion?: string;
+  ipAddress?: string;
+}
+
+export interface ActivitySubOption {
+  id: string;
+  title: string;
+  description: string;
 }
 
 export interface ActivityOption {
   id: string;
   title: string;
+  summaryTitle?: string;
   description: string;
   icon: "palette" | "pencil" | "sparkles";
   accent: "blue" | "purple" | "green";
+  subOptions?: ActivitySubOption[];
+}
+
+export interface ThemeOption {
+  id: string;
+  title: string;
+  tags: string[];
+  icon:
+    | "paw"
+    | "plane"
+    | "apple"
+    | "users"
+    | "shapes"
+    | "palette"
+    | "flower";
+  accent:
+    | "blue"
+    | "orange"
+    | "red"
+    | "green"
+    | "indigo"
+    | "amber"
+    | "pink";
+}
+
+export type SafetyRuleMode = "STRICT" | "STANDARD" | "CUSTOM";
+
+export interface SafetyModeOption {
+  id: SafetyRuleMode;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: "lock" | "shield" | "sliders";
 }
 
 export interface LiveFeedItem {
@@ -121,4 +163,79 @@ export interface ModerationQueueItem {
   originalSpeech: string;
   recognizedText?: string;
   resolutionNote?: string;
+}
+
+export type PrinterHardwareState =
+  | "ready"
+  | "printing"
+  | "error"
+  | "no-paper";
+
+export interface ReprintItem {
+  id: string;
+  title: string;
+  status: "printed" | "failed";
+  reprintCount?: number;
+  theme: string;
+  activity: string;
+  timestamp: string;
+}
+
+export interface KioskControlItem {
+  id: "restart" | "shutdown" | "sleep" | "wakeup";
+  title: string;
+  description: string;
+  accent: "blue" | "red" | "amber" | "green";
+}
+
+export interface ActivityLogRecord {
+  id: string;
+  date: string;
+  time: string;
+  safetyStatus: "Success" | "Blocked";
+  printStatus: "Printed" | "Not printed" | "Failed";
+  theme: string;
+  activityType: string;
+}
+
+export interface AnalyticsUsagePoint {
+  label: string;
+  generations: number;
+  prints: number;
+  isCurrent?: boolean;
+}
+
+export interface ThemeShareItem {
+  id: string;
+  name: string;
+  percentage: number;
+  color: string;
+}
+
+export interface ActivityMixItem {
+  id: string;
+  name: string;
+  percentage: number;
+  barColor: string;
+  textColor: string;
+}
+
+export interface ReportTypeOption {
+  id: "session" | "research";
+  title: string;
+  description: string;
+}
+
+export interface GeneratedReportItem {
+  id: string;
+  title: string;
+  type: "session" | "research";
+  generatedAt: string;
+  summary: string;
+}
+
+export interface ThemeSwatchOption {
+  id: string;
+  label: string;
+  hex: string;
 }

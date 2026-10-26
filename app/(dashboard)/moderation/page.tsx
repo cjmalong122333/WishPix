@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   AlertTriangle,
   Ban,
@@ -9,15 +10,19 @@ import {
   FileText,
   Mic,
   Shield,
+  X,
 } from "lucide-react";
 import { MODERATION_ITEMS } from "@/lib/mock-data";
-import type { ModerationQueueItem } from "@/types/kiosk";
+import type { ModerationQueueItem, SafetyRuleMode } from "@/types/kiosk";
 
 type FilterTab = "all" | "pending" | "resolved";
 
 export default function ModerationPage() {
   const [items, setItems] = useState<ModerationQueueItem[]>(MODERATION_ITEMS);
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const [safetyLevel, setSafetyLevel] = useState<SafetyRuleMode>("STANDARD");
+  const [inspectedItem, setInspectedItem] =
+    useState<ModerationQueueItem | null>(null);
 
   const pendingCount = items.filter((i) => i.status === "pending").length;
   const resolvedCount = items.filter((i) => i.status !== "pending").length;
@@ -48,6 +53,12 @@ export default function ModerationPage() {
           : item
       )
     );
+  };
+
+  const handleCycleSafetyLevel = () => {
+    const order: SafetyRuleMode[] = ["STRICT", "STANDARD", "CUSTOM"];
+    const nextIdx = (order.indexOf(safetyLevel) + 1) % order.length;
+    setSafetyLevel(order[nextIdx]);
   };
 
   return (
@@ -118,7 +129,7 @@ export default function ModerationPage() {
               </p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-[12px] sm:text-[13px] font-extrabold text-[#0F253E]">
-                  STANDARD
+                  {safetyLevel}
                 </span>
                 <span className="rounded-md bg-[#DCFCE7] px-1.5 py-0.5 text-[9px] sm:text-[9.5px] font-bold text-[#15803D]">
                   Active
@@ -127,12 +138,15 @@ export default function ModerationPage() {
             </div>
           </div>
 
-          <button
-            type="button"
-            className="text-[11px] sm:text-[12px] font-bold text-[#0077C8] hover:underline cursor-pointer"
-          >
-            Change
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleCycleSafetyLevel}
+              className="text-[11px] sm:text-[12px] font-bold text-[#0077C8] hover:underline cursor-pointer"
+            >
+              Change
+            </button>
+          </div>
         </div>
       </div>
 
@@ -219,7 +233,7 @@ export default function ModerationPage() {
                   </span>
 
                   <span className="text-[10px] sm:text-[11px] text-[#94A3B8]">
-                    {item.timestamp} • {item.theme}
+                    {item.timestamp} - {item.theme}
                   </span>
                 </div>
 
@@ -230,7 +244,7 @@ export default function ModerationPage() {
                 </span>
               </div>
 
-              {/* Speech & Recognized Text Boxes (Stacked on Mobile, 2 Columns on Desktop when both exist) */}
+              {/* Speech & Recognized Text Boxes */}
               <div
                 className={`mt-3 ${
                   item.recognizedText
@@ -289,6 +303,7 @@ export default function ModerationPage() {
 
                   <button
                     type="button"
+                    onClick={() => setInspectedItem(item)}
                     aria-label="Inspect prompt details"
                     className="w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#475569] flex items-center justify-center flex-shrink-0 transition cursor-pointer"
                   >
@@ -303,6 +318,7 @@ export default function ModerationPage() {
 
                   <button
                     type="button"
+                    onClick={() => setInspectedItem(item)}
                     className="inline-flex items-center gap-1 rounded-full bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] px-3 py-1 text-[10px] sm:text-[11px] font-bold transition cursor-pointer"
                   >
                     <Eye className="w-3 h-3" aria-hidden="true" />
@@ -314,6 +330,80 @@ export default function ModerationPage() {
           );
         })}
       </div>
+
+      {/* Inspection Modal */}
+      {inspectedItem && (
+        <div
+          className="fixed inset-0 z-50 bg-[#09192C]/50 backdrop-blur-[1px] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="inspect-modal-title"
+        >
+          <div className="w-full max-w-md rounded-[18px] bg-white border border-[#E6EDF5] p-5 shadow-xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h2
+                id="inspect-modal-title"
+                className="text-[15px] font-extrabold text-[#0F253E]"
+              >
+                Moderation Log Detail
+              </h2>
+              <button
+                type="button"
+                onClick={() => setInspectedItem(null)}
+                aria-label="Close detail dialog"
+                className="p-1 rounded-lg text-[#64748B] hover:bg-[#F1F5F9] cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2.5 text-[12px]">
+              <div className="flex justify-between py-1.5 border-b border-[#F1F5F9]">
+                <span className="text-[#64748B]">Category</span>
+                <span className="font-bold text-[#0F253E]">
+                  {inspectedItem.categoryLabel}
+                </span>
+              </div>
+              <div className="flex justify-between py-1.5 border-b border-[#F1F5F9]">
+                <span className="text-[#64748B]">Time & Theme</span>
+                <span className="font-bold text-[#0F253E]">
+                  {inspectedItem.timestamp} • {inspectedItem.theme}
+                </span>
+              </div>
+              <div className="flex justify-between py-1.5 border-b border-[#F1F5F9]">
+                <span className="text-[#64748B]">Status</span>
+                <span className="font-bold text-[#0F253E]">
+                  {inspectedItem.statusBadge}
+                </span>
+              </div>
+              <div className="pt-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                  Transcript
+                </p>
+                <p className="mt-1 italic text-[#334E68] bg-[#F8FAFC] p-2.5 rounded-[9px] border border-[#E6EDF5]">
+                  {inspectedItem.originalSpeech}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <Link
+                href="/session-setup?step=3"
+                className="text-[11.5px] font-bold text-[#0077C8] hover:underline"
+              >
+                Configure Safety Rules
+              </Link>
+              <button
+                type="button"
+                onClick={() => setInspectedItem(null)}
+                className="rounded-[9px] bg-[#0F253E] text-white px-4 py-2 text-[12px] font-bold cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

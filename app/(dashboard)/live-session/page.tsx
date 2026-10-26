@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Activity,
   Ban,
   Eye,
+  Pause,
   Plane,
   Play,
   Sparkles,
@@ -18,6 +20,12 @@ import {
 } from "@/lib/mock-data";
 
 export default function LiveSessionPage() {
+  const searchParams = useSearchParams();
+  const initialActive = searchParams.get("session") === "active";
+
+  const [isSessionActive, setIsSessionActive] = useState(initialActive);
+  const [activeStage, setActiveStage] = useState(1);
+
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top Dark Navy Live Session Monitor Banner */}
@@ -42,13 +50,23 @@ export default function LiveSessionPage() {
             </p>
           </div>
 
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3A2E1E] border border-[#F59E0B]/40 px-2.5 py-0.5 text-[10px] font-semibold text-[#FBBF24] flex-shrink-0">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]"
-              aria-hidden="true"
-            />
-            <span>No active session</span>
-          </span>
+          {isSessionActive ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#113934] border border-[#22C55E]/40 px-2.5 py-0.5 text-[10px] font-semibold text-[#4ADE80] flex-shrink-0">
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"
+                aria-hidden="true"
+              />
+              <span>Active session</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3A2E1E] border border-[#F59E0B]/40 px-2.5 py-0.5 text-[10px] font-semibold text-[#FBBF24] flex-shrink-0">
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]"
+                aria-hidden="true"
+              />
+              <span>No active session</span>
+            </span>
+          )}
         </div>
 
         {/* Heading, Description & CTA (Stacked on Mobile, Inline Row on Desktop) */}
@@ -63,16 +81,27 @@ export default function LiveSessionPage() {
             </p>
           </div>
 
-          <Link
-            href="/session-setup"
-            className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#0077C8] hover:bg-[#0267AD] text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,119,200,0.3)] transition flex-shrink-0"
-          >
-            <Play
-              className="w-3.5 h-3.5 fill-white text-white"
-              aria-hidden="true"
-            />
-            <span>Start Session</span>
-          </Link>
+          {isSessionActive ? (
+            <button
+              type="button"
+              onClick={() => setIsSessionActive(false)}
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#1E3A5F] hover:bg-[#274B7A] border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
+            >
+              <Pause className="w-3.5 h-3.5 fill-white text-white" />
+              <span>Pause Session</span>
+            </button>
+          ) : (
+            <Link
+              href="/session-setup"
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#0077C8] hover:bg-[#0267AD] text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,119,200,0.3)] transition flex-shrink-0"
+            >
+              <Play
+                className="w-3.5 h-3.5 fill-white text-white"
+                aria-hidden="true"
+              />
+              <span>Start Session</span>
+            </Link>
+          )}
         </div>
       </section>
 
@@ -93,34 +122,45 @@ export default function LiveSessionPage() {
                 CURRENT STATUS
               </h2>
               <span className="rounded-full bg-[#F1F5F9] px-2.5 py-0.5 text-[10px] font-bold text-[#475569]">
-                Idle
+                {isSessionActive
+                  ? (LIVE_STATUS_STAGES.find((s) => s.step === activeStage)
+                      ?.label ?? "Waiting")
+                  : "Idle"}
               </span>
             </div>
 
             {/* 5-Stage Pipeline Stepper */}
             <div className="mt-3.5 grid grid-cols-5 gap-1 text-center">
-              {LIVE_STATUS_STAGES.map((stage) => (
-                <div key={stage.step} className="flex flex-col items-center">
-                  <div
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center ${
-                      stage.active
-                        ? "bg-[#0066FF] text-white shadow-[0_2px_8px_rgba(0,102,255,0.35)]"
-                        : "bg-[#F1F5F9] text-[#94A3B8]"
-                    }`}
+              {LIVE_STATUS_STAGES.map((stage) => {
+                const isActive = stage.step === activeStage;
+                return (
+                  <button
+                    key={stage.step}
+                    type="button"
+                    onClick={() => setActiveStage(stage.step)}
+                    className="flex flex-col items-center cursor-pointer group"
                   >
-                    {stage.step}
-                  </div>
-                  <span
-                    className={`mt-1.5 text-[9.5px] sm:text-[10.5px] ${
-                      stage.active
-                        ? "font-bold text-[#0F253E]"
-                        : "font-medium text-[#94A3B8]"
-                    }`}
-                  >
-                    {stage.label}
-                  </span>
-                </div>
-              ))}
+                    <div
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center transition ${
+                        isActive
+                          ? "bg-[#0066FF] text-white shadow-[0_2px_8px_rgba(0,102,255,0.35)]"
+                          : "bg-[#F1F5F9] text-[#94A3B8] group-hover:bg-[#E2E8F0]"
+                      }`}
+                    >
+                      {stage.step}
+                    </div>
+                    <span
+                      className={`mt-1.5 text-[9.5px] sm:text-[10.5px] ${
+                        isActive
+                          ? "font-bold text-[#0F253E]"
+                          : "font-medium text-[#94A3B8]"
+                      }`}
+                    >
+                      {stage.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </section>
 
@@ -161,10 +201,7 @@ export default function LiveSessionPage() {
         </div>
 
         {/* Right Column on Desktop: Live Generation Feed */}
-        <section
-          aria-labelledby="live-feed-heading"
-          className="lg:col-span-7"
-        >
+        <section aria-labelledby="live-feed-heading" className="lg:col-span-7">
           <div className="flex items-center justify-between mb-2.5 sm:mb-3">
             <h2
               id="live-feed-heading"
@@ -210,7 +247,10 @@ export default function LiveSessionPage() {
                         className={`w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] flex items-center justify-center flex-shrink-0 ${iconBoxClass}`}
                       >
                         {item.icon === "ban" && (
-                          <Ban className="w-4 h-4 stroke-[2]" aria-hidden="true" />
+                          <Ban
+                            className="w-4 h-4 stroke-[2]"
+                            aria-hidden="true"
+                          />
                         )}
                         {item.icon === "plane" && (
                           <Plane
