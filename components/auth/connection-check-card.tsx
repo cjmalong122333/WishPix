@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
 import { INITIAL_CONNECTION_CHECKS } from "@/lib/mock-data";
@@ -22,20 +23,30 @@ export function ConnectionCheckCard() {
       return;
     }
 
+    router.prefetch("/dashboard");
+
     const readyTimer = setTimeout(() => {
       setAutoReady(true);
     }, 1600);
 
     let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+    let hardFallbackTimer: ReturnType<typeof setTimeout> | undefined;
     if (!stayOnPage) {
       redirectTimer = setTimeout(() => {
         router.push("/dashboard");
-      }, 3200);
+      }, 3000);
+
+      hardFallbackTimer = setTimeout(() => {
+        if (window.location.pathname.startsWith("/checking-connections")) {
+          window.location.assign("/dashboard");
+        }
+      }, 4500);
     }
 
     return () => {
       clearTimeout(readyTimer);
       if (redirectTimer) clearTimeout(redirectTimer);
+      if (hardFallbackTimer) clearTimeout(hardFallbackTimer);
     };
   }, [forcedState, router, stayOnPage]);
 
@@ -50,11 +61,11 @@ export function ConnectionCheckCard() {
   );
 
   return (
-    <section
+    <Link
+      href="/dashboard"
       aria-labelledby="system-check-heading"
-      onClick={() => router.push("/dashboard")}
-      title="Click to continue to Dashboard"
-      className="w-full rounded-[16px] bg-[#162F4D] border border-white/25 px-5 sm:px-6 pt-5 pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)] cursor-pointer"
+      title="Tap to continue to Dashboard"
+      className="block w-full rounded-[16px] bg-[#162F4D] border border-white/25 px-5 sm:px-6 pt-5 pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)] cursor-pointer no-underline"
     >
       {/* Card Top Brand */}
       <p className="text-[15px] sm:text-[16px] font-bold text-white text-center tracking-tight mb-3">
@@ -91,7 +102,7 @@ export function ConnectionCheckCard() {
           ? "All systems are ready, redirecting to dashboard..."
           : "This only takes a moment."}
       </p>
-    </section>
+    </Link>
   );
 }
 

@@ -89,9 +89,18 @@ export function PageTransition({
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Observe cards and sections inside the active page so they play a smooth
-    // cascade animation when entering the viewport while scrolling up (or down)
+    // cascade animation when entering the viewport while scrolling
     const container = containerRef.current;
     let observer: IntersectionObserver | undefined;
+    let hasUserScrolled = false;
+
+    const markScrolled = () => {
+      hasUserScrolled = true;
+    };
+    window.addEventListener("scroll", markScrolled, {
+      passive: true,
+      once: true,
+    });
 
     if (container && !prefersReducedMotion && "IntersectionObserver" in window) {
       const pageRoot =
@@ -102,13 +111,9 @@ export function PageTransition({
         )
       );
 
-      targets.forEach((el, idx) => {
-        el.classList.add("wishpix-scroll-item");
-        el.style.setProperty("--scroll-stagger", `${(idx % 5) * 35}ms`);
-      });
-
       observer = new IntersectionObserver(
         (entries) => {
+          if (!hasUserScrolled) return;
           entries.forEach((entry) => {
             const el = entry.target as HTMLElement;
 
@@ -141,6 +146,7 @@ export function PageTransition({
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", markScrolled);
       if (stopUpGlowTimeout) clearTimeout(stopUpGlowTimeout);
       observer?.disconnect();
     };

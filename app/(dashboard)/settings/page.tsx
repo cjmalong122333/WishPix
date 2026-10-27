@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
-import { Check, Volume2 } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Check,
+  Download,
+  Globe,
+  MonitorSmartphone,
+  RotateCcw,
+  Volume2,
+} from "lucide-react";
 import { THEME_SWATCHES } from "@/lib/mock-data";
 import {
   useAppSettings,
   type DisplayThemeId,
 } from "@/components/providers/app-settings-provider";
+import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
 const SWATCH_LABEL_FILIPINO: Record<string, string> = {
   "deep-blue": "Deep Blue",
@@ -33,6 +41,23 @@ export default function SettingsPage() {
     setAutoLogoutDuration,
     t,
   } = useAppSettings();
+
+  const {
+    isStandalone,
+    isInstalled,
+    accessChoice,
+    isChoiceRemembered,
+    resetAccessChoice,
+    triggerInstall,
+  } = usePwaInstall();
+
+  const [resetFeedback, setResetFeedback] = useState(false);
+
+  const handleResetAccessPreference = () => {
+    resetAccessChoice();
+    setResetFeedback(true);
+    setTimeout(() => setResetFeedback(false), 2500);
+  };
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
@@ -364,6 +389,116 @@ export default function SettingsPage() {
                   <option value="Never">{t("Never", "Hindi kailanman")}</option>
                 </select>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. App & Browser Access Card (Full Width on Desktop) */}
+        <section
+          aria-labelledby="app-access-settings-heading"
+          className="lg:col-span-2 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+        >
+          <div className="pb-3 border-b border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2
+                id="app-access-settings-heading"
+                className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              >
+                {t("App & Browser Access", "Pag-access sa App at Browser")}
+              </h2>
+              <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                {t(
+                  "Choose whether to use WishPix as a downloaded standalone app or inside your web browser.",
+                  "Piliin kung gagamitin ang WishPix bilang naka-download na app o sa loob ng iyong web browser."
+                )}
+              </p>
+            </div>
+
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
+                isStandalone || isInstalled
+                  ? "bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]"
+                  : "bg-[#F0F7FF] text-[#0066B2] border border-[#BAE0FD]"
+              }`}
+            >
+              {isStandalone || isInstalled ? (
+                <>
+                  <MonitorSmartphone className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>
+                    {t("Running in App Mode", "Tumatakbo sa App Mode")}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Globe className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>
+                    {t("Running in Web Browser", "Tumatakbo sa Web Browser")}
+                  </span>
+                </>
+              )}
+            </span>
+          </div>
+
+          <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                {isStandalone
+                  ? t(
+                      "WishPix is installed on this device",
+                      "Naka-install ang WishPix sa device na ito"
+                    )
+                  : t(
+                      "Download the WishPix Teacher App",
+                      "I-download ang WishPix Teacher App"
+                    )}
+              </p>
+              <p className="text-[11px] sm:text-[11.5px] text-[#64748B]">
+                {isStandalone
+                  ? t(
+                      "You are currently accessing WishPix through the standalone desktop/mobile app.",
+                      "Kasalukuyan mong binubuksan ang WishPix gamit ang standalone desktop/mobile app."
+                    )
+                  : t(
+                      "Install WishPix to launch it directly from your Desktop, Dock, or Home Screen without browser tabs.",
+                      "I-install ang WishPix upang mabuksan ito nang direkta mula sa iyong Desktop o Home Screen."
+                    )}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              {!isStandalone && (
+                <button
+                  type="button"
+                  onClick={() => triggerInstall()}
+                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0062A6] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer active:scale-95"
+                >
+                  <Download className="w-4 h-4" aria-hidden="true" />
+                  <span>
+                    {t("Download & Install App", "I-download at I-install ang App")}
+                  </span>
+                </button>
+              )}
+
+              {(isChoiceRemembered || accessChoice !== "unset" || resetFeedback) && (
+                <button
+                  type="button"
+                  onClick={handleResetAccessPreference}
+                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] font-bold text-[11.5px] px-3.5 py-2.5 transition cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>
+                    {resetFeedback
+                      ? t(
+                          "Choice screen will show on next Login!",
+                          "Lalabas muli ang pagpipilian sa susunod na Login!"
+                        )
+                      : t(
+                          "Reset App/Browser Choice on Login",
+                          "I-reset ang Pagpipilian sa Login"
+                        )}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </section>

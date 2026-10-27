@@ -2,7 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { Bell, Menu } from "lucide-react";
+import { Bell, Download, Menu, MonitorSmartphone } from "lucide-react";
+import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 import type { KioskInfo } from "@/types/kiosk";
 
 interface TopNavbarProps {
@@ -11,6 +13,9 @@ interface TopNavbarProps {
 }
 
 export function TopNavbar({ kiosk, onOpenMenu }: TopNavbarProps) {
+  const { t } = useAppSettings();
+  const { isStandalone, triggerInstall } = usePwaInstall();
+
   return (
     <header className="sticky top-0 z-30 bg-white px-4 sm:px-6 py-3 border-b border-[#E6EDF5] flex items-center justify-between gap-4">
       {/* Left: Hamburger + WishPix Brand with Blue Dot */}
@@ -36,8 +41,24 @@ export function TopNavbar({ kiosk, onOpenMenu }: TopNavbarProps) {
         </Link>
       </div>
 
-      {/* Right: Notification Bell with Red Dot + Circular JM Avatar */}
-      <div className="flex items-center gap-3">
+      {/* Right: Install App Button + Notification Bell + Circular JM Avatar */}
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        {isStandalone ? (
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857] text-[11px] font-bold">
+            <MonitorSmartphone className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>{t("App Mode", "App Mode")}</span>
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={() => triggerInstall()}
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F7FF] hover:bg-[#E0EFFE] border border-[#BAE0FD] px-2.5 sm:px-3 py-1 text-[11px] sm:text-[11.5px] font-bold text-[#0066B2] transition cursor-pointer active:scale-95"
+          >
+            <Download className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
+            <span>{t("Get App", "Kunin ang App")}</span>
+          </button>
+        )}
+
         <button
           type="button"
           aria-label={`${kiosk.notificationCount} unread notifications`}

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Sparkles, WandSparkles } from "lucide-react";
 
 const LOADING_STAGES = [
@@ -11,46 +12,68 @@ const LOADING_STAGES = [
   "Ready! Launching Teacher App...",
 ];
 
-function LoadingScreenContent() {
+export default function LoadingScreenPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const stayOnPage = searchParams.get("stay") === "1";
 
-  const [progress, setProgress] = useState(18);
+  const [progress, setProgress] = useState(24);
   const [stageIndex, setStageIndex] = useState(0);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const stayOnPage = params.get("stay") === "1";
+
+    router.prefetch("/login");
+
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return stayOnPage ? 22 : 100;
-        return Math.min(100, prev + 4);
+        return Math.min(100, prev + 6);
       });
-    }, 95);
+    }, 85);
 
     const stageInterval = setInterval(() => {
-      setStageIndex((prev) => (prev + 1) % LOADING_STAGES.length);
-    }, 850);
+      setStageIndex((prev) => {
+        if (stayOnPage) {
+          return (prev + 1) % LOADING_STAGES.length;
+        }
+        return Math.min(LOADING_STAGES.length - 1, prev + 1);
+      });
+    }, 520);
 
     let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+    let hardFallbackTimer: ReturnType<typeof setTimeout> | undefined;
+
     if (!stayOnPage) {
       redirectTimer = setTimeout(() => {
-        router.push("/login");
-      }, 2700);
+        router.replace("/login");
+      }, 1800);
+
+      hardFallbackTimer = setTimeout(() => {
+        if (window.location.pathname.startsWith("/loading-screen")) {
+          window.location.replace("/login");
+        }
+      }, 3200);
     }
 
     return () => {
       clearInterval(progressInterval);
       clearInterval(stageInterval);
       if (redirectTimer) clearTimeout(redirectTimer);
+      if (hardFallbackTimer) clearTimeout(hardFallbackTimer);
     };
-  }, [router, stayOnPage]);
+  }, [router]);
 
   return (
-    <div
-      onClick={() => router.push("/login")}
-      title="Click anywhere to proceed to Login"
-      className="wishpix-page-transition relative flex-1 min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-[#C7D6EB] via-[#A8BBD3] to-[#8F969E] overflow-hidden cursor-pointer select-none py-8"
+    <Link
+      href="/login"
+      replace
+      title="Tap anywhere to proceed to Login"
+      className="wishpix-page-transition relative flex-1 min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-[#C7D6EB] via-[#A8BBD3] to-[#8F969E] overflow-hidden cursor-pointer select-none py-8 no-underline"
     >
+      <noscript>
+        <meta httpEquiv="refresh" content="1;url=/login" />
+      </noscript>
+
       {/* Subtle Ambient Background Glows */}
       <div
         aria-hidden="true"
@@ -173,22 +196,14 @@ function LoadingScreenContent() {
               className="wishpix-shimmer absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-white/45 to-transparent"
             />
           </div>
+
+          <span className="mt-4 text-[11px] font-semibold text-[#155E95]/90 underline underline-offset-2">
+            Tap anywhere to continue to Login →
+          </span>
         </div>
       </main>
 
       <div aria-hidden="true" />
-    </div>
-  );
-}
-
-export default function LoadingScreenPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen w-full bg-gradient-to-b from-[#C7D6EB] via-[#A8BBD3] to-[#8F969E]" />
-      }
-    >
-      <LoadingScreenContent />
-    </Suspense>
+    </Link>
   );
 }
