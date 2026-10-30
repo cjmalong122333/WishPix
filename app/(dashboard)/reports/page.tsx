@@ -76,6 +76,7 @@ export default function ReportsPage() {
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Generate a Report Card */}
         <section
+          id="tour-reports-selector"
           aria-labelledby="generate-report-heading"
           className="lg:col-span-6 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -124,6 +125,7 @@ export default function ReportsPage() {
           </div>
 
           <button
+            id="tour-reports-generate-btn"
             type="button"
             onClick={handleGenerateReport}
             className="mt-4 w-full rounded-[11px] bg-[#0077C8] hover:opacity-95 active:scale-[0.99] text-white py-2.5 sm:py-3 px-4 text-[12px] sm:text-[13px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.22)] transition cursor-pointer"
@@ -134,6 +136,7 @@ export default function ReportsPage() {
 
         {/* Recent Reports Card */}
         <section
+          id="tour-reports-recent"
           aria-labelledby="recent-reports-heading"
           className="lg:col-span-6 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >

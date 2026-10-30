@@ -70,6 +70,7 @@ export default function KioskManagementPage() {
 
       {/* Dark Navy Registered Kiosk Banner */}
       <section
+        id="tour-kiosk-registered"
         aria-label="Registered Kiosk"
         className="relative overflow-hidden rounded-[16px] bg-[#0F233A] px-4 sm:px-5 py-4 sm:py-5 text-white flex items-start justify-between gap-3 shadow-[0_8px_24px_rgba(15,35,58,0.16)] transition-colors duration-200"
       >
@@ -110,7 +111,11 @@ export default function KioskManagementPage() {
       )}
 
       {/* Health Monitoring Section */}
-      <section aria-labelledby="health-monitoring-heading" className="space-y-3">
+      <section
+        id="tour-kiosk-diagnostics"
+        aria-labelledby="health-monitoring-heading"
+        className="space-y-3"
+      >
         <div className="flex items-center justify-between">
           <h2
             id="health-monitoring-heading"
@@ -120,6 +125,7 @@ export default function KioskManagementPage() {
           </h2>
 
           <button
+            id="tour-run-diagnostics-btn"
             type="button"
             onClick={handleRunDiagnostics}
             className="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] font-bold text-[#0077C8] hover:underline cursor-pointer"
@@ -267,7 +273,11 @@ export default function KioskManagementPage() {
       </section>
 
       {/* Controls Section */}
-      <section aria-labelledby="controls-heading" className="space-y-3">
+      <section
+        id="tour-kiosk-controls"
+        aria-labelledby="controls-heading"
+        className="space-y-3"
+      >
         <h2
           id="controls-heading"
           className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]"

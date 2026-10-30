@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { KioskStatusBanner } from "@/components/dashboard/kiosk-status-banner";
 import { MetricStatCard } from "@/components/dashboard/metric-stat-card";
 import { QuickActionsPanel } from "@/components/dashboard/quick-actions-panel";
@@ -9,6 +9,12 @@ import { DASHBOARD_METRICS, KIOSK_INFO } from "@/lib/mock-data";
 
 export default function DashboardPage() {
   const { t } = useAppSettings();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefreshSummary = () => {
+    setIsRefreshing(true);
+    window.setTimeout(() => setIsRefreshing(false), 600);
+  };
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
@@ -32,7 +38,10 @@ export default function DashboardPage() {
       <KioskStatusBanner kiosk={KIOSK_INFO} />
 
       {/* Today's Summary Section: 2x2 on Mobile/Tablet, 4 Columns on Desktop */}
-      <section aria-labelledby="todays-summary-heading">
+      <section
+        id="tour-todays-summary"
+        aria-labelledby="todays-summary-heading"
+      >
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
           <h2
             id="todays-summary-heading"
@@ -41,10 +50,14 @@ export default function DashboardPage() {
             {t("TODAY'S SUMMARY", "BUOD NGAYONG ARAW")}
           </h2>
           <button
+            id="tour-summary-refresh"
             type="button"
+            onClick={handleRefreshSummary}
             className="text-[11px] sm:text-[12px] font-semibold text-[#0077C8] hover:underline cursor-pointer"
           >
-            {t("Refresh", "I-refresh")}
+            {isRefreshing
+              ? t("Updated!", "Na-update!")
+              : t("Refresh", "I-refresh")}
           </button>
         </div>
 

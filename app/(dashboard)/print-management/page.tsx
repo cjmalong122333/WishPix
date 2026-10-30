@@ -102,7 +102,10 @@ export default function PrintManagementPage() {
       </section>
 
       {/* Print Counters */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div
+        id="tour-print-counters"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+      >
         {/* Today's Prints */}
         <article className="col-span-2 lg:col-span-1 rounded-[16px] bg-white border border-[#E6EDF5] border-r-[4px] border-r-[#0077C8] p-4 sm:p-5 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
           <div>
@@ -156,6 +159,7 @@ export default function PrintManagementPage() {
         <div className="space-y-4 lg:col-span-5">
           {/* Printer Status Card */}
           <section
+            id="tour-printer-status"
             aria-labelledby="printer-status-heading"
             className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
           >
@@ -173,7 +177,10 @@ export default function PrintManagementPage() {
             </p>
 
             {/* 4 Status Selector Pills */}
-            <div className="mt-3.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <div
+              id="tour-printer-status-pills"
+              className="mt-3.5 flex flex-wrap items-center gap-1.5 sm:gap-2"
+            >
               <button
                 type="button"
                 onClick={() => setPrinterState("ready")}
@@ -269,6 +276,7 @@ export default function PrintManagementPage() {
 
           {/* Print Queue Card */}
           <section
+            id="tour-print-queue"
             aria-labelledby="print-queue-heading"
             className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
           >
@@ -306,6 +314,7 @@ export default function PrintManagementPage() {
 
         {/* Right Column: Reprint Output */}
         <section
+          id="tour-reprint-list"
           aria-labelledby="reprint-output-heading"
           className="lg:col-span-7 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >

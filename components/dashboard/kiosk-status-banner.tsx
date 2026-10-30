@@ -21,6 +21,7 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
 
   return (
     <section
+      id="tour-kiosk-status"
       aria-label="Kiosk Status"
       className="relative overflow-hidden w-full rounded-[18px] bg-[#0F233A] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)] transition-colors duration-200"
     >
@@ -67,7 +68,10 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
       </div>
 
       {/* 5 Hardware Status Pills Row */}
-      <div className="relative mt-3.5 flex flex-wrap items-center gap-1.5">
+      <div
+        id="tour-hardware-pills"
+        className="relative mt-3.5 flex flex-wrap items-center gap-1.5"
+      >
         {KIOSK_STATUS_PILLS.map((pill) => {
           const isSelected = pill.id === activeStatus;
           return (

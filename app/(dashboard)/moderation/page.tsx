@@ -79,7 +79,10 @@ export default function ModerationPage() {
       </div>
 
       {/* Top Overview Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div
+        id="tour-moderation-stats"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+      >
         {/* Awaiting Review */}
         <article className="rounded-[14px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
           <div className="flex items-start justify-between gap-2">
@@ -147,6 +150,7 @@ export default function ModerationPage() {
           </div>
 
           <button
+            id="tour-safety-level-btn"
             type="button"
             onClick={handleCycleSafetyLevel}
             className="text-[11px] sm:text-[12px] font-bold text-[#0077C8] hover:underline cursor-pointer"
@@ -157,7 +161,7 @@ export default function ModerationPage() {
       </div>
 
       {/* Filter Pills Row */}
-      <div className="flex items-center gap-2">
+      <div id="tour-moderation-tabs" className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => setActiveTab("all")}
@@ -196,7 +200,7 @@ export default function ModerationPage() {
       </div>
 
       {/* Moderation Queue Cards */}
-      <div className="space-y-3 sm:space-y-4">
+      <div id="tour-moderation-queue" className="space-y-3 sm:space-y-4">
         {filteredItems.map((item) => {
           const isPending = item.status === "pending";
 

@@ -102,6 +102,7 @@ export default function ActivityLogsPage() {
 
       {/* Filter & Export CSV Card */}
       <section
+        id="tour-logs-filter-bar"
         aria-label="Filter and export activity logs"
         className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
       >
@@ -116,6 +117,7 @@ export default function ActivityLogsPage() {
           </div>
 
           <button
+            id="tour-logs-export-btn"
             type="button"
             onClick={handleExportCsv}
             className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
@@ -190,7 +192,10 @@ export default function ActivityLogsPage() {
       </section>
 
       {/* Log Record Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3">
+      <div
+        id="tour-logs-grid"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3"
+      >
         {paginatedRecords.map((record) => {
           const isSuccess = record.safetyStatus === "Success";
 
@@ -267,7 +272,10 @@ export default function ActivityLogsPage() {
       </div>
 
       {/* Pagination Footer Card */}
-      <div className="rounded-[14px] bg-white border border-[#E6EDF5] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.02)]">
+      <div
+        id="tour-logs-pagination"
+        className="rounded-[14px] bg-white border border-[#E6EDF5] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.02)]"
+      >
         <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B]">
           {t("Showing", "Ipinapakita")}{" "}
           <span className="font-semibold text-[#0F253E]">

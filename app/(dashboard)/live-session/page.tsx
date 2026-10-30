@@ -32,6 +32,7 @@ export default function LiveSessionPage() {
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top Dark Navy Live Session Monitor Banner */}
       <section
+        id="tour-live-banner"
         aria-label="Live Session Monitor"
         className="relative overflow-hidden rounded-[18px] bg-[#0F233A] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)] transition-colors duration-200"
       >
@@ -116,6 +117,7 @@ export default function LiveSessionPage() {
         <div className="space-y-4 lg:col-span-5">
           {/* Current Status Card */}
           <section
+            id="tour-live-pipeline"
             aria-labelledby="current-status-heading"
             className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
           >
@@ -171,6 +173,7 @@ export default function LiveSessionPage() {
 
           {/* Current Queue Card */}
           <section
+            id="tour-live-queue"
             aria-labelledby="current-queue-heading"
             className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
           >
@@ -212,7 +215,11 @@ export default function LiveSessionPage() {
         </div>
 
         {/* Right Column on Desktop: Live Generation Feed */}
-        <section aria-labelledby="live-feed-heading" className="lg:col-span-7">
+        <section
+          id="tour-live-feed"
+          aria-labelledby="live-feed-heading"
+          className="lg:col-span-7"
+        >
           <div className="flex items-center justify-between mb-2.5 sm:mb-3">
             <h2
               id="live-feed-heading"

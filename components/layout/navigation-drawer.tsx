@@ -68,6 +68,7 @@ export function NavigationDrawer({
       {/* Persistent Docked Left Sidebar on Desktop (lg+) */}
       {isDesktopSidebarOpen && (
         <aside
+          id="tour-sidebar-nav"
           aria-label="Desktop sidebar navigation"
           className="hidden lg:flex w-[265px] xl:w-[280px] shrink-0 min-h-screen bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
         >

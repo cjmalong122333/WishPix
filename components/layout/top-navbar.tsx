@@ -2,8 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import { Bell, Download, Menu, MonitorSmartphone } from "lucide-react";
+import {
+  Bell,
+  Compass,
+  Download,
+  Menu,
+  MonitorSmartphone,
+} from "lucide-react";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { useOnboardingTour } from "@/components/providers/onboarding-tour-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 import type { KioskInfo } from "@/types/kiosk";
 
@@ -15,12 +22,14 @@ interface TopNavbarProps {
 export function TopNavbar({ kiosk, onOpenMenu }: TopNavbarProps) {
   const { t } = useAppSettings();
   const { isStandalone, triggerInstall } = usePwaInstall();
+  const { resetAndReplayTour } = useOnboardingTour();
 
   return (
     <header className="sticky top-0 z-30 bg-white px-4 sm:px-6 py-3 border-b border-[#E6EDF5] flex items-center justify-between gap-4">
       {/* Left: Hamburger + WishPix Brand with Blue Dot */}
       <div className="flex items-center gap-2.5">
         <button
+          id="tour-nav-trigger"
           type="button"
           onClick={onOpenMenu}
           aria-label="Toggle navigation menu"
@@ -41,8 +50,22 @@ export function TopNavbar({ kiosk, onOpenMenu }: TopNavbarProps) {
         </Link>
       </div>
 
-      {/* Right: Install App Button + Notification Bell + Circular JM Avatar */}
-      <div className="flex items-center gap-2.5 sm:gap-3">
+      {/* Right: Tour Guide + Install App Button + Notification Bell + Circular JM Avatar */}
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        <button
+          id="tour-replay-button"
+          type="button"
+          onClick={resetAndReplayTour}
+          title={t("Replay interactive tour", "Ulitin ang interactive tour")}
+          className="inline-flex items-center gap-1.5 rounded-full bg-[#F8FAFC] hover:bg-[#EEF2F6] border border-[#E2E8F0] px-2.5 py-1 text-[11px] sm:text-[11.5px] font-bold text-[#334E68] transition cursor-pointer active:scale-95"
+        >
+          <Compass
+            className="w-3.5 h-3.5 text-[#0077C8] stroke-[2.2]"
+            aria-hidden="true"
+          />
+          <span className="hidden sm:inline">{t("Tour", "Gabay")}</span>
+        </button>
+
         {isStandalone ? (
           <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857] text-[11px] font-bold">
             <MonitorSmartphone className="w-3.5 h-3.5" aria-hidden="true" />

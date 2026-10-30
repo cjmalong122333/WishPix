@@ -5,6 +5,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { TopNavbar } from "@/components/layout/top-navbar";
 import { NavigationDrawer } from "@/components/layout/navigation-drawer";
 import { PageTransition } from "@/components/layout/page-transition";
+import { OnboardingTourProvider } from "@/components/providers/onboarding-tour-provider";
 import { KIOSK_INFO } from "@/lib/mock-data";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
@@ -39,25 +40,27 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="relative flex-1 flex min-h-screen w-full bg-[#F2F6FA] text-[#0F253E]">
-      {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
-      <NavigationDrawer
-        isOpen={isMobileDrawerOpen}
-        isDesktopSidebarOpen={effectiveDesktopSidebarOpen}
-        onCloseMobile={handleCloseMobileDrawer}
-        kiosk={KIOSK_INFO}
-      />
+    <OnboardingTourProvider>
+      <div className="relative flex-1 flex min-h-screen w-full bg-[#F2F6FA] text-[#0F253E]">
+        {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
+        <NavigationDrawer
+          isOpen={isMobileDrawerOpen}
+          isDesktopSidebarOpen={effectiveDesktopSidebarOpen}
+          onCloseMobile={handleCloseMobileDrawer}
+          kiosk={KIOSK_INFO}
+        />
 
-      {/* Right Main Column */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
-        {/* Top Educator App Bar */}
-        <TopNavbar kiosk={KIOSK_INFO} onOpenMenu={handleToggleMenu} />
+        {/* Right Main Column */}
+        <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+          {/* Top Educator App Bar */}
+          <TopNavbar kiosk={KIOSK_INFO} onOpenMenu={handleToggleMenu} />
 
-        {/* Main Responsive Content Container */}
-        <main className="wishpix-page-stage flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <PageTransition>{children}</PageTransition>
-        </main>
+          {/* Main Responsive Content Container */}
+          <main className="wishpix-page-stage flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+            <PageTransition>{children}</PageTransition>
+          </main>
+        </div>
       </div>
-    </div>
+    </OnboardingTourProvider>
   );
 }

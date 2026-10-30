@@ -183,6 +183,7 @@ export default function SessionSetupPage() {
 
       {/* 4-Step Segmented Progress Bar */}
       <div
+        id="tour-setup-stepper"
         role="tablist"
         aria-label="Session setup steps"
         className="rounded-[12px] bg-[#E6EEF6] p-1 grid grid-cols-4 gap-1"
@@ -232,7 +233,11 @@ export default function SessionSetupPage() {
       {/* Responsive Split Layout: Stacked on Mobile, 2-Column on Desktop (lg+) */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column: Active Step Content */}
-        <div key={`step-${currentStep}`} className="wishpix-step-transition lg:col-span-7 space-y-4">
+        <div
+          id="tour-setup-active-panel"
+          key={`step-${currentStep}`}
+          className="wishpix-step-transition lg:col-span-7 space-y-4"
+        >
           {/* STEP 1: ACTIVITY SETUP */}
           {currentStep === 1 && (
             <section
@@ -892,6 +897,7 @@ export default function SessionSetupPage() {
 
         {/* Right Column: Persistent Session Summary Card */}
         <section
+          id="tour-setup-summary"
           aria-labelledby="session-summary-heading"
           className="lg:col-span-5 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]"
         >
@@ -991,7 +997,10 @@ export default function SessionSetupPage() {
 
       {/* Bottom Back / Continue Footer for Steps 1 & 2 */}
       {(currentStep === 1 || currentStep === 2) && (
-        <div className="pt-2 flex items-center justify-between gap-3">
+        <div
+          id="tour-setup-continue"
+          className="pt-2 flex items-center justify-between gap-3"
+        >
           <button
             type="button"
             onClick={handleBack}

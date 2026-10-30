@@ -24,7 +24,11 @@ export function QuickActionsPanel() {
   };
 
   return (
-    <section aria-labelledby="quick-actions-heading" className="w-full">
+    <section
+      id="tour-quick-actions"
+      aria-labelledby="quick-actions-heading"
+      className="w-full"
+    >
       {/* Section Header */}
       <div className="mb-2.5 sm:mb-3">
         <h2
@@ -97,6 +101,7 @@ export function QuickActionsPanel() {
             <button
               key={action.id}
               type="button"
+              data-tour-action="true"
               onClick={() => handleActionClick(action)}
               className="w-full rounded-[14px] bg-white hover:bg-[#F8FAFC] border border-[#E6EDF5] px-4 py-3 sm:py-3.5 text-left flex items-center gap-3.5 shadow-[0_1px_4px_rgba(15,37,62,0.02)] transition cursor-pointer"
             >

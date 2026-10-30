@@ -66,7 +66,10 @@ export default function AnalyticsPage() {
       </div>
 
       {/* 6 KPI Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div
+        id="tour-analytics-kpis"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+      >
         {/* 1. Most Used Theme */}
         <article className="rounded-[15px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
@@ -190,6 +193,7 @@ export default function AnalyticsPage() {
 
       {/* Usage Over Time Card */}
       <section
+        id="tour-analytics-chart"
         aria-labelledby="usage-over-time-heading"
         className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
       >
@@ -211,6 +215,7 @@ export default function AnalyticsPage() {
 
           {/* Daily / Weekly / Monthly Switcher */}
           <div
+            id="tour-analytics-range-tabs"
             role="tablist"
             aria-label="Usage time range"
             className="rounded-[10px] bg-[#F1F5F9] p-1 flex items-center gap-0.5 flex-shrink-0"
@@ -313,6 +318,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Theme Distribution Card */}
         <section
+          id="tour-analytics-themes"
           aria-labelledby="theme-distribution-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -398,6 +404,7 @@ export default function AnalyticsPage() {
 
         {/* Activity Mix Card */}
         <section
+          id="tour-analytics-mix"
           aria-labelledby="activity-mix-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)] flex flex-col justify-between"
         >

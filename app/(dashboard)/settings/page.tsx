@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import {
   Check,
+  Compass,
   Download,
   Globe,
   MonitorSmartphone,
@@ -14,6 +15,7 @@ import {
   useAppSettings,
   type DisplayThemeId,
 } from "@/components/providers/app-settings-provider";
+import { useOnboardingTour } from "@/components/providers/onboarding-tour-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
 const SWATCH_LABEL_FILIPINO: Record<string, string> = {
@@ -51,6 +53,13 @@ export default function SettingsPage() {
     triggerInstall,
   } = usePwaInstall();
 
+  const {
+    completedPagesCount,
+    totalTourPages,
+    resetAndReplayTour,
+    resetAllPageTours,
+  } = useOnboardingTour();
+
   const [resetFeedback, setResetFeedback] = useState(false);
 
   const handleResetAccessPreference = () => {
@@ -78,6 +87,7 @@ export default function SettingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-start">
         {/* 1. Language Card */}
         <section
+          id="tour-settings-language"
           aria-labelledby="language-settings-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -137,6 +147,7 @@ export default function SettingsPage() {
 
         {/* 2. Audio Card */}
         <section
+          id="tour-settings-audio"
           aria-labelledby="audio-settings-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -195,6 +206,7 @@ export default function SettingsPage() {
 
         {/* 3. Display Card */}
         <section
+          id="tour-settings-display"
           aria-labelledby="display-settings-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -264,6 +276,7 @@ export default function SettingsPage() {
 
         {/* 4. System Card */}
         <section
+          id="tour-settings-system"
           aria-labelledby="system-settings-heading"
           className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
         >
@@ -393,7 +406,94 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* 5. App & Browser Access Card (Full Width on Desktop) */}
+        {/* 5. Interactive Onboarding Walkthrough Card (Full Width on Desktop) */}
+        <section
+          id="tour-settings-onboarding"
+          aria-labelledby="onboarding-tour-settings-heading"
+          className="lg:col-span-2 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+        >
+          <div className="pb-3 border-b border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2
+                id="onboarding-tour-settings-heading"
+                className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              >
+                {t(
+                  "Interactive Page Walkthroughs",
+                  "Interactive na Gabay sa Bawat Pahina"
+                )}
+              </h2>
+              <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                {t(
+                  "Every page in WishPix includes a guided tour explaining its controls. First-time visits trigger the guide automatically.",
+                  "Ang bawat pahina sa WishPix ay may sariling interactive na gabay na awtomatikong lumalabas sa unang pagbisita."
+                )}
+              </p>
+            </div>
+
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
+                completedPagesCount === totalTourPages
+                  ? "bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]"
+                  : "bg-[#F0F7FF] text-[#0066B2] border border-[#BAE0FD]"
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>
+                {t(
+                  `${completedPagesCount} of ${totalTourPages} Page Guides Completed`,
+                  `${completedPagesCount} sa ${totalTourPages} Gabay ang Natapos`
+                )}
+              </span>
+            </span>
+          </div>
+
+          <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                {t(
+                  "Replay This Page's Guide or Reset All 10 Page Tours",
+                  "Ulitin ang Gabay sa Pahinang Ito o I-reset ang Lahat ng 10 Gabay"
+                )}
+              </p>
+              <p className="text-[11px] sm:text-[11.5px] text-[#64748B]">
+                {t(
+                  "You can also click the 'Tour' button in the top navigation bar on any page to replay that page's walkthrough.",
+                  "Maaari mo ring pindutin ang 'Gabay' button sa itaas ng alinmang pahina upang ulitin ang gabay nito."
+                )}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={resetAndReplayTour}
+                className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0062A6] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer active:scale-95"
+              >
+                <Compass className="w-4 h-4" aria-hidden="true" />
+                <span>
+                  {t("Tour This Page", "Gabay sa Pahinang Ito")}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={resetAllPageTours}
+                className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] font-bold text-[11.5px] px-3.5 py-2.5 transition cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>
+                  {t(
+                    "Reset All 10 Page Tours",
+                    "I-reset ang Lahat ng 10 Gabay"
+                  )}
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. App & Browser Access Card (Full Width on Desktop) */}
         <section
           aria-labelledby="app-access-settings-heading"
           className="lg:col-span-2 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
