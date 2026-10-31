@@ -7,7 +7,9 @@ import {
   Download,
   Globe,
   MonitorSmartphone,
+  Play,
   RotateCcw,
+  Sparkles,
   Volume2,
 } from "lucide-react";
 import { THEME_SWATCHES } from "@/lib/mock-data";
@@ -15,7 +17,10 @@ import {
   useAppSettings,
   type DisplayThemeId,
 } from "@/components/providers/app-settings-provider";
-import { useOnboardingTour } from "@/components/providers/onboarding-tour-provider";
+import {
+  TOUR_ROUTE_META,
+  useOnboardingTour,
+} from "@/components/providers/onboarding-tour-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
 const SWATCH_LABEL_FILIPINO: Record<string, string> = {
@@ -54,10 +59,12 @@ export default function SettingsPage() {
   } = usePwaInstall();
 
   const {
+    completedRoutes,
     completedPagesCount,
     totalTourPages,
     resetAndReplayTour,
     resetAllPageTours,
+    launchTourForRoute,
   } = useOnboardingTour();
 
   const [resetFeedback, setResetFeedback] = useState(false);
@@ -67,6 +74,10 @@ export default function SettingsPage() {
     setResetFeedback(true);
     setTimeout(() => setResetFeedback(false), 2500);
   };
+
+  const progressPercentage = Math.round(
+    (completedPagesCount / Math.max(1, totalTourPages)) * 100
+  );
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
@@ -406,87 +417,142 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* 5. Interactive Onboarding Walkthrough Card (Full Width on Desktop) */}
+        {/* 5. Interactive Onboarding Walkthrough Hub (Signature Dark Navy & Cyan Glow Card) */}
         <section
           id="tour-settings-onboarding"
           aria-labelledby="onboarding-tour-settings-heading"
-          className="lg:col-span-2 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="relative overflow-hidden lg:col-span-2 rounded-[18px] bg-[#0F233A] border border-[#38BDF8]/30 p-4 sm:p-6 text-white shadow-[0_12px_30px_rgba(15,35,58,0.2)] transition-colors duration-200"
         >
-          <div className="pb-3 border-b border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2">
+          {/* Ambient Cyan Radial Glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-12 -right-10 w-52 h-52 rounded-full bg-[#0284C7]/25 blur-2xl"
+          />
+
+          <div className="relative pb-4 border-b border-white/10 flex flex-wrap items-start justify-between gap-3">
             <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#7DD3FC] text-[9.5px] font-extrabold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3 h-3" aria-hidden="true" />
+                <span>{t("WISHPIX ONBOARDING HUB", "SENTRO NG GABAY")}</span>
+              </div>
               <h2
                 id="onboarding-tour-settings-heading"
-                className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+                className="text-[15px] sm:text-[17px] font-extrabold text-white tracking-tight"
               >
                 {t(
                   "Interactive Page Walkthroughs",
                   "Interactive na Gabay sa Bawat Pahina"
                 )}
               </h2>
-              <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+              <p className="text-[11px] sm:text-[12px] text-[#94A8BE] mt-0.5 max-w-2xl">
                 {t(
-                  "Every page in WishPix includes a guided tour explaining its controls. First-time visits trigger the guide automatically.",
-                  "Ang bawat pahina sa WishPix ay may sariling interactive na gabay na awtomatikong lumalabas sa unang pagbisita."
+                  "Every module in WishPix includes a hands-on guided tour. Click any module below to jump straight into its interactive walkthrough.",
+                  "Ang bawat bahagi ng WishPix ay may sariling interactive na gabay. Pumili ng pahina sa ibaba upang buksan ang gabay nito."
                 )}
               </p>
             </div>
 
             <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold ${
                 completedPagesCount === totalTourPages
-                  ? "bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]"
-                  : "bg-[#F0F7FF] text-[#0066B2] border border-[#BAE0FD]"
+                  ? "bg-[#113934] text-[#4ADE80] border border-[#22C55E]/40"
+                  : "bg-[#0284C7]/20 text-[#7DD3FC] border border-[#38BDF8]/35"
               }`}
             >
               <Compass className="w-3.5 h-3.5" aria-hidden="true" />
               <span>
                 {t(
-                  `${completedPagesCount} of ${totalTourPages} Page Guides Completed`,
+                  `${completedPagesCount} of ${totalTourPages} Modules Explored`,
                   `${completedPagesCount} sa ${totalTourPages} Gabay ang Natapos`
                 )}
               </span>
             </span>
           </div>
 
-          <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
-                {t(
-                  "Replay This Page's Guide or Reset All 10 Page Tours",
-                  "Ulitin ang Gabay sa Pahinang Ito o I-reset ang Lahat ng 10 Gabay"
-                )}
-              </p>
-              <p className="text-[11px] sm:text-[11.5px] text-[#64748B]">
-                {t(
-                  "You can also click the 'Tour' button in the top navigation bar on any page to replay that page's walkthrough.",
-                  "Maaari mo ring pindutin ang 'Gabay' button sa itaas ng alinmang pahina upang ulitin ang gabay nito."
-                )}
-              </p>
+          {/* Progress Bar */}
+          <div className="relative mt-4">
+            <div className="flex items-center justify-between text-[10.5px] font-bold text-[#B8CDE2] mb-1.5">
+              <span>
+                {t("Educator Onboarding Progress", "Progreso ng Gabay ng Guro")}
+              </span>
+              <span className="text-[#38BDF8]">{progressPercentage}%</span>
             </div>
+            <div className="w-full h-2 rounded-full bg-black/30 border border-white/10 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[#0077C8] to-[#38BDF8] transition-all duration-300"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Interactive 10-Module Tour Launcher Grid */}
+          <div className="relative mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+            {TOUR_ROUTE_META.map((meta) => {
+              const isDone = Boolean(completedRoutes[meta.route]);
+              return (
+                <button
+                  key={meta.route}
+                  type="button"
+                  onClick={() => launchTourForRoute(meta.route)}
+                  className={`group text-left rounded-[11px] px-3 py-2.5 border transition cursor-pointer active:scale-[0.98] flex items-center justify-between gap-2 ${
+                    isDone
+                      ? "bg-white/10 hover:bg-white/15 border-white/20 text-white"
+                      : "bg-black/20 hover:bg-white/10 border-white/10 text-[#CBD5E1] hover:text-white"
+                  }`}
+                >
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-bold truncate">
+                      {t(meta.labelEn, meta.labelFil)}
+                    </p>
+                    <p className="text-[9.5px] text-[#94A8BE] mt-0.5">
+                      {t(
+                        `${meta.stepsCount} steps`,
+                        `${meta.stepsCount} hakbang`
+                      )}
+                    </p>
+                  </div>
+
+                  {isDone ? (
+                    <span className="w-5 h-5 rounded-full bg-[#22C55E]/20 border border-[#4ADE80]/40 text-[#4ADE80] flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 stroke-[2.75]" aria-hidden="true" />
+                    </span>
+                  ) : (
+                    <span className="w-5 h-5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30 text-[#38BDF8] group-hover:bg-[#38BDF8] group-hover:text-[#0F233A] flex items-center justify-center shrink-0 transition-colors">
+                      <Play className="w-2.5 h-2.5 fill-current" aria-hidden="true" />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Bottom Action Controls */}
+          <div className="relative mt-4 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-[11px] text-[#94A8BE]">
+              {t(
+                "Tip: Click the 'Tour' pill in the top bar anytime to replay the guide for the page you are viewing.",
+                "Tip: Pindutin ang 'Gabay' button sa itaas anumang oras upang ulitin ang paliwanag sa pahina."
+              )}
+            </p>
 
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <button
                 type="button"
                 onClick={resetAndReplayTour}
-                className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0062A6] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0284C7] border border-[#38BDF8]/40 text-white font-bold text-[12px] px-4 py-2 shadow-[0_4px_12px_rgba(2,132,199,0.3)] transition cursor-pointer active:scale-95"
               >
                 <Compass className="w-4 h-4" aria-hidden="true" />
-                <span>
-                  {t("Tour This Page", "Gabay sa Pahinang Ito")}
-                </span>
+                <span>{t("Tour This Page", "Gabay sa Pahinang Ito")}</span>
               </button>
 
               <button
                 type="button"
                 onClick={resetAllPageTours}
-                className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] font-bold text-[11.5px] px-3.5 py-2.5 transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-[10px] bg-white/10 hover:bg-white/15 border border-white/15 text-[#E2E8F0] font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>
-                  {t(
-                    "Reset All 10 Page Tours",
-                    "I-reset ang Lahat ng 10 Gabay"
-                  )}
+                  {t("Reset All 10 Page Tours", "I-reset ang Lahat ng 10 Gabay")}
                 </span>
               </button>
             </div>

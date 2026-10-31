@@ -28,6 +28,100 @@ export const ALL_TOUR_ROUTES = [
   "/settings",
 ] as const;
 
+export type TourRoutePath = (typeof ALL_TOUR_ROUTES)[number];
+
+export interface TourRouteMeta {
+  route: TourRoutePath;
+  labelEn: string;
+  labelFil: string;
+  badgeEn: string;
+  badgeFil: string;
+  stepsCount: number;
+}
+
+export const TOUR_ROUTE_META: TourRouteMeta[] = [
+  {
+    route: "/dashboard",
+    labelEn: "Dashboard",
+    labelFil: "Dashboard",
+    badgeEn: "WISHPIX • DASHBOARD",
+    badgeFil: "GABAY • DASHBOARD",
+    stepsCount: 5,
+  },
+  {
+    route: "/session-setup",
+    labelEn: "Session Setup",
+    labelFil: "Pag-setup ng Sesyon",
+    badgeEn: "WISHPIX • SESSION SETUP",
+    badgeFil: "GABAY • PAG-SETUP",
+    stepsCount: 4,
+  },
+  {
+    route: "/live-session",
+    labelEn: "Live Session",
+    labelFil: "Live na Sesyon",
+    badgeEn: "WISHPIX • LIVE MONITOR",
+    badgeFil: "GABAY • LIVE NA SESYON",
+    stepsCount: 4,
+  },
+  {
+    route: "/moderation",
+    labelEn: "Moderation",
+    labelFil: "Moderasyon",
+    badgeEn: "WISHPIX • SAFETY & MODERATION",
+    badgeFil: "GABAY • MODERASYON",
+    stepsCount: 3,
+  },
+  {
+    route: "/print-management",
+    labelEn: "Print Management",
+    labelFil: "Pamamahala ng Print",
+    badgeEn: "WISHPIX • PRINT SPOOLER",
+    badgeFil: "GABAY • PRINT QUEUE",
+    stepsCount: 4,
+  },
+  {
+    route: "/kiosk-management",
+    labelEn: "Kiosk Management",
+    labelFil: "Pamamahala ng Kiosk",
+    badgeEn: "WISHPIX • KIOSK HARDWARE",
+    badgeFil: "GABAY • KIOSK HARDWARE",
+    stepsCount: 3,
+  },
+  {
+    route: "/activity-logs",
+    labelEn: "Activity Logs",
+    labelFil: "Talaan ng Aktibidad",
+    badgeEn: "WISHPIX • ACTIVITY LOGS",
+    badgeFil: "GABAY • MGA REKORD",
+    stepsCount: 4,
+  },
+  {
+    route: "/analytics",
+    labelEn: "Analytics",
+    labelFil: "Pagsusuri (Analytics)",
+    badgeEn: "WISHPIX • ANALYTICS",
+    badgeFil: "GABAY • ANALYTICS",
+    stepsCount: 4,
+  },
+  {
+    route: "/reports",
+    labelEn: "Reports",
+    labelFil: "Mga Ulat",
+    badgeEn: "WISHPIX • REPORTS",
+    badgeFil: "GABAY • MGA ULAT",
+    stepsCount: 2,
+  },
+  {
+    route: "/settings",
+    labelEn: "Settings",
+    labelFil: "Mga Setting",
+    badgeEn: "WISHPIX • SETTINGS",
+    badgeFil: "GABAY • MGA SETTING",
+    stepsCount: 5,
+  },
+];
+
 interface InteractiveStepConfig extends DriveStep {
   /** Selector (within document or highlighted element) that triggers auto-advance when interacted with */
   advanceOnSelector?: string;
@@ -42,6 +136,8 @@ interface InteractiveStepConfig extends DriveStep {
 interface OnboardingTourContextValue {
   /** Whether the user has completed the tour for the currently active route */
   hasCompletedTour: boolean;
+  /** Map of completed route paths */
+  completedRoutes: Record<string, boolean>;
   /** Number of pages (out of 10) where the user has completed the guided tour */
   completedPagesCount: number;
   /** Total number of guided pages in the system */
@@ -52,6 +148,8 @@ interface OnboardingTourContextValue {
   resetAndReplayTour: () => void;
   /** Reset all 10 page tour states so every page shows its walkthrough again, and launch the Dashboard tour */
   resetAllPageTours: () => void;
+  /** Navigate to a specific route and launch its interactive tour */
+  launchTourForRoute: (route: TourRoutePath) => void;
 }
 
 type CompletedMap = Record<string, boolean>;
@@ -172,17 +270,67 @@ export function OnboardingTourProvider({
 
   const driverRef = useRef<Driver | null>(null);
   const cleanupListenersRef = useRef<(() => void) | null>(null);
+  const spotlightRafRef = useRef<number | null>(null);
   const activeTourRouteRef = useRef<string>(normalizedPath);
+
+  const removeSpotlightFrame = useCallback(() => {
+    if (spotlightRafRef.current !== null && typeof window !== "undefined") {
+      window.cancelAnimationFrame(spotlightRafRef.current);
+      spotlightRafRef.current = null;
+    }
+    if (typeof document !== "undefined") {
+      document.getElementById("wishpix-tour-spotlight-frame")?.remove();
+    }
+  }, []);
+
+  const syncSpotlightFrame = useCallback((targetEl?: Element | null) => {
+    if (typeof document === "undefined" || typeof window === "undefined") return;
+    if (
+      !targetEl ||
+      !(targetEl instanceof HTMLElement) ||
+      targetEl.id === "driver-dummy-element"
+    ) {
+      removeSpotlightFrame();
+      return;
+    }
+
+    let frame = document.getElementById("wishpix-tour-spotlight-frame");
+    if (!frame) {
+      frame = document.createElement("div");
+      frame.id = "wishpix-tour-spotlight-frame";
+      frame.setAttribute("aria-hidden", "true");
+      document.body.appendChild(frame);
+    }
+
+    const rect = targetEl.getBoundingClientRect();
+    const pad = 8;
+    const width = rect.width + pad * 2;
+    const height = rect.height + pad * 2;
+    const radius = Math.floor(Math.max(Math.min(16, width / 2, height / 2), 0));
+
+    frame.style.top = `${rect.top - pad}px`;
+    frame.style.left = `${rect.left - pad}px`;
+    frame.style.width = `${width}px`;
+    frame.style.height = `${height}px`;
+    frame.style.borderRadius = `${radius}px`;
+    frame.style.opacity = "1";
+  }, [removeSpotlightFrame]);
 
   const clearStepListeners = useCallback(() => {
     if (cleanupListenersRef.current) {
       cleanupListenersRef.current();
       cleanupListenersRef.current = null;
     }
+    if (typeof document !== "undefined") {
+      document
+        .querySelectorAll<HTMLElement>("[data-tour-interactive-target='true']")
+        .forEach((el) => el.removeAttribute("data-tour-interactive-target"));
+    }
   }, []);
 
   const destroyActiveTour = useCallback(() => {
     clearStepListeners();
+    removeSpotlightFrame();
     if (driverRef.current) {
       const instance = driverRef.current;
       driverRef.current = null;
@@ -190,7 +338,7 @@ export function OnboardingTourProvider({
         instance.destroy();
       }
     }
-  }, [clearStepListeners]);
+  }, [clearStepListeners, removeSpotlightFrame]);
 
   const buildStepsForRoute = useCallback(
     (route: string): InteractiveStepConfig[] => {
@@ -989,11 +1137,16 @@ export function OnboardingTourProvider({
 
       activeTourRouteRef.current = route;
 
+      const routeMeta = TOUR_ROUTE_META.find((m) => m.route === route);
+      const moduleBadgeLabel = routeMeta
+        ? t(routeMeta.badgeEn, routeMeta.badgeFil)
+        : t("WISHPIX • GUIDE", "GABAY • WISHPIX");
+
       const instance = driver({
         showProgress: true,
         animate: true,
         allowClose: true,
-        overlayColor: "rgba(9, 25, 44, 0.62)",
+        overlayColor: "rgba(6, 17, 31, 0.68)",
         stagePadding: 8,
         stageRadius: 16,
         popoverClass: "wishpix-tour-popover",
@@ -1003,7 +1156,7 @@ export function OnboardingTourProvider({
         ),
         nextBtnText: t("Next →", "Susunod →"),
         prevBtnText: t("← Back", "← Bumalik"),
-        doneBtnText: t("Got it!", "Nakuha ko!"),
+        doneBtnText: t("Complete ✨", "Tapos na ✨"),
         steps: validSteps,
 
         onPopoverRender: (popover, { state }) => {
@@ -1017,7 +1170,32 @@ export function OnboardingTourProvider({
           const activeIndex = state.activeIndex ?? 0;
           const currentStep = validSteps[activeIndex];
 
-          // Inject hands-on interactive hint badge when step has an interactive trigger
+          // 1. Inject custom WishPix module badge header above the title
+          const existingHeader = popover.wrapper.querySelector(
+            ".wishpix-tour-header"
+          );
+          if (existingHeader) {
+            existingHeader.remove();
+          }
+          const headerEl = document.createElement("div");
+          headerEl.className = "wishpix-tour-header";
+
+          const pillEl = document.createElement("span");
+          pillEl.className = "wishpix-tour-module-pill";
+
+          const dotEl = document.createElement("span");
+          dotEl.className = "wishpix-tour-module-dot";
+          dotEl.setAttribute("aria-hidden", "true");
+
+          const labelEl = document.createElement("span");
+          labelEl.textContent = moduleBadgeLabel;
+
+          pillEl.appendChild(dotEl);
+          pillEl.appendChild(labelEl);
+          headerEl.appendChild(pillEl);
+          popover.title.insertAdjacentElement("beforebegin", headerEl);
+
+          // 2. Inject hands-on interactive hint badge when step has an interactive trigger
           const existingHint = popover.wrapper.querySelector(
             ".wishpix-tour-hint-badge"
           );
@@ -1027,11 +1205,47 @@ export function OnboardingTourProvider({
           if (currentStep?.interactionHint) {
             const hintEl = document.createElement("div");
             hintEl.className = "wishpix-tour-hint-badge";
-            hintEl.textContent = currentStep.interactionHint;
+
+            const hintDot = document.createElement("span");
+            hintDot.className = "wishpix-tour-hint-dot";
+            hintDot.setAttribute("aria-hidden", "true");
+
+            const hintText = document.createElement("span");
+            hintText.textContent = currentStep.interactionHint;
+
+            hintEl.appendChild(hintDot);
+            hintEl.appendChild(hintText);
             popover.description.insertAdjacentElement("afterend", hintEl);
           }
 
-          // Add explicit "Skip tour" button before navigation buttons (except on final step)
+          // 3. Inject segmented visual step progress bar above the footer
+          const existingBar = popover.wrapper.querySelector(
+            ".wishpix-tour-progress-bar"
+          );
+          if (existingBar) {
+            existingBar.remove();
+          }
+          if (validSteps.length > 1) {
+            const barEl = document.createElement("div");
+            barEl.className = "wishpix-tour-progress-bar";
+            barEl.setAttribute("aria-hidden", "true");
+
+            for (let i = 0; i < validSteps.length; i++) {
+              const seg = document.createElement("span");
+              seg.className = "wishpix-tour-segment";
+              if (i < activeIndex) {
+                seg.setAttribute("data-state", "done");
+              } else if (i === activeIndex) {
+                seg.setAttribute("data-state", "active");
+              } else {
+                seg.setAttribute("data-state", "upcoming");
+              }
+              barEl.appendChild(seg);
+            }
+            popover.footer.insertAdjacentElement("beforebegin", barEl);
+          }
+
+          // 4. Add explicit "Skip guide" button before navigation buttons (except on final step)
           const isLastStep = activeIndex >= validSteps.length - 1;
           const existingSkip =
             popover.footer.querySelector(".wishpix-tour-skip");
@@ -1077,6 +1291,21 @@ export function OnboardingTourProvider({
             return;
           }
 
+          // Synchronize the animated Spotlight Halo & Sonar Ripple frame with the active target
+          syncSpotlightFrame(element);
+          const startTime = performance.now();
+          const trackDuringTransition = (now: number) => {
+            syncSpotlightFrame(element);
+            if (now - startTime < 460 && driverRef.current?.isActive()) {
+              spotlightRafRef.current = window.requestAnimationFrame(
+                trackDuringTransition
+              );
+            }
+          };
+          spotlightRafRef.current = window.requestAnimationFrame(
+            trackDuringTransition
+          );
+
           // Attach hands-on interaction listeners so interacting with the highlighted feature advances the tour
           const eventName = interactiveStep.advanceOnEvent;
           if (eventName) {
@@ -1104,19 +1333,25 @@ export function OnboardingTourProvider({
                 }, 420);
               };
 
-              targets.forEach((target) =>
+              targets.forEach((target) => {
+                target.setAttribute("data-tour-interactive-target", "true");
                 target.addEventListener(eventName, handleInteraction, {
                   once: true,
-                })
-              );
+                });
+              });
 
               cleanupListenersRef.current = () => {
-                targets.forEach((target) =>
-                  target.removeEventListener(eventName, handleInteraction)
-                );
+                targets.forEach((target) => {
+                  target.removeAttribute("data-tour-interactive-target");
+                  target.removeEventListener(eventName, handleInteraction);
+                });
               };
             }
           }
+        },
+
+        onHighlighted: (element) => {
+          syncSpotlightFrame(element);
         },
 
         onNextClick: () => {
@@ -1167,7 +1402,13 @@ export function OnboardingTourProvider({
       driverRef.current = instance;
       instance.drive();
     },
-    [buildStepsForRoute, clearStepListeners, destroyActiveTour, t]
+    [
+      buildStepsForRoute,
+      clearStepListeners,
+      destroyActiveTour,
+      syncSpotlightFrame,
+      t,
+    ]
   );
 
   const startTour = useCallback(
@@ -1194,6 +1435,18 @@ export function OnboardingTourProvider({
     }
   }, [launchDriverForCurrentRoute, normalizedPath, router]);
 
+  const launchTourForRoute = useCallback(
+    (targetRoute: TourRoutePath) => {
+      markRouteCompleted(targetRoute, false);
+      if (normalizedPath !== targetRoute) {
+        router.push(targetRoute);
+      } else {
+        launchDriverForCurrentRoute(targetRoute);
+      }
+    },
+    [launchDriverForCurrentRoute, normalizedPath, router]
+  );
+
   // Auto-trigger walkthrough when the user visits ANY dashboard page for the first time
   useEffect(() => {
     // Clean up any previous page's tour immediately on route change
@@ -1212,7 +1465,7 @@ export function OnboardingTourProvider({
     return () => window.clearTimeout(timer);
   }, [normalizedPath, launchDriverForCurrentRoute, destroyActiveTour]);
 
-  // Handle screen resizing gracefully while the tour is active
+  // Handle screen resizing & scrolling gracefully while the tour is active
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -1237,21 +1490,37 @@ export function OnboardingTourProvider({
         }
       }
       instance.refresh();
+      syncSpotlightFrame(instance.getActiveElement());
+    };
+
+    const handleScroll = () => {
+      const instance = driverRef.current;
+      if (!instance || !instance.isActive()) return;
+      syncSpotlightFrame(instance.getActiveElement());
     };
 
     window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+      capture: true,
+    });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [syncSpotlightFrame]);
 
   return (
     <OnboardingTourContext.Provider
       value={{
         hasCompletedTour,
+        completedRoutes: completedMap,
         completedPagesCount,
         totalTourPages: ALL_TOUR_ROUTES.length,
         startTour,
         resetAndReplayTour,
         resetAllPageTours,
+        launchTourForRoute,
       }}
     >
       {children}
