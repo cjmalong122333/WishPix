@@ -6,7 +6,9 @@ import {
   Download,
   ExternalLink,
   MonitorSmartphone,
+  MoreVertical,
   Share,
+  Smartphone,
   PlusSquare,
   Sparkles,
   X,
@@ -52,12 +54,15 @@ export function InstallGuideModal({
       aria-modal="true"
       aria-labelledby="install-guide-title"
     >
-      <div className="relative w-full max-w-[430px] rounded-[18px] bg-[#0D223B] border border-[#1E3A5F] p-5 sm:p-6 text-white shadow-[0_22px_48px_rgba(4,15,28,0.65)]">
+      <div className="relative w-full max-w-[445px] rounded-[18px] bg-[#0D223B] border border-[#1E3A5F] p-5 sm:p-6 text-white shadow-[0_22px_48px_rgba(4,15,28,0.65)]">
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          aria-label={t("Close install dialog", "Isara ang dialog sa pag-install")}
+          aria-label={t(
+            "Close install dialog",
+            "Isara ang dialog sa pag-install"
+          )}
           className="absolute top-4 right-4 p-1.5 rounded-lg text-[#94A8BE] hover:text-white hover:bg-white/10 transition cursor-pointer"
         >
           <X className="w-4 h-4" aria-hidden="true" />
@@ -77,10 +82,7 @@ export function InstallGuideModal({
                 id="install-guide-title"
                 className="text-[17px] sm:text-[18px] font-extrabold text-white tracking-tight"
               >
-                {t(
-                  "WishPix App is Ready!",
-                  "Handa na ang WishPix App!"
-                )}
+                {t("WishPix App is Ready!", "Handa na ang WishPix App!")}
               </h3>
             </div>
             <p className="mt-2 text-[12px] sm:text-[12.5px] text-[#B0C4D8] leading-relaxed">
@@ -108,20 +110,61 @@ export function InstallGuideModal({
               id="install-guide-title"
               className="text-[17px] sm:text-[18.5px] font-extrabold text-white tracking-tight"
             >
-              {t(
-                "Install WishPix on Your Device",
-                "I-install ang WishPix sa Iyong Device"
-              )}
+              {platform === "android"
+                ? t(
+                    "Install WishPix on Android",
+                    "I-install ang WishPix sa Android"
+                  )
+                : t(
+                    "Install WishPix on Your Device",
+                    "I-install ang WishPix sa Iyong Device"
+                  )}
             </h3>
             <p className="mt-1 text-[11.5px] sm:text-[12px] text-[#94A8BE] leading-relaxed">
-              {t(
-                "Follow these quick steps to launch WishPix in its own dedicated app window:",
-                "Sundin ang mabilis na hakbang na ito upang buksan ang WishPix bilang sariling app:"
-              )}
+              {platform === "android"
+                ? t(
+                    "Download the Android APK package directly or install via Chrome's app menu:",
+                    "I-download nang direkta ang Android APK o i-install gamit ang menu ng Chrome:"
+                  )
+                : t(
+                    "Follow these quick steps to launch WishPix in its own dedicated app window:",
+                    "Sundin ang mabilis na hakbang na ito upang buksan ang WishPix bilang sariling app:"
+                  )}
             </p>
 
+            {/* Direct Android APK Download Banner */}
+            {platform !== "ios" && (
+              <div className="mt-3.5 rounded-[12px] bg-gradient-to-r from-[#0B3B66] to-[#082B4B] border border-[#38BDF8]/40 p-3.5 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-[10px] bg-[#0284C7] text-white flex items-center justify-center shrink-0">
+                    <Smartphone className="w-4 h-4" aria-hidden="true" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-extrabold text-white truncate">
+                      {t("WishPix Android Package", "WishPix Android Package")}
+                    </p>
+                    <p className="text-[10.5px] text-[#B8CDE2]">
+                      {t(
+                        "Direct standalone .APK installer for Android phones & tablets",
+                        "Direktang .APK installer para sa Android phone at tablet"
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="/wishpix-android.apk"
+                  download="WishPix-Teacher-App.apk"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-[9px] bg-[#0077C8] hover:bg-[#0284C7] border border-[#38BDF8]/50 text-white font-bold text-[11.5px] px-3 py-2 shadow-xs transition cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>{t("Download .APK", "I-download .APK")}</span>
+                </a>
+              </div>
+            )}
+
             {/* Step-by-step instructions tailored by platform */}
-            <div className="mt-4 space-y-2.5">
+            <div className="mt-3.5 space-y-2.5">
               {platform === "ios" ? (
                 <>
                   <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
@@ -130,7 +173,10 @@ export function InstallGuideModal({
                     </div>
                     <div>
                       <p className="text-[12px] font-bold text-white">
-                        {t("1. Tap the Share button", "1. Pindutin ang Share button")}
+                        {t(
+                          "1. Tap the Share button",
+                          "1. Pindutin ang Share button"
+                        )}
                       </p>
                       <p className="text-[11px] text-[#94A8BE] mt-0.5">
                         {t(
@@ -161,6 +207,51 @@ export function InstallGuideModal({
                     </div>
                   </div>
                 </>
+              ) : platform === "android" ? (
+                <>
+                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                      <MoreVertical className="w-4 h-4" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-bold text-white">
+                        {t(
+                          "1. Tap the Chrome ⋮ menu (or Download .APK above)",
+                          "1. Pindutin ang ⋮ menu sa Chrome (o I-download ang .APK sa itaas)"
+                        )}
+                      </p>
+                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                        {t(
+                          "Open the three-dot browser menu in the top-right corner of Chrome on Android.",
+                          "Buksan ang three-dot menu sa kanang itaas ng Chrome sa iyong Android device."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                      <MonitorSmartphone
+                        className="w-4 h-4"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-bold text-white">
+                        {t(
+                          '2. Tap "Install app" or "Add to Home screen"',
+                          '2. Piliin ang "Install app" o "Add to Home screen"'
+                        )}
+                      </p>
+                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                        {t(
+                          "Confirm installation to add the WishPix Teacher App icon to your Android app drawer and home screen.",
+                          "Kumpirmahin upang mailagay ang WishPix Teacher App sa iyong Android home screen."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </>
               ) : (
                 <>
                   <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
@@ -185,7 +276,10 @@ export function InstallGuideModal({
 
                   <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
                     <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
-                      <MonitorSmartphone className="w-4 h-4" aria-hidden="true" />
+                      <MonitorSmartphone
+                        className="w-4 h-4"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div>
                       <p className="text-[12px] font-bold text-white">

@@ -23,9 +23,7 @@ function getAllowedDevOrigins(): string[] {
 const nextConfig: NextConfig = {
   /* config options here */
   allowedDevOrigins: getAllowedDevOrigins(),
-  experimental: {
-    agentFeedback: true,
-  },
+  devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

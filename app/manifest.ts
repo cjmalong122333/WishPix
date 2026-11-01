@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
+    id: "/",
     name: "WishPix Teacher App",
     short_name: "WishPix",
     description:
@@ -12,6 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "any",
     background_color: "#0F253E",
     theme_color: "#0F253E",
+    prefer_related_applications: false,
     categories: ["education", "productivity", "utilities"],
     icons: [
       {
@@ -22,6 +24,12 @@ export default function manifest(): MetadataRoute.Manifest {
       },
       {
         src: "/pwa-icon-512",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/pwa-icon-maskable-512",
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",

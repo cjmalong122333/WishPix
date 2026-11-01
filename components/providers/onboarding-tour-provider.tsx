@@ -9,11 +9,24 @@ import React, {
   useSyncExternalStore,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { driver, type Driver, type DriveStep } from "driver.js";
+import {
+  driver,
+  type Alignment,
+  type Driver,
+  type DriveStep,
+  type Side,
+} from "driver.js";
 import "driver.js/dist/driver.css";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 
 const PAGE_TOURS_STORAGE_KEY = "wishpix_page_tours_completed_v1";
+const STICKY_HEADER_CLEARANCE = 68;
+const VIEWPORT_EDGE_MARGIN = 16;
+const STAGE_PADDING = 8;
+const POPOVER_GAP = 14;
+const TOTAL_SPOTLIGHT_OFFSET = STAGE_PADDING + POPOVER_GAP;
+const ESTIMATED_POPOVER_WIDTH = 355;
+const ESTIMATED_POPOVER_HEIGHT = 275;
 
 export const ALL_TOUR_ROUTES = [
   "/dashboard",
@@ -131,6 +144,10 @@ interface InteractiveStepConfig extends DriveStep {
   interactionHint?: string;
   /** Fallback selector if primary element is hidden on current breakpoint (e.g., desktop sidebar vs mobile menu button) */
   fallbackElement?: string;
+  /** Original preferred side preserved across dynamic viewport recalculations */
+  preferredSide?: Side;
+  /** Original preferred alignment preserved across dynamic viewport recalculations */
+  preferredAlign?: Alignment;
 }
 
 interface OnboardingTourContextValue {
@@ -243,6 +260,500 @@ function isElementVisible(selector: string): HTMLElement | null {
   return el;
 }
 
+function stripScrollTransformClasses() {
+  if (typeof document === "undefined") return;
+  document
+    .querySelectorAll<HTMLElement>(
+      ".wishpix-scroll-up-reveal, .wishpix-scroll-down-reveal, .wishpix-scroll-top-boost"
+    )
+    .forEach((el) => {
+      el.classList.remove(
+        "wishpix-scroll-up-reveal",
+        "wishpix-scroll-down-reveal",
+        "wishpix-scroll-top-boost"
+      );
+    });
+}
+
+function isInsideStickyOrFixedContainer(el: HTMLElement): boolean {
+  let curr: HTMLElement | null = el;
+  while (curr && curr !== document.body) {
+    const pos = window.getComputedStyle(curr).position;
+    if (pos === "sticky" || pos === "fixed") {
+      return true;
+    }
+    curr = curr.parentElement;
+  }
+  return false;
+}
+
+function computeHorizontalAlign(
+  targetRect: DOMRect,
+  popoverWidth: number,
+  align: Alignment,
+  minX: number,
+  maxX: number
+): number {
+  let left: number;
+  if (align === "center") {
+    left = targetRect.left + (targetRect.width - popoverWidth) / 2;
+  } else if (align === "end") {
+    left = targetRect.right - popoverWidth;
+  } else {
+    left = targetRect.left;
+  }
+  return Math.max(minX, Math.min(maxX - popoverWidth, left));
+}
+
+function computeVerticalAlign(
+  targetRect: DOMRect,
+  popoverHeight: number,
+  align: Alignment,
+  minY: number,
+  maxY: number
+): number {
+  let top: number;
+  if (align === "center") {
+    top = targetRect.top + (targetRect.height - popoverHeight) / 2;
+  } else if (align === "end") {
+    top = targetRect.bottom - popoverHeight;
+  } else {
+    top = targetRect.top;
+  }
+  return Math.max(minY, Math.min(maxY - popoverHeight, top));
+}
+
+function syncPopoverArrowClasses(
+  wrapper: HTMLElement,
+  side: Side,
+  align: Alignment
+) {
+  const arrow = wrapper.querySelector<HTMLElement>(".driver-popover-arrow");
+  if (!arrow) return;
+  arrow.classList.remove(
+    "driver-popover-arrow-none",
+    "driver-popover-arrow-side-top",
+    "driver-popover-arrow-side-bottom",
+    "driver-popover-arrow-side-left",
+    "driver-popover-arrow-side-right",
+    "driver-popover-arrow-align-start",
+    "driver-popover-arrow-align-center",
+    "driver-popover-arrow-align-end"
+  );
+  const oppositeSideMap: Record<string, string> = {
+    top: "bottom",
+    bottom: "top",
+    left: "right",
+    right: "left",
+  };
+  const arrowSide = oppositeSideMap[side] ?? "top";
+  arrow.classList.add(
+    `driver-popover-arrow-side-${arrowSide}`,
+    `driver-popover-arrow-align-${align}`
+  );
+}
+
+/**
+ * Resolves a non-overlapping Side, Alignment, and optional window scroll target
+ * so the tour popover is strictly outside the highlighted element's spotlight
+ * while remaining 100% inside the visible viewport.
+ */
+function resolveNonOverlappingPlacement(
+  el: HTMLElement,
+  step: InteractiveStepConfig | undefined,
+  popoverWidth: number,
+  popoverHeight: number
+): { side: Side; align: Alignment; targetScrollY: number | null } {
+  const preferredSide: Side =
+    step?.preferredSide ?? step?.popover?.side ?? "bottom";
+  const preferredAlign: Alignment =
+    step?.preferredAlign ?? step?.popover?.align ?? "start";
+
+  if (typeof window === "undefined") {
+    return { side: preferredSide, align: preferredAlign, targetScrollY: null };
+  }
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const isSticky = isInsideStickyOrFixedContainer(el);
+  const rect = el.getBoundingClientRect();
+
+  const minX = VIEWPORT_EDGE_MARGIN;
+  const maxX = vw - VIEWPORT_EDGE_MARGIN;
+  const minY = STICKY_HEADER_CLEARANCE;
+  const maxY = vh - VIEWPORT_EDGE_MARGIN;
+
+  const neededHoriz = popoverWidth + TOTAL_SPOTLIGHT_OFFSET;
+  const neededVert = popoverHeight + TOTAL_SPOTLIGHT_OFFSET;
+
+  const fitsRight = maxX - rect.right >= neededHoriz;
+  const fitsLeft = rect.left - minX >= neededHoriz;
+
+  const maxScroll = Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight
+  );
+  const currentScrollY = window.scrollY;
+  const absoluteTop = currentScrollY + rect.top;
+  const absoluteBottom = currentScrollY + rect.bottom;
+
+  // Helper to compute scroll position when placing popover on Left or Right
+  const getScrollForHorizontalSide = (): number | null => {
+    if (isSticky) return null;
+    if (rect.top >= minY + 12 && rect.bottom <= maxY - 12) {
+      return null;
+    }
+    let desiredS: number;
+    if (rect.height > maxY - minY - 24) {
+      desiredS = absoluteTop - (minY + 16);
+    } else {
+      desiredS = absoluteTop - Math.max(minY + 20, (vh - rect.height) / 2);
+    }
+    return Math.max(0, Math.min(maxScroll, desiredS));
+  };
+
+  // 1. If preferred side is horizontal (right/left) and fits horizontally, use it immediately
+  if (preferredSide === "right" && fitsRight) {
+    return {
+      side: "right",
+      align: preferredAlign,
+      targetScrollY: getScrollForHorizontalSide(),
+    };
+  }
+  if (preferredSide === "left" && fitsLeft) {
+    return {
+      side: "left",
+      align: preferredAlign,
+      targetScrollY: getScrollForHorizontalSide(),
+    };
+  }
+
+  // Sticky elements (TopNavbar buttons / Desktop Sidebar)
+  if (isSticky) {
+    if (fitsRight && (preferredSide === "right" || rect.height > maxY - minY - neededVert)) {
+      return { side: "right", align: preferredAlign, targetScrollY: null };
+    }
+    if (fitsLeft && (preferredSide === "left" || rect.height > maxY - minY - neededVert)) {
+      return { side: "left", align: preferredAlign, targetScrollY: null };
+    }
+    const spaceBelow = maxY - rect.bottom;
+    const spaceAbove = rect.top - VIEWPORT_EDGE_MARGIN;
+    const chosenSide: Side = spaceBelow >= spaceAbove ? "bottom" : "top";
+    return { side: chosenSide, align: preferredAlign, targetScrollY: null };
+  }
+
+  // Evaluate vertical placement ("bottom" vs "top") with scroll capability
+  const availHeight = maxY - minY;
+  const fitsEntirelyWithPopover = rect.height + neededVert + 12 <= availHeight;
+
+  // Interactive sub-target bounds (if any) to ensure hands-on controls stay visible
+  const subEl =
+    step?.advanceOnSelector && typeof document !== "undefined"
+      ? document.querySelector<HTMLElement>(step.advanceOnSelector)
+      : null;
+  const subRect = subEl ? subEl.getBoundingClientRect() : null;
+  const subOffsetBottom = subRect
+    ? Math.min(rect.height, Math.max(80, subRect.bottom - rect.top + 16))
+    : Math.min(rect.height, 180);
+
+  // Scroll interval [bottomMinS, bottomMaxS] where "bottom" popover fits in viewport without overlapping el
+  let canFitBottom = false;
+  let idealBottomScroll = currentScrollY;
+
+  if (fitsEntirelyWithPopover) {
+    const sMin = absoluteBottom - (maxY - neededVert - 4);
+    const sMax = absoluteTop - (minY + 12);
+    const clampedMin = Math.max(0, sMin);
+    const clampedMax = Math.min(maxScroll, sMax);
+    if (clampedMin <= clampedMax + 2) {
+      canFitBottom = true;
+      if (currentScrollY >= clampedMin && currentScrollY <= clampedMax) {
+        idealBottomScroll = currentScrollY;
+      } else if (currentScrollY < clampedMin) {
+        idealBottomScroll = clampedMin;
+      } else {
+        idealBottomScroll = clampedMax;
+      }
+    }
+  } else {
+    // Tall element: place bottom of element just above the bottom popover
+    const sForBottom = absoluteBottom - (maxY - neededVert - 8);
+    if (sForBottom >= 0 && sForBottom <= maxScroll) {
+      canFitBottom = true;
+      idealBottomScroll = sForBottom;
+    }
+  }
+
+  // Scroll interval [topMinS, topMaxS] where "top" popover fits in viewport without overlapping el
+  let canFitTop = false;
+  let idealTopScroll = currentScrollY;
+
+  if (fitsEntirelyWithPopover) {
+    const sMin = absoluteBottom - (maxY - 12);
+    const sMax = absoluteTop - (minY + neededVert + 4);
+    const clampedMin = Math.max(0, sMin);
+    const clampedMax = Math.min(maxScroll, sMax);
+    if (clampedMin <= clampedMax + 2) {
+      canFitTop = true;
+      if (currentScrollY >= clampedMin && currentScrollY <= clampedMax) {
+        idealTopScroll = currentScrollY;
+      } else if (currentScrollY < clampedMin) {
+        idealTopScroll = clampedMin;
+      } else {
+        idealTopScroll = clampedMax;
+      }
+    }
+  } else {
+    // Tall element: place top of element just below the top popover so header & interactive controls are visible
+    const sForTop = absoluteTop - (minY + neededVert + 8);
+    const visibleSliceHeight = maxY - (minY + neededVert + 8);
+    if (
+      sForTop >= 0 &&
+      sForTop <= maxScroll &&
+      subOffsetBottom <= visibleSliceHeight
+    ) {
+      canFitTop = true;
+      idealTopScroll = sForTop;
+    }
+  }
+
+  // If element is tall and horizontal space is available, prefer horizontal side so the whole card stays visible
+  if (!fitsEntirelyWithPopover && (fitsRight || fitsLeft)) {
+    const horizSide: Side = fitsRight ? "right" : "left";
+    return {
+      side: horizSide,
+      align: "start",
+      targetScrollY: getScrollForHorizontalSide(),
+    };
+  }
+
+  const effectiveVerticalPref: "top" | "bottom" =
+    preferredSide === "top" ? "top" : "bottom";
+
+  const fallbackAlign: Alignment =
+    preferredSide === "left"
+      ? "end"
+      : preferredSide === "right"
+        ? "start"
+        : preferredAlign;
+
+  if (effectiveVerticalPref === "bottom") {
+    if (canFitBottom) {
+      return {
+        side: "bottom",
+        align: fallbackAlign,
+        targetScrollY: idealBottomScroll,
+      };
+    }
+    if (canFitTop) {
+      return {
+        side: "top",
+        align: fallbackAlign,
+        targetScrollY: idealTopScroll,
+      };
+    }
+  } else {
+    if (canFitTop) {
+      return {
+        side: "top",
+        align: fallbackAlign,
+        targetScrollY: idealTopScroll,
+      };
+    }
+    if (canFitBottom) {
+      return {
+        side: "bottom",
+        align: fallbackAlign,
+        targetScrollY: idealBottomScroll,
+      };
+    }
+  }
+
+  // If horizontal sides fit when vertical sides are constrained, use horizontal
+  if (fitsRight) {
+    return {
+      side: "right",
+      align: "start",
+      targetScrollY: getScrollForHorizontalSide(),
+    };
+  }
+  if (fitsLeft) {
+    return {
+      side: "left",
+      align: "start",
+      targetScrollY: getScrollForHorizontalSide(),
+    };
+  }
+
+  // Final guaranteed non-overlapping vertical fallback: pick whichever vertical side can be scrolled into view
+  const sForTopFallback = Math.max(
+    0,
+    Math.min(maxScroll, absoluteTop - (minY + neededVert + 8))
+  );
+  const sForBottomFallback = Math.max(
+    0,
+    Math.min(maxScroll, absoluteBottom - (maxY - neededVert - 8))
+  );
+  const topClearanceAtFallback = absoluteTop - sForTopFallback - minY;
+  const bottomClearanceAtFallback =
+    maxY - (absoluteBottom - sForBottomFallback);
+
+  if (topClearanceAtFallback >= bottomClearanceAtFallback) {
+    return {
+      side: "top",
+      align: fallbackAlign,
+      targetScrollY: sForTopFallback,
+    };
+  }
+  return {
+    side: "bottom",
+    align: fallbackAlign,
+    targetScrollY: sForBottomFallback,
+  };
+}
+
+/**
+ * Positions the rendered driver.js popover strictly outside the target element's
+ * spotlight frame so the onboarding dialog never covers the highlighted tool.
+ */
+function positionPopoverOutsideTarget(
+  targetEl: Element | null | undefined,
+  step: InteractiveStepConfig | undefined,
+  options?: { allowScroll?: boolean; onScrollAdjusted?: () => void }
+) {
+  if (
+    typeof document === "undefined" ||
+    typeof window === "undefined" ||
+    !targetEl ||
+    !(targetEl instanceof HTMLElement) ||
+    targetEl.id === "driver-dummy-element"
+  ) {
+    return;
+  }
+
+  const allowScroll = options?.allowScroll ?? false;
+  const wrapper = document.querySelector<HTMLElement>(
+    ".driver-popover.wishpix-tour-popover"
+  );
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const pw = wrapper
+    ? Math.max(260, wrapper.getBoundingClientRect().width)
+    : Math.min(ESTIMATED_POPOVER_WIDTH, vw - 32);
+  const ph = wrapper
+    ? Math.max(180, wrapper.getBoundingClientRect().height)
+    : ESTIMATED_POPOVER_HEIGHT;
+
+  const placement = resolveNonOverlappingPlacement(targetEl, step, pw, ph);
+
+  if (step?.popover) {
+    step.popover.side = placement.side;
+    step.popover.align = placement.align;
+  }
+
+  if (
+    allowScroll &&
+    placement.targetScrollY !== null &&
+    Math.abs(window.scrollY - placement.targetScrollY) > 2
+  ) {
+    window.scrollTo({
+      top: placement.targetScrollY,
+      behavior: "instant" as ScrollBehavior,
+    });
+    options?.onScrollAdjusted?.();
+  }
+
+  if (!wrapper) return;
+
+  const freshTargetRect = targetEl.getBoundingClientRect();
+  const freshPopoverRect = wrapper.getBoundingClientRect();
+  const finalPw = freshPopoverRect.width || pw;
+  const finalPh = freshPopoverRect.height || ph;
+
+  const minX = VIEWPORT_EDGE_MARGIN;
+  const maxX = vw - VIEWPORT_EDGE_MARGIN;
+  const minY = STICKY_HEADER_CLEARANCE;
+  const maxY = vh - VIEWPORT_EDGE_MARGIN;
+
+  // If allowScroll is false (e.g. user manually scrolled), ensure chosen side still doesn't overlap target
+  let finalSide = placement.side;
+  const finalAlign = placement.align;
+
+  if (!allowScroll && (finalSide === "top" || finalSide === "bottom")) {
+    const currentSpaceTop =
+      freshTargetRect.top - TOTAL_SPOTLIGHT_OFFSET - minY;
+    const currentSpaceBottom =
+      maxY - (freshTargetRect.bottom + TOTAL_SPOTLIGHT_OFFSET);
+    if (
+      finalSide === "bottom" &&
+      currentSpaceBottom < finalPh &&
+      currentSpaceTop > currentSpaceBottom
+    ) {
+      finalSide = "top";
+    } else if (
+      finalSide === "top" &&
+      currentSpaceTop < finalPh &&
+      currentSpaceBottom > currentSpaceTop
+    ) {
+      finalSide = "bottom";
+    }
+  }
+
+  let top: number;
+  let left: number;
+
+  if (finalSide === "right") {
+    left = Math.min(
+      maxX - finalPw,
+      Math.max(
+        freshTargetRect.right + TOTAL_SPOTLIGHT_OFFSET,
+        minX
+      )
+    );
+    top = computeVerticalAlign(freshTargetRect, finalPh, finalAlign, minY, maxY);
+  } else if (finalSide === "left") {
+    left = Math.max(
+      minX,
+      Math.min(
+        freshTargetRect.left - TOTAL_SPOTLIGHT_OFFSET - finalPw,
+        maxX - finalPw
+      )
+    );
+    top = computeVerticalAlign(freshTargetRect, finalPh, finalAlign, minY, maxY);
+  } else if (finalSide === "top") {
+    // Strictly above the target spotlight frame — never allowed to slide down over freshTargetRect.top
+    const maxAllowedTop =
+      freshTargetRect.top - TOTAL_SPOTLIGHT_OFFSET - finalPh;
+    top = Math.min(maxAllowedTop, Math.max(minY, maxAllowedTop));
+    left = computeHorizontalAlign(
+      freshTargetRect,
+      finalPw,
+      finalAlign,
+      minX,
+      maxX
+    );
+  } else {
+    // Strictly below the target spotlight frame — never allowed to slide up over freshTargetRect.bottom
+    const minAllowedTop = freshTargetRect.bottom + TOTAL_SPOTLIGHT_OFFSET;
+    top = Math.max(minAllowedTop, Math.min(maxY - finalPh, minAllowedTop));
+    left = computeHorizontalAlign(
+      freshTargetRect,
+      finalPw,
+      finalAlign,
+      minX,
+      maxX
+    );
+  }
+
+  wrapper.style.top = `${Math.round(top)}px`;
+  wrapper.style.left = `${Math.round(left)}px`;
+  wrapper.style.bottom = "auto";
+  wrapper.style.right = "auto";
+
+  syncPopoverArrowClasses(wrapper, finalSide, finalAlign);
+}
+
 const OnboardingTourContext = createContext<OnboardingTourContextValue | null>(
   null
 );
@@ -270,53 +781,84 @@ export function OnboardingTourProvider({
 
   const driverRef = useRef<Driver | null>(null);
   const cleanupListenersRef = useRef<(() => void) | null>(null);
-  const spotlightRafRef = useRef<number | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const transitionTimeoutRef = useRef<number | null>(null);
   const activeTourRouteRef = useRef<string>(normalizedPath);
 
+  const disconnectResizeObserver = useCallback(() => {
+    if (resizeObserverRef.current) {
+      resizeObserverRef.current.disconnect();
+      resizeObserverRef.current = null;
+    }
+  }, []);
+
   const removeSpotlightFrame = useCallback(() => {
-    if (spotlightRafRef.current !== null && typeof window !== "undefined") {
-      window.cancelAnimationFrame(spotlightRafRef.current);
-      spotlightRafRef.current = null;
+    if (transitionTimeoutRef.current !== null && typeof window !== "undefined") {
+      window.clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = null;
     }
     if (typeof document !== "undefined") {
       document.getElementById("wishpix-tour-spotlight-frame")?.remove();
     }
   }, []);
 
-  const syncSpotlightFrame = useCallback((targetEl?: Element | null) => {
-    if (typeof document === "undefined" || typeof window === "undefined") return;
-    if (
-      !targetEl ||
-      !(targetEl instanceof HTMLElement) ||
-      targetEl.id === "driver-dummy-element"
-    ) {
-      removeSpotlightFrame();
-      return;
-    }
+  const syncSpotlightFrame = useCallback(
+    (targetEl?: Element | null, animateStepTransition = false) => {
+      if (typeof document === "undefined" || typeof window === "undefined")
+        return;
+      if (
+        !targetEl ||
+        !(targetEl instanceof HTMLElement) ||
+        targetEl.id === "driver-dummy-element"
+      ) {
+        removeSpotlightFrame();
+        return;
+      }
 
-    let frame = document.getElementById("wishpix-tour-spotlight-frame");
-    if (!frame) {
-      frame = document.createElement("div");
-      frame.id = "wishpix-tour-spotlight-frame";
-      frame.setAttribute("aria-hidden", "true");
-      document.body.appendChild(frame);
-    }
+      let frame = document.getElementById("wishpix-tour-spotlight-frame");
+      const isNewFrame = !frame;
+      if (!frame) {
+        frame = document.createElement("div");
+        frame.id = "wishpix-tour-spotlight-frame";
+        frame.setAttribute("aria-hidden", "true");
+        document.body.appendChild(frame);
+      }
 
-    const rect = targetEl.getBoundingClientRect();
-    const pad = 8;
-    const width = rect.width + pad * 2;
-    const height = rect.height + pad * 2;
-    const radius = Math.floor(Math.max(Math.min(16, width / 2, height / 2), 0));
+      if (animateStepTransition && !isNewFrame) {
+        frame.setAttribute("data-transitioning", "true");
+        if (transitionTimeoutRef.current !== null) {
+          window.clearTimeout(transitionTimeoutRef.current);
+        }
+        transitionTimeoutRef.current = window.setTimeout(() => {
+          frame?.setAttribute("data-transitioning", "false");
+          transitionTimeoutRef.current = null;
+        }, 280);
+      } else if (isNewFrame) {
+        frame.setAttribute("data-transitioning", "false");
+      }
 
-    frame.style.top = `${rect.top - pad}px`;
-    frame.style.left = `${rect.left - pad}px`;
-    frame.style.width = `${width}px`;
-    frame.style.height = `${height}px`;
-    frame.style.borderRadius = `${radius}px`;
-    frame.style.opacity = "1";
-  }, [removeSpotlightFrame]);
+      const rect = targetEl.getBoundingClientRect();
+      const pad = 8;
+      const width = Math.round(rect.width + pad * 2);
+      const height = Math.round(rect.height + pad * 2);
+      const top = Math.round(rect.top - pad);
+      const left = Math.round(rect.left - pad);
+      const radius = Math.floor(
+        Math.max(Math.min(16, width / 2, height / 2), 0)
+      );
+
+      frame.style.top = `${top}px`;
+      frame.style.left = `${left}px`;
+      frame.style.width = `${width}px`;
+      frame.style.height = `${height}px`;
+      frame.style.borderRadius = `${radius}px`;
+      frame.style.opacity = "1";
+    },
+    [removeSpotlightFrame]
+  );
 
   const clearStepListeners = useCallback(() => {
+    disconnectResizeObserver();
     if (cleanupListenersRef.current) {
       cleanupListenersRef.current();
       cleanupListenersRef.current = null;
@@ -326,7 +868,7 @@ export function OnboardingTourProvider({
         .querySelectorAll<HTMLElement>("[data-tour-interactive-target='true']")
         .forEach((el) => el.removeAttribute("data-tour-interactive-target"));
     }
-  }, []);
+  }, [disconnectResizeObserver]);
 
   const destroyActiveTour = useCallback(() => {
     clearStepListeners();
@@ -385,7 +927,7 @@ export function OnboardingTourProvider({
                   "Track total voice sessions, thermal stickers printed, active kids, and completion rates at a glance.",
                   "Subaybayan ang bilang ng mga sesyon, na-print na sticker, at aktibidad ng mga bata sa isang tingin."
                 ),
-                side: "top",
+                side: "bottom",
                 align: "center",
               },
             },
@@ -557,7 +1099,7 @@ export function OnboardingTourProvider({
                   "See exactly where the kiosk is in the workflow: 1. Waiting, 2. Listening, 3. Creating AI Art, 4. Thermal Printing, and 5. Done.",
                   "Subaybayan ang kasalukuyang hakbang ng kiosk: Waiting, Listening, Creating, Printing, at Done."
                 ),
-                side: "bottom",
+                side: "right",
                 align: "start",
               },
             },
@@ -572,7 +1114,7 @@ export function OnboardingTourProvider({
                   "Tracks waiting participants by queue position number only—no personal child names are ever recorded or stored.",
                   "Binibilang ang mga bata ayon sa posisyon sa pila lamang—walang pangalan ng bata na iniimbak."
                 ),
-                side: "top",
+                side: "right",
                 align: "start",
               },
             },
@@ -656,7 +1198,7 @@ export function OnboardingTourProvider({
                   "Ihambing ang Original Speech sa Recognized Text. Piliin kung Panatilihing Hinarang o Payagan at i-print."
                 ),
                 side: "top",
-                align: "center",
+                align: "start",
               },
             },
           ];
@@ -711,7 +1253,7 @@ export function OnboardingTourProvider({
                   "Displays any sticker activity sheet currently being transmitted to the thermal printer.",
                   "Ipinapakita ang activity sheet na kasalukuyang ipinapadala sa printer."
                 ),
-                side: "top",
+                side: "right",
                 align: "start",
               },
             },
@@ -774,7 +1316,7 @@ export function OnboardingTourProvider({
                   "Suriin ang kondisyon ng Printer, Temperatura, Papel, Audio, at Network sa isang tingin."
                 ),
                 side: "top",
-                align: "center",
+                align: "end",
               },
             },
             {
@@ -821,7 +1363,7 @@ export function OnboardingTourProvider({
                   "Salain ang mga nakaraang rekord ayon sa Uri ng Aktibidad o Tema ng pag-aaral."
                 ),
                 side: "bottom",
-                align: "center",
+                align: "start",
               },
             },
             {
@@ -921,7 +1463,7 @@ export function OnboardingTourProvider({
                   "Visualize which classroom themes (Animals, Transportation, Fruits, Nature) spark the most student engagement.",
                   "Tingnan kung aling mga tema ang pinakapaborito ng mga bata sa klase."
                 ),
-                side: "top",
+                side: "right",
                 align: "start",
               },
             },
@@ -936,8 +1478,8 @@ export function OnboardingTourProvider({
                   "See the proportion of classroom sessions spent in Color & Create, Trace & Learn, and Free Play.",
                   "Alamin ang bahagdan ng paggamit sa Color & Create, Trace & Learn, at Free Play."
                 ),
-                side: "top",
-                align: "end",
+                side: "left",
+                align: "start",
               },
             },
           ];
@@ -1054,8 +1596,8 @@ export function OnboardingTourProvider({
                   "Configure automatic kiosk sleep timers during idle classroom periods and automatic teacher sign-out for security.",
                   "I-set ang oras para sa awtomatikong pagtulog ng kiosk at awtomatikong pag-logout."
                 ),
-                side: "top",
-                align: "end",
+                side: "left",
+                align: "start",
               },
             },
             {
@@ -1095,13 +1637,17 @@ export function OnboardingTourProvider({
           break;
       }
 
-      // Resolve responsive elements and filter out any missing DOM targets
+      // Resolve responsive elements, preserve original side/align preferences, and filter out any missing DOM targets
       const resolvedSteps: InteractiveStepConfig[] = [];
       for (const step of rawSteps) {
         if (typeof step.element === "string") {
           const primaryEl = isElementVisible(step.element);
           if (primaryEl) {
-            resolvedSteps.push(step);
+            resolvedSteps.push({
+              ...step,
+              preferredSide: step.popover?.side ?? "bottom",
+              preferredAlign: step.popover?.align ?? "start",
+            });
           } else if (
             step.fallbackElement &&
             isElementVisible(step.fallbackElement)
@@ -1109,6 +1655,8 @@ export function OnboardingTourProvider({
             resolvedSteps.push({
               ...step,
               element: step.fallbackElement,
+              preferredSide: "bottom",
+              preferredAlign: "start",
               popover: {
                 ...step.popover,
                 side: "bottom",
@@ -1117,7 +1665,11 @@ export function OnboardingTourProvider({
             });
           }
         } else {
-          resolvedSteps.push(step);
+          resolvedSteps.push({
+            ...step,
+            preferredSide: step.popover?.side ?? "bottom",
+            preferredAlign: step.popover?.align ?? "start",
+          });
         }
       }
 
@@ -1131,6 +1683,7 @@ export function OnboardingTourProvider({
       if (typeof window === "undefined") return;
 
       destroyActiveTour();
+      stripScrollTransformClasses();
 
       const validSteps = buildStepsForRoute(route);
       if (validSteps.length === 0) return;
@@ -1145,10 +1698,12 @@ export function OnboardingTourProvider({
       const instance = driver({
         showProgress: true,
         animate: true,
+        smoothScroll: false,
         allowClose: true,
         overlayColor: "rgba(6, 17, 31, 0.68)",
         stagePadding: 8,
         stageRadius: 16,
+        popoverOffset: 12,
         popoverClass: "wishpix-tour-popover",
         progressText: t(
           "Step {{current}} of {{total}}",
@@ -1265,14 +1820,24 @@ export function OnboardingTourProvider({
             popover.footer.insertBefore(skipBtn, popover.footerButtons);
           }
 
-          // Programmatically route focus into the popover so keyboard & screen reader users perceive context
+          // Position popover strictly outside the highlighted tool after custom elements are injected
           requestAnimationFrame(() => {
-            popover.nextButton?.focus();
+            const activeEl = driverRef.current?.getActiveElement();
+            driverRef.current?.refresh();
+            positionPopoverOutsideTarget(activeEl, currentStep, {
+              allowScroll: true,
+              onScrollAdjusted: () => {
+                driverRef.current?.refresh();
+              },
+            });
+            syncSpotlightFrame(activeEl, false);
+            popover.nextButton?.focus({ preventScroll: true });
           });
         },
 
         onHighlightStarted: (element, step) => {
           clearStepListeners();
+          stripScrollTransformClasses();
           const interactiveStep = step as InteractiveStepConfig;
 
           // Gracefully skip if the target element was unmounted or hidden mid-tour
@@ -1291,20 +1856,33 @@ export function OnboardingTourProvider({
             return;
           }
 
+          if (element instanceof HTMLElement) {
+            // Pre-scroll and resolve non-overlapping popover side & alignment before initial render
+            positionPopoverOutsideTarget(element, interactiveStep, {
+              allowScroll: true,
+            });
+          }
+
           // Synchronize the animated Spotlight Halo & Sonar Ripple frame with the active target
-          syncSpotlightFrame(element);
-          const startTime = performance.now();
-          const trackDuringTransition = (now: number) => {
-            syncSpotlightFrame(element);
-            if (now - startTime < 460 && driverRef.current?.isActive()) {
-              spotlightRafRef.current = window.requestAnimationFrame(
-                trackDuringTransition
-              );
-            }
-          };
-          spotlightRafRef.current = window.requestAnimationFrame(
-            trackDuringTransition
-          );
+          syncSpotlightFrame(element, true);
+
+          // Observe target & document layout changes while step is active
+          if (
+            typeof ResizeObserver !== "undefined" &&
+            element instanceof HTMLElement
+          ) {
+            const ro = new ResizeObserver(() => {
+              if (!driverRef.current?.isActive()) return;
+              driverRef.current.refresh();
+              positionPopoverOutsideTarget(element, interactiveStep, {
+                allowScroll: false,
+              });
+              syncSpotlightFrame(element, false);
+            });
+            ro.observe(element);
+            ro.observe(document.body);
+            resizeObserverRef.current = ro;
+          }
 
           // Attach hands-on interaction listeners so interacting with the highlighted feature advances the tour
           const eventName = interactiveStep.advanceOnEvent;
@@ -1350,8 +1928,16 @@ export function OnboardingTourProvider({
           }
         },
 
-        onHighlighted: (element) => {
-          syncSpotlightFrame(element);
+        onHighlighted: (element, step) => {
+          const interactiveStep = step as InteractiveStepConfig;
+          driverRef.current?.refresh();
+          positionPopoverOutsideTarget(element, interactiveStep, {
+            allowScroll: true,
+            onScrollAdjusted: () => {
+              driverRef.current?.refresh();
+            },
+          });
+          syncSpotlightFrame(element, false);
         },
 
         onNextClick: () => {
@@ -1465,9 +2051,11 @@ export function OnboardingTourProvider({
     return () => window.clearTimeout(timer);
   }, [normalizedPath, launchDriverForCurrentRoute, destroyActiveTour]);
 
-  // Handle screen resizing & scrolling gracefully while the tour is active
+  // Handle screen resizing & scrolling synchronously while the tour is active
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    let scrollRafId: number | null = null;
 
     const handleResize = () => {
       const instance = driverRef.current;
@@ -1477,7 +2065,8 @@ export function OnboardingTourProvider({
         | InteractiveStepConfig
         | undefined;
       if (activeStep && typeof activeStep.element === "string") {
-        if (!isElementVisible(activeStep.element)) {
+        const visibleEl = isElementVisible(activeStep.element);
+        if (!visibleEl) {
           if (
             activeStep.fallbackElement &&
             isElementVisible(activeStep.fallbackElement)
@@ -1489,14 +2078,43 @@ export function OnboardingTourProvider({
           }
         }
       }
+      const activeEl = instance.getActiveElement();
       instance.refresh();
-      syncSpotlightFrame(instance.getActiveElement());
+      positionPopoverOutsideTarget(activeEl, activeStep, {
+        allowScroll: true,
+        onScrollAdjusted: () => {
+          instance.refresh();
+        },
+      });
+      syncSpotlightFrame(activeEl, false);
     };
 
     const handleScroll = () => {
       const instance = driverRef.current;
       if (!instance || !instance.isActive()) return;
-      syncSpotlightFrame(instance.getActiveElement());
+      const activeEl = instance.getActiveElement();
+      const activeStep = instance.getActiveStep() as
+        | InteractiveStepConfig
+        | undefined;
+      syncSpotlightFrame(activeEl, false);
+      positionPopoverOutsideTarget(activeEl, activeStep, {
+        allowScroll: false,
+      });
+      if (scrollRafId === null) {
+        scrollRafId = window.requestAnimationFrame(() => {
+          scrollRafId = null;
+          if (!driverRef.current?.isActive()) return;
+          const currentEl = driverRef.current.getActiveElement();
+          const currentStep = driverRef.current.getActiveStep() as
+            | InteractiveStepConfig
+            | undefined;
+          driverRef.current.refresh();
+          positionPopoverOutsideTarget(currentEl, currentStep, {
+            allowScroll: false,
+          });
+          syncSpotlightFrame(currentEl, false);
+        });
+      }
     };
 
     window.addEventListener("resize", handleResize, { passive: true });
@@ -1505,6 +2123,9 @@ export function OnboardingTourProvider({
       capture: true,
     });
     return () => {
+      if (scrollRafId !== null) {
+        window.cancelAnimationFrame(scrollRafId);
+      }
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll, true);
     };

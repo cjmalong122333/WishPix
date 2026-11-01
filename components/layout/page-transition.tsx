@@ -65,8 +65,10 @@ export function PageTransition({
       window.requestAnimationFrame(() => {
         const currentY = window.scrollY;
         const delta = currentY - lastScrollYRef.current;
+        const isTourActive =
+          document.body.classList.contains("driver-active");
 
-        if (delta < -4) {
+        if (!isTourActive && delta < -4) {
           scrollDirectionRef.current = "up";
           document.documentElement.setAttribute("data-scroll-dir", "up");
           setIsScrollingUp(true);
@@ -74,13 +76,13 @@ export function PageTransition({
           stopUpGlowTimeout = setTimeout(() => {
             setIsScrollingUp(false);
           }, 650);
-        } else if (delta > 4) {
+        } else if (!isTourActive && delta > 4) {
           scrollDirectionRef.current = "down";
           document.documentElement.setAttribute("data-scroll-dir", "down");
           setIsScrollingUp(false);
         }
 
-        setShowScrollTop(currentY > 180);
+        setShowScrollTop(!isTourActive && currentY > 180);
         lastScrollYRef.current = currentY;
         ticking = false;
       });
@@ -95,11 +97,12 @@ export function PageTransition({
     let hasUserScrolled = false;
 
     const markScrolled = () => {
-      hasUserScrolled = true;
+      if (!document.body.classList.contains("driver-active")) {
+        hasUserScrolled = true;
+      }
     };
     window.addEventListener("scroll", markScrolled, {
       passive: true,
-      once: true,
     });
 
     if (container && !prefersReducedMotion && "IntersectionObserver" in window) {
@@ -113,7 +116,21 @@ export function PageTransition({
 
       observer = new IntersectionObserver(
         (entries) => {
-          if (!hasUserScrolled) return;
+          // Never displace elements with scroll-reveal transforms while onboarding tour is active
+          if (
+            !hasUserScrolled ||
+            document.body.classList.contains("driver-active")
+          ) {
+            entries.forEach((entry) => {
+              const el = entry.target as HTMLElement;
+              el.classList.remove(
+                "wishpix-scroll-up-reveal",
+                "wishpix-scroll-down-reveal"
+              );
+            });
+            return;
+          }
+
           entries.forEach((entry) => {
             const el = entry.target as HTMLElement;
 

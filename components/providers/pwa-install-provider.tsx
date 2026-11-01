@@ -25,7 +25,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 interface PwaInstallContextValue {
-  /** True when running inside the installed standalone PWA window */
+  /** True when running inside the installed standalone PWA window or Android APK wrapper */
   isStandalone: boolean;
   /** True when the browser has fired beforeinstallprompt and can open the native dialog immediately */
   canPromptNative: boolean;
@@ -138,7 +138,10 @@ function getStandaloneSnapshot(): boolean {
   const navStandalone = Boolean(
     (window.navigator as Navigator & { standalone?: boolean }).standalone
   );
-  return mediaMatch || navStandalone;
+  const apkWrapperMatch = /WishPixAndroidWrapper/i.test(
+    window.navigator.userAgent || ""
+  );
+  return mediaMatch || navStandalone || apkWrapperMatch;
 }
 
 function getServerStandaloneSnapshot(): boolean {

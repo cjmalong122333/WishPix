@@ -68,11 +68,10 @@ export function NavigationDrawer({
       {/* Persistent Docked Left Sidebar on Desktop (lg+) */}
       {isDesktopSidebarOpen && (
         <aside
-          id="tour-sidebar-nav"
           aria-label="Desktop sidebar navigation"
-          className="hidden lg:flex w-[265px] xl:w-[280px] shrink-0 min-h-screen bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
+          className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto w-[265px] xl:w-[280px] shrink-0 bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
         >
-          <SidebarContent kiosk={kiosk} />
+          <SidebarContent kiosk={kiosk} tourTargetId="tour-sidebar-nav" />
         </aside>
       )}
 
@@ -110,18 +109,20 @@ function SidebarContent({
   onNavigate,
   showCloseButton,
   onClose,
+  tourTargetId,
 }: {
   kiosk: KioskInfo;
   onNavigate?: () => void;
   showCloseButton?: boolean;
   onClose?: () => void;
+  tourTargetId?: string;
 }) {
   const pathname = usePathname();
   const { t } = useAppSettings();
 
   return (
     <>
-      <div>
+      <div id={tourTargetId}>
         {/* Top Brand Header */}
         <div className="px-5 pt-5 pb-3.5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">

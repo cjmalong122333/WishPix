@@ -7,6 +7,7 @@ import {
   Download,
   Globe,
   MonitorSmartphone,
+  Smartphone,
   Sparkles,
 } from "lucide-react";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
@@ -116,8 +117,8 @@ export function AccessChoiceCard({ onContinueToLogin }: AccessChoiceCardProps) {
 
                 <p className="text-[11px] text-[#B8CDE2] mt-1 leading-snug">
                   {t(
-                    "Installs on your Desktop or Home Screen with a dedicated full-screen classroom window.",
-                    "I-install sa iyong Desktop o Home Screen para sa sariling full-screen window."
+                    "Installs on your Android, Desktop, or Home Screen with a dedicated full-screen classroom window.",
+                    "I-install sa iyong Android, Desktop, o Home Screen para sa sariling full-screen window."
                   )}
                 </p>
               </div>
@@ -129,6 +130,27 @@ export function AccessChoiceCard({ onContinueToLogin }: AccessChoiceCardProps) {
             />
           </div>
         </button>
+
+        {/* Direct Android APK Download Bar */}
+        <div className="rounded-[11px] bg-[#081729]/90 border border-[#1C3654] px-3.5 py-2.5 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-[11px] text-[#B8CDE2]">
+            <Smartphone className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" aria-hidden="true" />
+            <span>
+              {t(
+                "Using an Android phone or tablet?",
+                "Gamit ang Android phone o tablet?"
+              )}
+            </span>
+          </div>
+          <a
+            href="/wishpix-android.apk"
+            download="WishPix-Teacher-App.apk"
+            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#38BDF8] hover:text-[#7DD3FC] transition cursor-pointer shrink-0"
+          >
+            <Download className="w-3 h-3" aria-hidden="true" />
+            <span>{t("Download .APK", "I-download .APK")}</span>
+          </a>
+        </div>
 
         {/* Option 2: Continue in Browser */}
         <button

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { AppSettingsProvider } from "@/components/providers/app-settings-provider";
 import { PwaInstallProvider } from "@/components/providers/pwa-install-provider";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,10 +19,14 @@ export const metadata: Metadata = {
   title: "WishPix Teacher App | AI Voice-Activated Kiosk",
   description:
     "WishPix: An AI-Powered Voice-Activated Generative Learning and Thermal Sticker Printing Kiosk for Early Childhood Education Centers.",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "WishPix",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
   },
 };
 
@@ -38,7 +43,10 @@ export default function RootLayout({
     >
       <body className="min-h-screen w-full bg-[var(--background)] text-[var(--foreground)] font-sans flex flex-col transition-colors duration-200">
         <AppSettingsProvider>
-          <PwaInstallProvider>{children}</PwaInstallProvider>
+          <PwaInstallProvider>
+            {children}
+            <InstallPrompt />
+          </PwaInstallProvider>
         </AppSettingsProvider>
       </body>
     </html>
