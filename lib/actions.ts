@@ -169,6 +169,10 @@ export async function authenticateEducatorAction(
     };
   }
 
+  const localPart = trimmedUser.includes("@")
+    ? trimmedUser.split("@")[0]
+    : trimmedUser;
+
   const rows = await prisma.$queryRaw<RawEducatorRow[]>`
     SELECT
       "id",
@@ -180,6 +184,7 @@ export async function authenticateEducatorAction(
       "lockedUntil"
     FROM "Educator"
     WHERE LOWER("username") = ${trimmedUser}
+       OR LOWER("username") = ${localPart}
     LIMIT 1
   `;
 

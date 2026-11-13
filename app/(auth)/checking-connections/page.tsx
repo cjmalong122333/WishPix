@@ -1,14 +1,15 @@
 import React, { Suspense } from "react";
 import { ConnectionCheckCard } from "@/components/auth/connection-check-card";
+import { StarLoader } from "@/components/layout/star-loader";
 
 export default function CheckingConnectionsPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="h-[310px] rounded-[16px] bg-[#162F4D]/80 animate-pulse" />
-      }
-    >
-      <ConnectionCheckCard />
-    </Suspense>
+    <div className="min-h-screen w-full bg-[#FAF8FF] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-[440px]">
+        <Suspense fallback={<StarLoader fullScreen={false} />}>
+          <ConnectionCheckCard />
+        </Suspense>
+      </div>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   Download,
   MonitorSmartphone,
@@ -21,8 +22,16 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const DISMISS_SESSION_KEY = "wishpix_install_prompt_dismissed_v1";
+const PUBLIC_PATHS = new Set([
+  "/",
+  "/about",
+  "/team",
+  "/login",
+  "/loading-screen",
+]);
 
 export function InstallPrompt() {
+  const pathname = usePathname();
   const { t } = useAppSettings();
   const { isStandalone, platform, openInstallGuide } = usePwaInstall();
 
@@ -94,6 +103,7 @@ export function InstallPrompt() {
   };
 
   const isVisible =
+    !PUBLIC_PATHS.has(pathname) &&
     !isStandalone &&
     !isDismissed &&
     (Boolean(deferredPrompt) || platform === "android");

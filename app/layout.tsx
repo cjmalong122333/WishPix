@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import React, { Suspense } from "react";
 import { Inter } from "next/font/google";
 import { AppSettingsProvider } from "@/components/providers/app-settings-provider";
 import { PwaInstallProvider } from "@/components/providers/pwa-install-provider";
@@ -45,7 +46,9 @@ export default function RootLayout({
         <AppSettingsProvider>
           <PwaInstallProvider>
             {children}
-            <InstallPrompt />
+            <Suspense fallback={null}>
+              <InstallPrompt />
+            </Suspense>
           </PwaInstallProvider>
         </AppSettingsProvider>
       </body>
