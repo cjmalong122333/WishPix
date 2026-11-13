@@ -5,13 +5,19 @@ import {
   Check,
   Compass,
   Download,
+  Eye,
+  EyeOff,
   Globe,
+  KeyRound,
+  Loader2,
+  LogOut,
   MonitorSmartphone,
   Play,
   RotateCcw,
   Sparkles,
   Volume2,
 } from "lucide-react";
+import { changeEducatorPasswordAction } from "@/lib/actions";
 import { THEME_SWATCHES } from "@/lib/mock-data";
 import {
   useAppSettings,
@@ -68,6 +74,61 @@ export default function SettingsPage() {
   } = useOnboardingTour();
 
   const [resetFeedback, setResetFeedback] = useState(false);
+
+  // Password Change State
+  const [isPasswordFormOpen, setIsPasswordFormOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState<{
+    type: "success" | "error";
+    messageEn: string;
+    messageFil: string;
+  } | null>(null);
+
+  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isSavingPassword) return;
+    setIsSavingPassword(true);
+    setPasswordStatus(null);
+
+    try {
+      const res = await changeEducatorPasswordAction(
+        currentPassword,
+        newPassword
+      );
+      if (!res.ok) {
+        setPasswordStatus({
+          type: "error",
+          messageEn: res.errorEn ?? "Could not update password.",
+          messageFil: res.errorFil ?? "Hindi ma-update ang password.",
+        });
+      } else {
+        setPasswordStatus({
+          type: "success",
+          messageEn: "Password updated! Other active sessions were signed out.",
+          messageFil:
+            "Na-update ang password! Ang ibang sesyon ay na-sign out.",
+        });
+        setCurrentPassword("");
+        setNewPassword("");
+        setTimeout(() => {
+          setIsPasswordFormOpen(false);
+          setPasswordStatus(null);
+        }, 2500);
+      }
+    } catch {
+      setPasswordStatus({
+        type: "error",
+        messageEn: "An unexpected error occurred.",
+        messageFil: "May nangyaring hindi inaasahang error.",
+      });
+    } finally {
+      setIsSavingPassword(false);
+    }
+  };
 
   const handleResetAccessPreference = () => {
     resetAccessChoice();
@@ -413,6 +474,189 @@ export default function SettingsPage() {
                   <option value="Never">{t("Never", "Hindi kailanman")}</option>
                 </select>
               </div>
+            </div>
+
+            {/* Educator Password Security */}
+            <div className="pt-3.5 border-t border-[#F1F5F9]">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                    {t("Password security", "Seguridad ng password")}
+                  </p>
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                    {t(
+                      "Update your educator password (8+ chars, letters & numbers).",
+                      "Palitan ang password ng guro (8+ karakter, titik at numero)."
+                    )}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPasswordFormOpen((prev) => !prev);
+                    setPasswordStatus(null);
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#0F253E] font-bold text-[11.5px] sm:text-[12px] px-3 py-2 transition cursor-pointer shrink-0"
+                >
+                  <KeyRound className="w-3.5 h-3.5 text-[#0077C8]" aria-hidden="true" />
+                  <span>
+                    {isPasswordFormOpen
+                      ? t("Cancel", "Kanselahin")
+                      : t("Change Password", "Palitan ang Password")}
+                  </span>
+                </button>
+              </div>
+
+              {isPasswordFormOpen && (
+                <form
+                  onSubmit={handlePasswordSubmit}
+                  className="mt-3 rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5"
+                >
+                  <div>
+                    <label
+                      htmlFor="settings-current-password"
+                      className="block text-[11px] font-bold text-[#0F253E] mb-1"
+                    >
+                      {t("Current password", "Kasalukuyang password")}
+                    </label>
+                    <div className="relative flex items-center">
+                      <input
+                        id="settings-current-password"
+                        type={showCurrentPw ? "text" : "password"}
+                        required
+                        autoComplete="current-password"
+                        value={currentPassword}
+                        onChange={(e) => {
+                          setCurrentPassword(e.target.value);
+                          if (passwordStatus) setPasswordStatus(null);
+                        }}
+                        placeholder={t(
+                          "Enter current password",
+                          "Ilagay ang kasalukuyang password"
+                        )}
+                        className="w-full rounded-[8px] border border-[#CBD5E1] bg-white pl-3 pr-9 py-2 text-[12px] text-[#0F253E] focus:border-[#0077C8] focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPw((prev) => !prev)}
+                        aria-label={t(
+                          "Toggle current password visibility",
+                          "Ipakita o itago ang kasalukuyang password"
+                        )}
+                        className="absolute right-2.5 p-1 text-[#64748B] hover:text-[#0F253E] cursor-pointer"
+                      >
+                        {showCurrentPw ? (
+                          <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
+                        ) : (
+                          <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="settings-new-password"
+                      className="block text-[11px] font-bold text-[#0F253E] mb-1"
+                    >
+                      {t("New password", "Bagong password")}
+                    </label>
+                    <div className="relative flex items-center">
+                      <input
+                        id="settings-new-password"
+                        type={showNewPw ? "text" : "password"}
+                        required
+                        autoComplete="new-password"
+                        value={newPassword}
+                        onChange={(e) => {
+                          setNewPassword(e.target.value);
+                          if (passwordStatus) setPasswordStatus(null);
+                        }}
+                        placeholder={t(
+                          "At least 8 characters (letters & numbers)",
+                          "Hindi bababa sa 8 karakter (titik at numero)"
+                        )}
+                        className="w-full rounded-[8px] border border-[#CBD5E1] bg-white pl-3 pr-9 py-2 text-[12px] text-[#0F253E] focus:border-[#0077C8] focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPw((prev) => !prev)}
+                        aria-label={t(
+                          "Toggle new password visibility",
+                          "Ipakita o itago ang bagong password"
+                        )}
+                        className="absolute right-2.5 p-1 text-[#64748B] hover:text-[#0F253E] cursor-pointer"
+                      >
+                        {showNewPw ? (
+                          <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
+                        ) : (
+                          <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {passwordStatus && (
+                    <p
+                      role="status"
+                      className={`text-[11px] font-semibold ${
+                        passwordStatus.type === "success"
+                          ? "text-[#059669]"
+                          : "text-[#DC2626]"
+                      }`}
+                    >
+                      {t(passwordStatus.messageEn, passwordStatus.messageFil)}
+                    </p>
+                  )}
+
+                  <div className="flex justify-end pt-1">
+                    <button
+                      type="submit"
+                      disabled={isSavingPassword}
+                      className="inline-flex items-center gap-1.5 rounded-[8px] bg-[#0077C8] hover:bg-[#0062A6] disabled:opacity-60 text-white font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
+                    >
+                      {isSavingPassword && (
+                        <Loader2
+                          className="w-3.5 h-3.5 animate-spin"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span>
+                        {isSavingPassword
+                          ? t("Saving...", "Sine-save...")
+                          : t("Update Password", "I-update ang Password")}
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Educator Account Sign Out */}
+            <div className="pt-3.5 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+              <div>
+                <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                  {t("Teacher account", "Account ng guro")}
+                </p>
+                <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                  {t(
+                    "Sign out of this educator session now.",
+                    "Mag-sign out sa kasalukuyang sesyon ng guro."
+                  )}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(new Event("wishpix:request-logout"))
+                }
+                className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#FEF2F2] hover:bg-[#FEE2E2] border border-[#FECACA] text-[#DC2626] font-bold text-[11.5px] sm:text-[12px] px-3.5 py-2 transition cursor-pointer active:scale-95 shrink-0"
+              >
+                <LogOut className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
+                <span>{t("Log Out", "Mag-logout")}</span>
+              </button>
             </div>
           </div>
         </section>

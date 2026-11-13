@@ -9,6 +9,7 @@ import {
   FileText,
   History,
   LayoutGrid,
+  LogOut,
   Monitor,
   Printer,
   Settings,
@@ -25,6 +26,7 @@ interface NavigationDrawerProps {
   isOpen: boolean;
   isDesktopSidebarOpen: boolean;
   onCloseMobile: () => void;
+  onLogout: () => void;
   kiosk: KioskInfo;
 }
 
@@ -52,6 +54,7 @@ export function NavigationDrawer({
   isOpen,
   isDesktopSidebarOpen,
   onCloseMobile,
+  onLogout,
   kiosk,
 }: NavigationDrawerProps) {
   useEffect(() => {
@@ -71,7 +74,11 @@ export function NavigationDrawer({
           aria-label="Desktop sidebar navigation"
           className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto w-[265px] xl:w-[280px] shrink-0 bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
         >
-          <SidebarContent kiosk={kiosk} tourTargetId="tour-sidebar-nav" />
+          <SidebarContent
+            kiosk={kiosk}
+            onLogout={onLogout}
+            tourTargetId="tour-sidebar-nav"
+          />
         </aside>
       )}
 
@@ -87,6 +94,7 @@ export function NavigationDrawer({
             <SidebarContent
               kiosk={kiosk}
               onNavigate={onCloseMobile}
+              onLogout={onLogout}
               showCloseButton
               onClose={onCloseMobile}
             />
@@ -107,12 +115,14 @@ export function NavigationDrawer({
 function SidebarContent({
   kiosk,
   onNavigate,
+  onLogout,
   showCloseButton,
   onClose,
   tourTargetId,
 }: {
   kiosk: KioskInfo;
   onNavigate?: () => void;
+  onLogout: () => void;
   showCloseButton?: boolean;
   onClose?: () => void;
   tourTargetId?: string;
@@ -232,19 +242,35 @@ function SidebarContent({
         </nav>
       </div>
 
-      {/* Bottom Teacher / System Version Footer */}
-      <div className="px-4 py-4 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-[#35749F] text-white text-[10.5px] font-bold flex items-center justify-center flex-shrink-0 transition-colors duration-200">
-          WP
+      {/* Bottom Teacher / System Version Footer + Logout Button */}
+      <div className="px-3.5 py-3.5 border-t border-white/10 space-y-2.5">
+        <div className="px-1 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#35749F] text-white text-[10.5px] font-bold flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+            {kiosk.educatorInitials || "WP"}
+          </div>
+          <div className="leading-tight min-w-0">
+            <p className="text-[12px] font-bold text-white truncate">
+              {kiosk.educatorName
+                ? `${kiosk.educatorName} (${t("Teacher", "Guro")})`
+                : t("WishPix Teacher", "Guro ng WishPix")}
+            </p>
+            <p className="text-[10px] text-white/70 mt-0.5">
+              {kiosk.systemVersion}
+            </p>
+          </div>
         </div>
-        <div className="leading-tight min-w-0">
-          <p className="text-[12px] font-bold text-white truncate">
-            {t("WishPix Teacher", "Guro ng WishPix")}
-          </p>
-          <p className="text-[10px] text-white/70 mt-0.5">
-            {kiosk.systemVersion}
-          </p>
-        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            onNavigate?.();
+            onLogout();
+          }}
+          className="w-full flex items-center justify-center gap-2 rounded-[10px] bg-white/10 hover:bg-[#EF4444] text-white font-bold text-[12px] px-3 py-2.5 border border-white/15 hover:border-[#EF4444] transition-all duration-200 cursor-pointer active:scale-[0.98]"
+        >
+          <LogOut className="w-4 h-4 stroke-[2.1]" aria-hidden="true" />
+          <span>{t("Log Out", "Mag-logout")}</span>
+        </button>
       </div>
     </>
   );

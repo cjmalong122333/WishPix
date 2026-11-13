@@ -8,15 +8,30 @@ datasource db {
 }
 
 model Educator {
-  id          String            @id @default(cuid())
-  username    String            @unique
-  password    String
-  displayName String
-  initials    String
-  createdAt   DateTime          @default(now())
-  settings    AppSettings?
-  sessions    Session[]
-  reports     GeneratedReport[]
+  id                  String            @id @default(cuid())
+  username            String            @unique
+  password            String
+  displayName         String
+  initials            String
+  failedLoginAttempts Int               @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  createdAt           DateTime          @default(now())
+  settings            AppSettings?
+  sessions            Session[]
+  reports             GeneratedReport[]
+  authSessions        EducatorSession[]
+}
+
+model EducatorSession {
+  id           String   @id @default(cuid())
+  tokenHash    String   @unique
+  educatorId   String
+  educator     Educator @relation(fields: [educatorId], references: [id], onDelete: Cascade)
+  rememberMe   Boolean  @default(false)
+  expiresAt    DateTime
+  lastActiveAt DateTime @default(now())
+  createdAt    DateTime @default(now())
 }
 
 model AppSettings {

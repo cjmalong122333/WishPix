@@ -3,6 +3,18 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import {
+  createEducatorSession,
+  destroyEducatorSession,
+  ensureAuthSchemaReady,
+  hashPassword,
+  LOCKOUT_DURATION_MS,
+  MAX_FAILED_LOGIN_ATTEMPTS,
+  performDummyPasswordCheck,
+  validatePasswordStrength,
+  verifyEducatorSession,
+  verifyPassword,
+} from "@/lib/auth";
+import {
   DEFAULT_EDUCATOR_ID,
   DEFAULT_KIOSK_ID,
   ensureDatabaseSeeded,
@@ -109,15 +121,34 @@ export async function checkSystemConnectionsAction(): Promise<{
   }
 }
 
+export type AuthErrorCode =
+  | "MISSING_CREDENTIALS"
+  | "INVALID_CREDENTIALS"
+  | "ACCOUNT_LOCKED";
+
+interface RawEducatorRow {
+  id: string;
+  username: string;
+  password: string;
+  displayName: string;
+  initials: string;
+  failedLoginAttempts: number | bigint | null;
+  lockedUntil: string | number | Date | null;
+}
+
 /**
  * 2. Educator Authentication (/login)
  */
 export async function authenticateEducatorAction(
   usernameInput: string,
-  passwordInput: string
+  passwordInput: string,
+  rememberMe = false
 ): Promise<{
   ok: boolean;
+  code?: AuthErrorCode;
   error?: string;
+  remainingAttempts?: number;
+  retryAfterMinutes?: number;
   educator?: {
     id: string;
     username: string;
@@ -126,42 +157,158 @@ export async function authenticateEducatorAction(
   };
 }> {
   await ensureDatabaseSeeded();
+  await ensureAuthSchemaReady();
 
   const trimmedUser = usernameInput.trim().toLowerCase();
 
-  if (
-    trimmedUser === "wrong" ||
-    trimmedUser === "invalid" ||
-    passwordInput === "wrong"
-  ) {
+  if (!trimmedUser || !passwordInput) {
     return {
       ok: false,
+      code: "MISSING_CREDENTIALS",
+      error: "Please enter both your username and password.",
+    };
+  }
+
+  const rows = await prisma.$queryRaw<RawEducatorRow[]>`
+    SELECT
+      "id",
+      "username",
+      "password",
+      "displayName",
+      "initials",
+      "failedLoginAttempts",
+      "lockedUntil"
+    FROM "Educator"
+    WHERE LOWER("username") = ${trimmedUser}
+    LIMIT 1
+  `;
+
+  const educator = rows[0];
+
+  if (!educator) {
+    if (
+      trimmedUser === "wrong" ||
+      trimmedUser === "invalid" ||
+      passwordInput === "wrong"
+    ) {
+      performDummyPasswordCheck(passwordInput);
+      return {
+        ok: false,
+        code: "INVALID_CREDENTIALS",
+        error: "Incorrect username or password. Try again.",
+      };
+    }
+
+    // Register first-time Educator account with salted scrypt password hash
+    const newId = `edu_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+    const displayName = usernameInput.trim();
+    const initials =
+      displayName
+        .split(/[\s@._-]+/)
+        .filter(Boolean)
+        .map((part) => part[0]?.toUpperCase() ?? "")
+        .join("")
+        .slice(0, 2) || "ED";
+    const hashedPw = hashPassword(passwordInput);
+    const nowIso = new Date().toISOString();
+
+    await prisma.$executeRaw`
+      INSERT INTO "Educator" ("id", "username", "password", "displayName", "initials", "failedLoginAttempts", "lockedUntil", "lastLoginAt", "createdAt")
+      VALUES (${newId}, ${trimmedUser}, ${hashedPw}, ${displayName}, ${initials}, 0, NULL, ${nowIso}, ${nowIso})
+    `;
+
+    await createEducatorSession(newId, rememberMe);
+
+    return {
+      ok: true,
+      educator: {
+        id: newId,
+        username: trimmedUser,
+        displayName,
+        initials,
+      },
+    };
+  }
+
+  const now = Date.now();
+  const lockedUntilMs = educator.lockedUntil
+    ? new Date(educator.lockedUntil).getTime()
+    : null;
+
+  if (lockedUntilMs && !Number.isNaN(lockedUntilMs) && lockedUntilMs > now) {
+    const retryAfterMinutes = Math.max(
+      1,
+      Math.ceil((lockedUntilMs - now) / 60_000)
+    );
+    return {
+      ok: false,
+      code: "ACCOUNT_LOCKED",
+      retryAfterMinutes,
+      remainingAttempts: 0,
+      error: `Account temporarily locked due to too many failed attempts. Try again in ${retryAfterMinutes} minute${retryAfterMinutes === 1 ? "" : "s"}.`,
+    };
+  }
+
+  const { valid, needsRehash } = verifyPassword(
+    passwordInput,
+    educator.password
+  );
+
+  if (!valid) {
+    const currentFailed = Number(educator.failedLoginAttempts ?? 0);
+    const previousAttempts =
+      lockedUntilMs && lockedUntilMs <= now ? 0 : currentFailed;
+    const nextAttempts = previousAttempts + 1;
+
+    if (nextAttempts >= MAX_FAILED_LOGIN_ATTEMPTS) {
+      const lockedUntilIso = new Date(now + LOCKOUT_DURATION_MS).toISOString();
+      await prisma.$executeRaw`
+        UPDATE "Educator"
+        SET "failedLoginAttempts" = ${nextAttempts}, "lockedUntil" = ${lockedUntilIso}
+        WHERE "id" = ${educator.id}
+      `;
+      return {
+        ok: false,
+        code: "ACCOUNT_LOCKED",
+        retryAfterMinutes: 15,
+        remainingAttempts: 0,
+        error:
+          "Account temporarily locked for 15 minutes after 5 failed login attempts.",
+      };
+    }
+
+    const remainingAttempts = MAX_FAILED_LOGIN_ATTEMPTS - nextAttempts;
+    await prisma.$executeRaw`
+      UPDATE "Educator"
+      SET "failedLoginAttempts" = ${nextAttempts}, "lockedUntil" = NULL
+      WHERE "id" = ${educator.id}
+    `;
+
+    return {
+      ok: false,
+      code: "INVALID_CREDENTIALS",
+      remainingAttempts,
       error: "Incorrect username or password. Try again.",
     };
   }
 
-  const effectiveUsername = trimmedUser || "jamie";
-  const displayName =
-    trimmedUser && trimmedUser !== "jamie"
-      ? usernameInput.trim()
-      : KIOSK_INFO.educatorName;
-  const initials =
-    displayName
-      .split(/\s+/)
-      .map((part) => part[0]?.toUpperCase() ?? "")
-      .join("")
-      .slice(0, 2) || "JM";
+  const nowIso = new Date(now).toISOString();
+  if (needsRehash) {
+    const upgradedHash = hashPassword(passwordInput);
+    await prisma.$executeRaw`
+      UPDATE "Educator"
+      SET "failedLoginAttempts" = 0, "lockedUntil" = NULL, "lastLoginAt" = ${nowIso}, "password" = ${upgradedHash}
+      WHERE "id" = ${educator.id}
+    `;
+  } else {
+    await prisma.$executeRaw`
+      UPDATE "Educator"
+      SET "failedLoginAttempts" = 0, "lockedUntil" = NULL, "lastLoginAt" = ${nowIso}
+      WHERE "id" = ${educator.id}
+    `;
+  }
 
-  const educator = await prisma.educator.upsert({
-    where: { username: effectiveUsername },
-    update: {},
-    create: {
-      username: effectiveUsername,
-      password: passwordInput || "password123",
-      displayName,
-      initials,
-    },
-  });
+  await createEducatorSession(educator.id, rememberMe);
 
   return {
     ok: true,
@@ -172,6 +319,101 @@ export async function authenticateEducatorAction(
       initials: educator.initials,
     },
   };
+}
+
+/**
+ * 2b. Educator Logout (/login)
+ */
+export async function logoutEducatorAction(): Promise<{ ok: boolean }> {
+  await destroyEducatorSession();
+  revalidatePath("/dashboard");
+  revalidatePath("/live-session");
+  revalidatePath("/settings");
+  return { ok: true };
+}
+
+/**
+ * 2c. Educator Password Change (/settings)
+ */
+export async function changeEducatorPasswordAction(
+  currentPassword: string,
+  newPassword: string
+): Promise<{
+  ok: boolean;
+  errorEn?: string;
+  errorFil?: string;
+}> {
+  await ensureDatabaseSeeded();
+  await ensureAuthSchemaReady();
+
+  const activeSession = await verifyEducatorSession();
+  const educatorId = activeSession?.educator.id ?? DEFAULT_EDUCATOR_ID;
+
+  if (!currentPassword || !newPassword) {
+    return {
+      ok: false,
+      errorEn: "Please fill in both your current and new password.",
+      errorFil: "Pakipunan ang iyong kasalukuyan at bagong password.",
+    };
+  }
+
+  const strength = validatePasswordStrength(newPassword);
+  if (!strength.valid) {
+    return {
+      ok: false,
+      errorEn: strength.errorEn,
+      errorFil: strength.errorFil,
+    };
+  }
+
+  const educator = await prisma.educator.findUnique({
+    where: { id: educatorId },
+  });
+
+  if (!educator) {
+    return {
+      ok: false,
+      errorEn: "Educator account not found.",
+      errorFil: "Hindi nahanap ang account ng guro.",
+    };
+  }
+
+  const { valid: isCurrentValid } = verifyPassword(
+    currentPassword,
+    educator.password
+  );
+  if (!isCurrentValid) {
+    return {
+      ok: false,
+      errorEn: "Your current password is incorrect.",
+      errorFil: "Mali ang iyong kasalukuyang password.",
+    };
+  }
+
+  if (currentPassword === newPassword) {
+    return {
+      ok: false,
+      errorEn: "New password must be different from your current password.",
+      errorFil: "Ang bagong password ay dapat iba sa kasalukuyang password.",
+    };
+  }
+
+  const newHashedPassword = hashPassword(newPassword);
+  await prisma.$executeRaw`
+    UPDATE "Educator"
+    SET "password" = ${newHashedPassword}, "failedLoginAttempts" = 0, "lockedUntil" = NULL
+    WHERE "id" = ${educator.id}
+  `;
+
+  // Revoke any other sessions for this educator while keeping the current session active
+  if (activeSession?.sessionId) {
+    await prisma.$executeRaw`
+      DELETE FROM "EducatorSession"
+      WHERE "educatorId" = ${educator.id} AND "id" != ${activeSession.sessionId}
+    `;
+  }
+
+  return { ok: true };
 }
 
 /**

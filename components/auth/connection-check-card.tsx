@@ -13,6 +13,13 @@ export function ConnectionCheckCard() {
   const searchParams = useSearchParams();
   const stayOnPage = searchParams.get("stay") === "1";
   const forcedState = searchParams.get("state"); // "checking" | "ready" | null
+  const redirectParam = searchParams.get("redirect");
+  const targetDashboardUrl =
+    redirectParam &&
+    redirectParam.startsWith("/") &&
+    !redirectParam.startsWith("//")
+      ? redirectParam
+      : "/dashboard";
 
   const [autoReady, setAutoReady] = useState(false);
   const [liveChecks, setLiveChecks] = useState<ConnectionCheckItem[] | null>(
@@ -27,7 +34,7 @@ export function ConnectionCheckCard() {
       return;
     }
 
-    router.prefetch("/dashboard");
+    router.prefetch(targetDashboardUrl);
 
     let cancelled = false;
     checkSystemConnectionsAction()
@@ -50,12 +57,12 @@ export function ConnectionCheckCard() {
     let hardFallbackTimer: ReturnType<typeof setTimeout> | undefined;
     if (!stayOnPage) {
       redirectTimer = setTimeout(() => {
-        router.push("/dashboard");
+        router.push(targetDashboardUrl);
       }, 3000);
 
       hardFallbackTimer = setTimeout(() => {
         if (window.location.pathname.startsWith("/checking-connections")) {
-          window.location.assign("/dashboard");
+          window.location.assign(targetDashboardUrl);
         }
       }, 4500);
     }
@@ -66,7 +73,7 @@ export function ConnectionCheckCard() {
       if (redirectTimer) clearTimeout(redirectTimer);
       if (hardFallbackTimer) clearTimeout(hardFallbackTimer);
     };
-  }, [forcedState, router, stayOnPage]);
+  }, [forcedState, router, stayOnPage, targetDashboardUrl]);
 
   const items: ConnectionCheckItem[] =
     isAllReady && liveChecks
@@ -83,7 +90,7 @@ export function ConnectionCheckCard() {
 
   return (
     <Link
-      href="/dashboard"
+      href={targetDashboardUrl}
       aria-labelledby="system-check-heading"
       title="Tap to continue to Dashboard"
       className="block w-full rounded-[16px] bg-[#162F4D] border border-white/25 px-5 sm:px-6 pt-5 pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)] cursor-pointer no-underline"

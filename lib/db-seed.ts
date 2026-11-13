@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { hashPassword, isHashedPassword } from "@/lib/auth";
 import {
   ACTIVITY_LOGS_DATA,
   KIOSK_INFO,
@@ -24,17 +25,27 @@ export async function ensureDatabaseSeeded(): Promise<void> {
       });
 
       if (existingKiosk) {
+        // Ensure all existing educator passwords are upgraded from plaintext to scrypt hashes
+        const existingEducators = await prisma.educator.findMany();
+        for (const edu of existingEducators) {
+          if (!isHashedPassword(edu.password)) {
+            await prisma.educator.update({
+              where: { id: edu.id },
+              data: { password: hashPassword(edu.password) },
+            });
+          }
+        }
         return;
       }
 
-      // 1. Seed default Educator (Jamie) and AppSettings
+      // 1. Seed default Educator (Jamie) and AppSettings with scrypt hashed password
       await prisma.educator.upsert({
         where: { username: "jamie" },
         update: {},
         create: {
           id: DEFAULT_EDUCATOR_ID,
           username: "jamie",
-          password: "password123",
+          password: hashPassword("password123"),
           displayName: KIOSK_INFO.educatorName,
           initials: KIOSK_INFO.educatorInitials,
           settings: {
