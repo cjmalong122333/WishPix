@@ -30,6 +30,7 @@ import {
   SESSION_ACTIVITIES,
   SESSION_THEMES,
 } from "@/lib/mock-data";
+import { createSessionAction } from "@/lib/actions";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { SafetyRuleMode, ThemeOption } from "@/types/kiosk";
 
@@ -152,10 +153,28 @@ export default function SessionSetupPage() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < 4) {
       setCurrentStep((prev) => prev + 1);
     } else {
+      try {
+        await createSessionAction({
+          activityId: selectedActivityId ?? "color-create",
+          activityTitle: selectedActivity?.title ?? "Color & Create",
+          subOptionId: selectedSubOptionId,
+          subOptionTitle: selectedSubOption?.title ?? null,
+          themeId: selectedThemeId ?? "animals",
+          themeTitle: themeSummaryLabel,
+          customThemeText:
+            selectedThemeId === "custom" ? customThemeText.trim() : undefined,
+          safetyMode,
+          blockedWords,
+          allowedWords,
+          allowedLanguages: selectedLanguages,
+        });
+      } catch {
+        // Ignore offline errors
+      }
       router.push("/live-session?session=active");
     }
   };

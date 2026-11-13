@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
+import { checkSystemConnectionsAction } from "@/lib/actions";
 import { INITIAL_CONNECTION_CHECKS } from "@/lib/mock-data";
 import type { ConnectionCheckItem } from "@/types/kiosk";
 
@@ -14,6 +15,9 @@ export function ConnectionCheckCard() {
   const forcedState = searchParams.get("state"); // "checking" | "ready" | null
 
   const [autoReady, setAutoReady] = useState(false);
+  const [liveChecks, setLiveChecks] = useState<ConnectionCheckItem[] | null>(
+    null
+  );
 
   const isAllReady =
     forcedState === "ready" || (forcedState !== "checking" && autoReady);
@@ -25,8 +29,21 @@ export function ConnectionCheckCard() {
 
     router.prefetch("/dashboard");
 
+    let cancelled = false;
+    checkSystemConnectionsAction()
+      .then((res) => {
+        if (!cancelled && res.ok) {
+          setLiveChecks(res.checks);
+        }
+      })
+      .catch(() => {
+        // Fallback to timer-based check
+      });
+
     const readyTimer = setTimeout(() => {
-      setAutoReady(true);
+      if (!cancelled) {
+        setAutoReady(true);
+      }
     }, 1600);
 
     let redirectTimer: ReturnType<typeof setTimeout> | undefined;
@@ -44,21 +61,25 @@ export function ConnectionCheckCard() {
     }
 
     return () => {
+      cancelled = true;
       clearTimeout(readyTimer);
       if (redirectTimer) clearTimeout(redirectTimer);
       if (hardFallbackTimer) clearTimeout(hardFallbackTimer);
     };
   }, [forcedState, router, stayOnPage]);
 
-  const items: ConnectionCheckItem[] = INITIAL_CONNECTION_CHECKS.map((item) =>
-    isAllReady
-      ? {
-          ...item,
-          state: "online",
-          statusText: item.readyText,
-        }
-      : item
-  );
+  const items: ConnectionCheckItem[] =
+    isAllReady && liveChecks
+      ? liveChecks
+      : INITIAL_CONNECTION_CHECKS.map((item) =>
+          isAllReady
+            ? {
+                ...item,
+                state: "online",
+                statusText: item.readyText,
+              }
+            : item
+        );
 
   return (
     <Link

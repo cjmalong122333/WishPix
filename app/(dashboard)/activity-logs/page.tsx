@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronDown, Download, History } from "lucide-react";
+import { getActivityLogsDataAction } from "@/lib/actions";
 import { ACTIVITY_LOGS_DATA } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import type { ActivityLogRecord } from "@/types/kiosk";
 
 const PAGE_SIZE = 8;
 
@@ -27,11 +29,25 @@ const THEME_FILTERS = [
 
 export default function ActivityLogsPage() {
   const { t } = useAppSettings();
+  const [records, setRecords] =
+    useState<ActivityLogRecord[]>(ACTIVITY_LOGS_DATA);
   const [activityFilter, setActivityFilter] = useState("All activities");
   const [themeFilter, setThemeFilter] = useState("All themes");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredRecords = ACTIVITY_LOGS_DATA.filter((record) => {
+  useEffect(() => {
+    getActivityLogsDataAction()
+      .then((dbRecords) => {
+        if (dbRecords.length > 0) {
+          setRecords(dbRecords);
+        }
+      })
+      .catch(() => {
+        // Fallback to initial seeded constants
+      });
+  }, []);
+
+  const filteredRecords = records.filter((record) => {
     const matchesActivity =
       activityFilter === "All activities" ||
       record.activityType === activityFilter;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Ban,
   GraduationCap,
@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   WandSparkles,
 } from "lucide-react";
+import { getAnalyticsDataAction } from "@/lib/actions";
 import {
   ACTIVITY_MIX,
   ANALYTICS_DAILY_USAGE,
@@ -17,16 +18,42 @@ import {
   THEME_DISTRIBUTION,
 } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import type { AnalyticsUsagePoint } from "@/types/kiosk";
 
 type TimeRange = "daily" | "weekly" | "monthly";
 
 export default function AnalyticsPage() {
   const { t } = useAppSettings();
   const [timeRange, setTimeRange] = useState<TimeRange>("daily");
+  const [dailyData, setDailyData] = useState<AnalyticsUsagePoint[]>(
+    ANALYTICS_DAILY_USAGE
+  );
+  const [kpis, setKpis] = useState({
+    totalPrints: "3,259",
+    totalGenerations: "3,864",
+    blockedRequests: "115",
+    successRate: "97.1%",
+  });
+
+  useEffect(() => {
+    getAnalyticsDataAction()
+      .then((data) => {
+        setDailyData(data.dailyUsage);
+        setKpis({
+          totalPrints: data.kpis.totalPrints.toLocaleString(),
+          totalGenerations: data.kpis.totalGenerations.toLocaleString(),
+          blockedRequests: data.kpis.blockedRequests.toLocaleString(),
+          successRate: data.kpis.successRate,
+        });
+      })
+      .catch(() => {
+        // Fallback to initial seeded constants
+      });
+  }, []);
 
   const usageData =
     timeRange === "daily"
-      ? ANALYTICS_DAILY_USAGE
+      ? dailyData
       : timeRange === "weekly"
         ? ANALYTICS_WEEKLY_USAGE
         : ANALYTICS_MONTHLY_USAGE;
@@ -122,7 +149,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="mt-2.5">
             <p className="text-[18px] sm:text-[22px] font-extrabold text-[#0F253E] leading-none">
-              3,259
+              {kpis.totalPrints}
             </p>
             <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-1.5">
               {t("All time", "Lahat ng panahon")}
@@ -142,7 +169,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="mt-2.5">
             <p className="text-[18px] sm:text-[22px] font-extrabold text-[#0F253E] leading-none">
-              3,864
+              {kpis.totalGenerations}
             </p>
             <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-1.5">
               {t("All time", "Lahat ng panahon")}
@@ -162,7 +189,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="mt-2.5">
             <p className="text-[18px] sm:text-[22px] font-extrabold text-[#0F253E] leading-none">
-              115
+              {kpis.blockedRequests}
             </p>
             <p className="text-[10px] sm:text-[11px] font-semibold text-[#D97706] mt-1.5">
               {t("Rejected by Safety", "Tinanggihan ng Safety")}
@@ -182,7 +209,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="mt-2.5">
             <p className="text-[18px] sm:text-[22px] font-extrabold text-[#0F253E] leading-none">
-              97.1%
+              {kpis.successRate}
             </p>
             <p className="text-[10px] sm:text-[11px] font-semibold text-[#15803D] mt-1.5">
               {t("Passing safety", "Pumasa sa safety")}

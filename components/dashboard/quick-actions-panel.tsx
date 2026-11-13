@@ -10,16 +10,29 @@ import {
   RotateCcw,
   Square,
 } from "lucide-react";
+import { triggerQuickActionServer } from "@/lib/actions";
 import { QUICK_ACTIONS } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { QuickActionItem } from "@/types/kiosk";
 
-export function QuickActionsPanel() {
+interface QuickActionsPanelProps {
+  onActionCompleted?: () => void;
+}
+
+export function QuickActionsPanel({
+  onActionCompleted,
+}: QuickActionsPanelProps = {}) {
   const { t } = useAppSettings();
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
-  const handleActionClick = (action: QuickActionItem) => {
+  const handleActionClick = async (action: QuickActionItem) => {
     setFeedbackMessage(`${action.title} triggered.`);
+    try {
+      await triggerQuickActionServer(action.id);
+      onActionCompleted?.();
+    } catch {
+      // Fallback
+    }
     setTimeout(() => setFeedbackMessage(null), 2500);
   };
 

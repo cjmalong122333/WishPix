@@ -2,18 +2,36 @@
 
 import React, { useState } from "react";
 import { Volume2 } from "lucide-react";
+import { updateKioskHardwareStatusAction } from "@/lib/actions";
 import { KIOSK_STATUS_PILLS } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { KioskHardwareStatus, KioskInfo } from "@/types/kiosk";
 
 interface KioskStatusBannerProps {
   kiosk: KioskInfo;
+  hardwareStatus?: KioskHardwareStatus;
+  onHardwareStatusChange?: (status: KioskHardwareStatus) => void;
 }
 
-export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
+export function KioskStatusBanner({
+  kiosk,
+  hardwareStatus,
+  onHardwareStatusChange,
+}: KioskStatusBannerProps) {
   const { t } = useAppSettings();
-  const [activeStatus, setActiveStatus] =
-    useState<KioskHardwareStatus>("online");
+  const [localStatus, setLocalStatus] = useState<KioskHardwareStatus | null>(
+    null
+  );
+
+  const activeStatus = localStatus ?? hardwareStatus ?? "online";
+
+  const handleSelectStatus = (status: KioskHardwareStatus) => {
+    setLocalStatus(status);
+    onHardwareStatusChange?.(status);
+    updateKioskHardwareStatusAction(status).catch(() => {
+      // Ignore transient errors
+    });
+  };
 
   const currentPill =
     KIOSK_STATUS_PILLS.find((p) => p.id === activeStatus) ??
@@ -78,7 +96,7 @@ export function KioskStatusBanner({ kiosk }: KioskStatusBannerProps) {
             <button
               key={pill.id}
               type="button"
-              onClick={() => setActiveStatus(pill.id)}
+              onClick={() => handleSelectStatus(pill.id)}
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium transition cursor-pointer ${
                 isSelected
                   ? "bg-white/20 border border-white/40 text-white shadow-xs"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -12,6 +12,11 @@ import {
   Shield,
   X,
 } from "lucide-react";
+import {
+  getModerationDataAction,
+  resolveModerationDecisionAction,
+  updateSafetyLevelAction,
+} from "@/lib/actions";
 import { MODERATION_ITEMS } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { ModerationQueueItem, SafetyRuleMode } from "@/types/kiosk";
@@ -26,6 +31,19 @@ export default function ModerationPage() {
   const [inspectedItem, setInspectedItem] =
     useState<ModerationQueueItem | null>(null);
 
+  useEffect(() => {
+    getModerationDataAction()
+      .then((data) => {
+        if (data.items.length > 0) {
+          setItems(data.items);
+        }
+        setSafetyLevel(data.safetyLevel);
+      })
+      .catch(() => {
+        // Fallback to seeded initial data
+      });
+  }, []);
+
   const pendingCount = items.filter((i) => i.status === "pending").length;
   const resolvedCount = items.filter((i) => i.status !== "pending").length;
 
@@ -35,7 +53,7 @@ export default function ModerationPage() {
     return true;
   });
 
-  const handleDecision = (
+  const handleDecision = async (
     id: string,
     decision: "blocked" | "overridden"
   ) => {
@@ -55,12 +73,25 @@ export default function ModerationPage() {
           : item
       )
     );
+
+    try {
+      const updated = await resolveModerationDecisionAction(id, decision);
+      setItems(updated.items);
+    } catch {
+      // Optimistic state kept on failure
+    }
   };
 
-  const handleCycleSafetyLevel = () => {
+  const handleCycleSafetyLevel = async () => {
     const order: SafetyRuleMode[] = ["STRICT", "STANDARD", "CUSTOM"];
     const nextIdx = (order.indexOf(safetyLevel) + 1) % order.length;
-    setSafetyLevel(order[nextIdx]);
+    const nextLevel = order[nextIdx];
+    setSafetyLevel(nextLevel);
+    try {
+      await updateSafetyLevelAction(nextLevel);
+    } catch {
+      // Ignore offline error
+    }
   };
 
   return (

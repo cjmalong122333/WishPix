@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AlertTriangle,
   Ban,
@@ -12,6 +12,11 @@ import {
   RotateCw,
   Volume2,
 } from "lucide-react";
+import {
+  getPrintManagementDataAction,
+  triggerReprintJobAction,
+  updatePrinterStateAction,
+} from "@/lib/actions";
 import { KIOSK_INFO, REPRINT_HISTORY } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { PrinterHardwareState, ReprintItem } from "@/types/kiosk";
@@ -25,7 +30,30 @@ export default function PrintManagementPage() {
   const [todaysPrints, setTodaysPrints] = useState(47);
   const [queuedJobTitle, setQueuedJobTitle] = useState<string | null>(null);
 
-  const handleReprint = (item: ReprintItem) => {
+  useEffect(() => {
+    getPrintManagementDataAction()
+      .then((data) => {
+        setPrinterState(data.printerState);
+        if (data.reprintItems.length > 0) {
+          setReprintItems(data.reprintItems);
+        }
+        setTodaysPrints(data.todaysPrints);
+      })
+      .catch(() => {
+        // Fallback to initial seeded state
+      });
+  }, []);
+
+  const handleSelectPrinterState = async (state: PrinterHardwareState) => {
+    setPrinterState(state);
+    try {
+      await updatePrinterStateAction(state);
+    } catch {
+      // Ignore offline error
+    }
+  };
+
+  const handleReprint = async (item: ReprintItem) => {
     setQueuedJobTitle(item.title);
     setPrinterState("printing");
     setTodaysPrints((prev) => prev + 1);
@@ -40,6 +68,14 @@ export default function PrintManagementPage() {
           : entry
       )
     );
+
+    try {
+      const updated = await triggerReprintJobAction(item.id);
+      setReprintItems(updated.reprintItems);
+      setTodaysPrints(updated.todaysPrints);
+    } catch {
+      // Keep optimistic state
+    }
 
     setTimeout(() => {
       setQueuedJobTitle(null);
@@ -183,7 +219,7 @@ export default function PrintManagementPage() {
             >
               <button
                 type="button"
-                onClick={() => setPrinterState("ready")}
+                onClick={() => handleSelectPrinterState("ready")}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10.5px] sm:text-[11px] font-bold transition cursor-pointer ${
                   printerState === "ready"
                     ? "bg-[#0F253E] text-white shadow-xs"
@@ -199,7 +235,7 @@ export default function PrintManagementPage() {
 
               <button
                 type="button"
-                onClick={() => setPrinterState("printing")}
+                onClick={() => handleSelectPrinterState("printing")}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10.5px] sm:text-[11px] font-bold transition cursor-pointer ${
                   printerState === "printing"
                     ? "bg-[#0F253E] text-white shadow-xs"
@@ -212,7 +248,7 @@ export default function PrintManagementPage() {
 
               <button
                 type="button"
-                onClick={() => setPrinterState("error")}
+                onClick={() => handleSelectPrinterState("error")}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10.5px] sm:text-[11px] font-bold transition cursor-pointer ${
                   printerState === "error"
                     ? "bg-[#E11D48] text-white shadow-xs"
@@ -225,7 +261,7 @@ export default function PrintManagementPage() {
 
               <button
                 type="button"
-                onClick={() => setPrinterState("no-paper")}
+                onClick={() => handleSelectPrinterState("no-paper")}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10.5px] sm:text-[11px] font-bold transition cursor-pointer ${
                   printerState === "no-paper"
                     ? "bg-[#D97706] text-white shadow-xs"

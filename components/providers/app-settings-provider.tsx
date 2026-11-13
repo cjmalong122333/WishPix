@@ -7,6 +7,10 @@ import React, {
   useEffect,
   useSyncExternalStore,
 } from "react";
+import {
+  getEducatorSettingsAction,
+  saveEducatorSettingsAction,
+} from "@/lib/actions";
 
 export type DisplayLanguage = "English" | "Filipino";
 export type DisplayThemeId = "deep-blue" | "ocean" | "midnight" | "slate";
@@ -115,7 +119,8 @@ function subscribe(listener: () => void): () => void {
 }
 
 function updateSettings(
-  updater: (prev: AppSettingsState) => AppSettingsState
+  updater: (prev: AppSettingsState) => AppSettingsState,
+  syncToDb = true
 ) {
   const next = updater(getSnapshot());
   currentSettings = next;
@@ -125,6 +130,11 @@ function updateSettings(
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Ignore storage errors
+    }
+    if (syncToDb) {
+      saveEducatorSettingsAction(next).catch(() => {
+        // Ignore background sync errors
+      });
     }
   }
   listeners.forEach((l) => l());
@@ -149,6 +159,41 @@ export function AppSettingsProvider({
     document.documentElement.lang =
       settings.displayLanguage === "Filipino" ? "fil" : "en";
   }, [settings.themeId, settings.displayLanguage]);
+
+  // Hydrate persisted settings from SQLite if localStorage was not explicitly customized
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hasLocal = Boolean(window.localStorage.getItem(STORAGE_KEY));
+    if (hasLocal) return;
+
+    getEducatorSettingsAction()
+      .then((dbSettings) => {
+        if (!dbSettings) return;
+        updateSettings(
+          (prev) => ({
+            displayLanguage:
+              dbSettings.displayLanguage === "Filipino"
+                ? "Filipino"
+                : "English",
+            themeId:
+              dbSettings.themeId === "ocean" ||
+              dbSettings.themeId === "midnight" ||
+              dbSettings.themeId === "slate"
+                ? dbSettings.themeId
+                : "deep-blue",
+            volume: dbSettings.volume ?? prev.volume,
+            autoSleepEnabled: dbSettings.autoSleepEnabled,
+            autoSleepDuration: dbSettings.autoSleepDuration,
+            autoLogoutEnabled: dbSettings.autoLogoutEnabled,
+            autoLogoutDuration: dbSettings.autoLogoutDuration,
+          }),
+          false
+        );
+      })
+      .catch(() => {
+        // Ignore initial fetch errors
+      });
+  }, []);
 
   const setDisplayLanguage = useCallback((displayLanguage: DisplayLanguage) => {
     updateSettings((prev) => ({ ...prev, displayLanguage }));

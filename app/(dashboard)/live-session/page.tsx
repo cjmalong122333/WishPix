@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -14,11 +14,17 @@ import {
   UserPlus,
 } from "lucide-react";
 import {
+  getLiveSessionDataAction,
+  pauseLiveSessionAction,
+  updateLiveSessionStageAction,
+} from "@/lib/actions";
+import {
   KIOSK_INFO,
   LIVE_GENERATION_FEED,
   LIVE_STATUS_STAGES,
 } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import type { LiveFeedItem } from "@/types/kiosk";
 
 export default function LiveSessionPage() {
   const searchParams = useSearchParams();
@@ -27,6 +33,42 @@ export default function LiveSessionPage() {
 
   const [isSessionActive, setIsSessionActive] = useState(initialActive);
   const [activeStage, setActiveStage] = useState(1);
+  const [feedItems, setFeedItems] =
+    useState<LiveFeedItem[]>(LIVE_GENERATION_FEED);
+
+  useEffect(() => {
+    getLiveSessionDataAction()
+      .then((data) => {
+        if (searchParams.get("session") !== "active") {
+          setIsSessionActive(data.isSessionActive);
+        }
+        setActiveStage(data.activeStage);
+        if (data.feed.length > 0) {
+          setFeedItems(data.feed);
+        }
+      })
+      .catch(() => {
+        // Fallback to seeded initial data
+      });
+  }, [searchParams]);
+
+  const handlePauseSession = async () => {
+    setIsSessionActive(false);
+    try {
+      await pauseLiveSessionAction();
+    } catch {
+      // Ignore offline errors
+    }
+  };
+
+  const handleSelectStage = async (step: number) => {
+    setActiveStage(step);
+    try {
+      await updateLiveSessionStageAction(step);
+    } catch {
+      // Ignore offline errors
+    }
+  };
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
@@ -90,7 +132,7 @@ export default function LiveSessionPage() {
           {isSessionActive ? (
             <button
               type="button"
-              onClick={() => setIsSessionActive(false)}
+              onClick={handlePauseSession}
               className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-white/15 hover:bg-white/25 border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
             >
               <Pause className="w-3.5 h-3.5 fill-white text-white" />
@@ -144,7 +186,7 @@ export default function LiveSessionPage() {
                   <button
                     key={stage.step}
                     type="button"
-                    onClick={() => setActiveStage(stage.step)}
+                    onClick={() => handleSelectStage(stage.step)}
                     className="flex flex-col items-center cursor-pointer group"
                   >
                     <div
@@ -233,7 +275,7 @@ export default function LiveSessionPage() {
           </div>
 
           <div className="space-y-2.5 sm:space-y-3">
-            {LIVE_GENERATION_FEED.map((item) => {
+            {feedItems.map((item) => {
               const isDanger = item.badgeVariant === "danger";
 
               const badgeClass =

@@ -6,6 +6,7 @@ import { Download, Globe, Lock, MonitorSmartphone, User } from "lucide-react";
 import { AccessChoiceCard } from "@/components/auth/access-choice-card";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
+import { authenticateEducatorAction } from "@/lib/actions";
 
 export function LoginForm() {
   const router = useRouter();
@@ -49,7 +50,7 @@ export function LoginForm() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const trimmedUser = username.trim().toLowerCase();
@@ -61,6 +62,16 @@ export function LoginForm() {
     ) {
       setHasSubmitError(true);
       return;
+    }
+
+    try {
+      const result = await authenticateEducatorAction(username, password);
+      if (!result.ok) {
+        setHasSubmitError(true);
+        return;
+      }
+    } catch {
+      // Fallback if offline
     }
 
     setHasSubmitError(false);

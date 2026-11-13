@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Educator {
+  id          String            @id @default(cuid())
+  username    String            @unique
+  password    String
+  displayName String
+  initials    String
+  createdAt   DateTime          @default(now())
+  settings    AppSettings?
+  sessions    Session[]
+  reports     GeneratedReport[]
+}
+
+model AppSettings {
+  id                 String   @id @default(cuid())
+  educatorId         String   @unique
+  educator           Educator @relation(fields: [educatorId], references: [id], onDelete: Cascade)
+  displayLanguage    String   @default("English")
+  themeId            String   @default("deep-blue")
+  volume             Int      @default(70)
+  autoSleepEnabled   Boolean  @default(true)
+  autoSleepDuration  String   @default("15 minutes")
+  autoLogoutEnabled  Boolean  @default(true)
+  autoLogoutDuration String   @default("30 minutes")
+  updatedAt          DateTime @updatedAt
+}
+
+model Kiosk {
+  id                String         @id @default("kiosk-rainbow-room")
+  roomName          String         @default("Rainbow Room")
+  statusHeading     String         @default("WAITING FOR TEACHER")
+  statusDescription String         @default("No activity is running. Choose what the children will do next.")
+  isOnline          Boolean        @default(true)
+  hardwareStatus    String         @default("online")
+  printerState      String         @default("ready")
+  paperTrayLevel    Int            @default(18)
+  temperatureC      Int            @default(41)
+  networkLatencyMs  Int            @default(24)
+  liveStage         Int            @default(1)
+  queueCount        Int            @default(0)
+  notificationCount Int            @default(1)
+  systemVersion     String         @default("System v2.4.1")
+  firmwareVersion   String         @default("2.4.1")
+  ipAddress         String         @default("192.168.1.42")
+  safetyLevel       String         @default("STANDARD")
+  lastHeartbeatAt   DateTime       @default(now())
+  sessions          Session[]
+  generations       Generation[]
+  commands          KioskCommand[]
+}
+
+model Session {
+  id                   String       @id @default(cuid())
+  kioskId              String
+  kiosk                Kiosk        @relation(fields: [kioskId], references: [id], onDelete: Cascade)
+  educatorId           String?
+  educator             Educator?    @relation(fields: [educatorId], references: [id], onDelete: SetNull)
+  status               String       @default("active")
+  activityId           String       @default("color-create")
+  activityTitle        String       @default("Color & Create")
+  subOptionId          String?      @default("single-object")
+  subOptionTitle       String?      @default("Single Object Coloring")
+  themeId              String       @default("animals")
+  themeTitle           String       @default("Animals")
+  customThemeText      String?
+  safetyMode           String       @default("STANDARD")
+  blockedWordsJson     String       @default("[]")
+  allowedWordsJson     String       @default("[]")
+  allowedLanguagesJson String       @default("[\"English\",\"Filipino\"]")
+  startedAt            DateTime     @default(now())
+  endedAt              DateTime?
+  generations          Generation[]
+}
+
+model Generation {
+  id              String          @id @default(cuid())
+  sessionId       String?
+  session         Session?        @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  kioskId         String
+  kiosk           Kiosk           @relation(fields: [kioskId], references: [id], onDelete: Cascade)
+  title           String
+  subtitle        String          @default("Generated & printed successfully")
+  badgeText       String          @default("Success")
+  badgeVariant    String          @default("success")
+  icon            String          @default("cat")
+  requiresAction  Boolean         @default(false)
+  actionNote      String?
+  dateLabel       String
+  timeLabel       String
+  safetyStatus    String          @default("Success")
+  printStatus     String          @default("Printed")
+  theme           String          @default("Animals")
+  activityType    String          @default("Color & Create")
+  reprintCount    Int             @default(0)
+  isReprintable   Boolean         @default(true)
+  showInLiveFeed  Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  moderationItem  ModerationItem?
+}
+
+model ModerationItem {
+  id              String      @id @default(cuid())
+  generationId    String?     @unique
+  generation      Generation? @relation(fields: [generationId], references: [id], onDelete: SetNull)
+  categoryLabel   String
+  categoryVariant String
+  timestamp       String
+  theme           String
+  status          String      @default("pending")
+  statusBadge     String      @default("Needs review")
+  originalSpeech  String
+  recognizedText  String?
+  resolutionNote  String?
+  createdAt       DateTime    @default(now())
+  resolvedAt      DateTime?
+}
+
+model KioskCommand {
+  id        String   @id @default(cuid())
+  kioskId   String
+  kiosk     Kiosk    @relation(fields: [kioskId], references: [id], onDelete: Cascade)
+  command   String
+  status    String   @default("completed")
+  createdAt DateTime @default(now())
+}
+
+model GeneratedReport {
+  id          String    @id @default(cuid())
+  educatorId  String?
+  educator    Educator? @relation(fields: [educatorId], references: [id], onDelete: SetNull)
+  title       String
+  type        String
+  generatedAt String
+  summary     String
+  createdAt   DateTime  @default(now())
+}

@@ -1,18 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { KioskStatusBanner } from "@/components/dashboard/kiosk-status-banner";
 import { MetricStatCard } from "@/components/dashboard/metric-stat-card";
 import { QuickActionsPanel } from "@/components/dashboard/quick-actions-panel";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { getDashboardDataAction } from "@/lib/actions";
 import { DASHBOARD_METRICS, KIOSK_INFO } from "@/lib/mock-data";
+import type { KioskHardwareStatus, KioskInfo, StatMetric } from "@/types/kiosk";
 
 export default function DashboardPage() {
   const { t } = useAppSettings();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [kiosk, setKiosk] = useState<KioskInfo>(KIOSK_INFO);
+  const [hardwareStatus, setHardwareStatus] =
+    useState<KioskHardwareStatus>("online");
+  const [metrics, setMetrics] = useState<StatMetric[]>(DASHBOARD_METRICS);
 
-  const handleRefreshSummary = () => {
+  const loadDashboard = useCallback(async () => {
+    try {
+      const data = await getDashboardDataAction();
+      setKiosk(data.kiosk);
+      setHardwareStatus(data.hardwareStatus);
+      setMetrics(data.metrics);
+    } catch {
+      // Fallback to seeded initial constants
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getDashboardDataAction()
+      .then((data) => {
+        if (cancelled) return;
+        setKiosk(data.kiosk);
+        setHardwareStatus(data.hardwareStatus);
+        setMetrics(data.metrics);
+      })
+      .catch(() => {
+        // Fallback to seeded initial constants
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleRefreshSummary = async () => {
     setIsRefreshing(true);
+    await loadDashboard();
     window.setTimeout(() => setIsRefreshing(false), 600);
   };
 
@@ -22,8 +57,8 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
           {t(
-            `Good morning, ${KIOSK_INFO.educatorName}`,
-            `Magandang umaga, ${KIOSK_INFO.educatorName}`
+            `Good morning, ${kiosk.educatorName}`,
+            `Magandang umaga, ${kiosk.educatorName}`
           )}
         </h1>
         <p className="text-[11.5px] sm:text-[13px] text-[#64748B] mt-0.5">
@@ -35,7 +70,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Kiosk Status Card */}
-      <KioskStatusBanner kiosk={KIOSK_INFO} />
+      <KioskStatusBanner
+        kiosk={kiosk}
+        hardwareStatus={hardwareStatus}
+        onHardwareStatusChange={setHardwareStatus}
+      />
 
       {/* Today's Summary Section: 2x2 on Mobile/Tablet, 4 Columns on Desktop */}
       <section
@@ -62,14 +101,14 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {DASHBOARD_METRICS.map((metric) => (
+          {metrics.map((metric) => (
             <MetricStatCard key={metric.id} metric={metric} />
           ))}
         </div>
       </section>
 
       {/* Quick Actions */}
-      <QuickActionsPanel />
+      <QuickActionsPanel onActionCompleted={loadDashboard} />
     </div>
   );
 }

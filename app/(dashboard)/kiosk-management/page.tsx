@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FileWarning,
   Monitor,
@@ -13,6 +13,10 @@ import {
   Volume2,
   Wifi,
 } from "lucide-react";
+import {
+  getKioskManagementDataAction,
+  sendKioskControlCommandAction,
+} from "@/lib/actions";
 import { KIOSK_CONTROLS, KIOSK_INFO } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { KioskControlItem } from "@/types/kiosk";
@@ -25,8 +29,24 @@ export default function KioskManagementPage() {
     "Online" | "Sleeping" | "Restarting" | "Offline"
   >("Online");
 
-  const handleRunDiagnostics = () => {
+  useEffect(() => {
+    getKioskManagementDataAction()
+      .then((data) => {
+        setKioskPowerState(data.powerState);
+      })
+      .catch(() => {
+        // Fallback to initial state
+      });
+  }, []);
+
+  const handleRunDiagnostics = async () => {
     setIsRunningDiagnostics(true);
+    try {
+      const data = await getKioskManagementDataAction();
+      setKioskPowerState(data.powerState);
+    } catch {
+      // Fallback
+    }
     setTimeout(() => {
       setIsRunningDiagnostics(false);
       setControlFeedback("Live diagnostics completed: All sensors healthy.");
@@ -34,7 +54,7 @@ export default function KioskManagementPage() {
     }, 900);
   };
 
-  const handleControlAction = (control: KioskControlItem) => {
+  const handleControlAction = async (control: KioskControlItem) => {
     if (control.id === "restart") setKioskPowerState("Restarting");
     if (control.id === "shutdown") setKioskPowerState("Offline");
     if (control.id === "sleep") setKioskPowerState("Sleeping");
@@ -43,6 +63,13 @@ export default function KioskManagementPage() {
     setControlFeedback(
       `${control.title} command sent to ${KIOSK_INFO.roomName}.`
     );
+
+    try {
+      await sendKioskControlCommandAction(control.id);
+    } catch {
+      // Ignore offline error
+    }
+
     setTimeout(() => {
       if (control.id === "restart") setKioskPowerState("Online");
       setControlFeedback(null);

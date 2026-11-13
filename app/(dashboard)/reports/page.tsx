@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Download, FileText, Trash2 } from "lucide-react";
+import {
+  clearReportsAction,
+  generateReportAction,
+  getReportsDataAction,
+} from "@/lib/actions";
 import { REPORT_TYPES } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import type { GeneratedReportItem } from "@/types/kiosk";
@@ -15,7 +20,17 @@ export default function ReportsPage() {
     GeneratedReportItem[]
   >([]);
 
-  const handleGenerateReport = () => {
+  useEffect(() => {
+    getReportsDataAction()
+      .then((reports) => {
+        setGeneratedReports(reports);
+      })
+      .catch(() => {
+        // Ignore initial fetch error
+      });
+  }, []);
+
+  const handleGenerateReport = async () => {
     const selectedMeta =
       REPORT_TYPES.find((r) => r.id === selectedReportType) ?? REPORT_TYPES[0];
     const now = new Date();
@@ -24,7 +39,7 @@ export default function ReportsPage() {
       minute: "2-digit",
     });
 
-    const newReport: GeneratedReportItem = {
+    const optimisticReport: GeneratedReportItem = {
       id: `rep-${Date.now()}`,
       title: selectedMeta.title,
       type: selectedMeta.id,
@@ -35,7 +50,23 @@ export default function ReportsPage() {
           : "Pilot Usability Evaluation • 97.1% Safety Pass Rate • 3,864 Total Generations",
     };
 
-    setGeneratedReports((prev) => [newReport, ...prev]);
+    setGeneratedReports((prev) => [optimisticReport, ...prev]);
+
+    try {
+      const updated = await generateReportAction(selectedReportType);
+      setGeneratedReports(updated);
+    } catch {
+      // Keep optimistic report if offline
+    }
+  };
+
+  const handleClearReports = async () => {
+    setGeneratedReports([]);
+    try {
+      await clearReportsAction();
+    } catch {
+      // Ignore offline error
+    }
   };
 
   const handleDownloadReport = (report: GeneratedReportItem) => {
@@ -159,7 +190,7 @@ export default function ReportsPage() {
             {generatedReports.length > 0 && (
               <button
                 type="button"
-                onClick={() => setGeneratedReports([])}
+                onClick={handleClearReports}
                 className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#64748B] hover:text-[#E11D48] transition cursor-pointer"
               >
                 <Trash2 className="w-3 h-3" aria-hidden="true" />
