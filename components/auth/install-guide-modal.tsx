@@ -49,12 +49,12 @@ export function InstallGuideModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#061220]/70 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231B3B]/65 backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
       aria-labelledby="install-guide-title"
     >
-      <div className="relative w-full max-w-[445px] rounded-[18px] bg-[#0D223B] border border-[#1E3A5F] p-5 sm:p-6 text-white shadow-[0_22px_48px_rgba(4,15,28,0.65)]">
+      <div className="relative w-full max-w-[445px] rounded-[22px] bg-[#231B3B] border border-[#A78BFA]/25 p-5 sm:p-6 text-white shadow-[0_22px_48px_rgba(20,12,42,0.65)]">
         {/* Close Button */}
         <button
           type="button"
@@ -63,13 +63,13 @@ export function InstallGuideModal({
             "Close install dialog",
             "Isara ang dialog sa pag-install"
           )}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-[#94A8BE] hover:text-white hover:bg-white/10 transition cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[#C4B5FD] hover:text-white hover:bg-white/10 transition cursor-pointer"
         >
           <X className="w-4 h-4" aria-hidden="true" />
         </button>
 
         {/* Header Badge */}
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#38BDF8] text-[10.5px] font-bold tracking-wide uppercase">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#6D48DF]/30 border border-[#A78BFA]/35 text-[#DDD6FE] text-[10.5px] font-bold tracking-wide uppercase">
           <Sparkles className="w-3 h-3" aria-hidden="true" />
           <span>{t("WishPix App Installer", "WishPix App Installer")}</span>
         </div>
@@ -85,7 +85,7 @@ export function InstallGuideModal({
                 {t("WishPix App is Ready!", "Handa na ang WishPix App!")}
               </h3>
             </div>
-            <p className="mt-2 text-[12px] sm:text-[12.5px] text-[#B0C4D8] leading-relaxed">
+            <p className="mt-2 text-[12px] sm:text-[12.5px] text-[#DDD6FE] leading-relaxed">
               {isStandalone
                 ? t(
                     "You are already using the installed WishPix standalone application.",
@@ -99,7 +99,7 @@ export function InstallGuideModal({
             <button
               type="button"
               onClick={onClose}
-              className="mt-5 w-full rounded-[10px] bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold text-[12.5px] py-2.5 px-4 transition cursor-pointer"
+              className="mt-5 w-full rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white font-bold text-[12.5px] py-2.5 px-4 transition cursor-pointer"
             >
               {t("Continue to WishPix", "Magpatuloy sa WishPix")}
             </button>
@@ -120,7 +120,7 @@ export function InstallGuideModal({
                     "I-install ang WishPix sa Iyong Device"
                   )}
             </h3>
-            <p className="mt-1 text-[11.5px] sm:text-[12px] text-[#94A8BE] leading-relaxed">
+            <p className="mt-1 text-[11.5px] sm:text-[12px] text-[#C4B5FD] leading-relaxed">
               {platform === "android"
                 ? t(
                     "Download the Android APK package directly or install via Chrome's app menu:",
@@ -134,16 +134,16 @@ export function InstallGuideModal({
 
             {/* Direct Android APK Download Banner */}
             {platform !== "ios" && (
-              <div className="mt-3.5 rounded-[12px] bg-gradient-to-r from-[#0B3B66] to-[#082B4B] border border-[#38BDF8]/40 p-3.5 flex items-center justify-between gap-3">
+              <div className="mt-3.5 rounded-[14px] bg-gradient-to-r from-[#312552] to-[#231B3B] border border-[#A78BFA]/40 p-3.5 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-[10px] bg-[#0284C7] text-white flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-[10px] bg-[#6D48DF] text-white flex items-center justify-center shrink-0">
                     <Smartphone className="w-4 h-4" aria-hidden="true" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[12px] font-extrabold text-white truncate">
                       {t("WishPix Android Package", "WishPix Android Package")}
                     </p>
-                    <p className="text-[10.5px] text-[#B8CDE2]">
+                    <p className="text-[10.5px] text-[#DDD6FE]">
                       {t(
                         "Direct standalone .APK installer for Android phones & tablets",
                         "Direktang .APK installer para sa Android phone at tablet"
@@ -155,7 +155,7 @@ export function InstallGuideModal({
                 <a
                   href="/wishpix-android.apk"
                   download="WishPix-Teacher-App.apk"
-                  className="shrink-0 inline-flex items-center gap-1.5 rounded-[9px] bg-[#0077C8] hover:bg-[#0284C7] border border-[#38BDF8]/50 text-white font-bold text-[11.5px] px-3 py-2 shadow-xs transition cursor-pointer"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] border border-[#A78BFA]/50 text-white font-bold text-[11.5px] px-3 py-2 shadow-xs transition cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>{t("Download .APK", "I-download .APK")}</span>
@@ -167,8 +167,8 @@ export function InstallGuideModal({
             <div className="mt-3.5 space-y-2.5">
               {platform === "ios" ? (
                 <>
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <Share className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div>
@@ -178,7 +178,7 @@ export function InstallGuideModal({
                           "1. Pindutin ang Share button"
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           "Located at the bottom or top bar of Safari.",
                           "Makikita sa ibaba o itaas na bar ng Safari."
@@ -187,8 +187,8 @@ export function InstallGuideModal({
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <PlusSquare className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div>
@@ -198,7 +198,7 @@ export function InstallGuideModal({
                           '2. Piliin ang "Add to Home Screen"'
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           'Tap "Add" in the top-right corner to finish installing the app.',
                           'Pindutin ang "Add" sa kanang itaas upang matapos ang pag-install.'
@@ -209,8 +209,8 @@ export function InstallGuideModal({
                 </>
               ) : platform === "android" ? (
                 <>
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <MoreVertical className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div>
@@ -220,7 +220,7 @@ export function InstallGuideModal({
                           "1. Pindutin ang ⋮ menu sa Chrome (o I-download ang .APK sa itaas)"
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           "Open the three-dot browser menu in the top-right corner of Chrome on Android.",
                           "Buksan ang three-dot menu sa kanang itaas ng Chrome sa iyong Android device."
@@ -229,8 +229,8 @@ export function InstallGuideModal({
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <MonitorSmartphone
                         className="w-4 h-4"
                         aria-hidden="true"
@@ -243,7 +243,7 @@ export function InstallGuideModal({
                           '2. Piliin ang "Install app" o "Add to Home screen"'
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           "Confirm installation to add the WishPix Teacher App icon to your Android app drawer and home screen.",
                           "Kumpirmahin upang mailagay ang WishPix Teacher App sa iyong Android home screen."
@@ -254,8 +254,8 @@ export function InstallGuideModal({
                 </>
               ) : (
                 <>
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <Download className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div>
@@ -265,7 +265,7 @@ export function InstallGuideModal({
                           "1. I-click ang Install icon sa address bar ng browser"
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           "Look for the computer/download icon on the right side of the address bar (or open the browser ⋮ menu).",
                           "Hanapin ang download/app icon sa kanang bahagi ng address bar (o buksan ang ⋮ menu ng browser)."
@@ -274,8 +274,8 @@ export function InstallGuideModal({
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-[12px] bg-[#081729] border border-[#1C3654] p-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#0284C7]/20 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="flex items-start gap-3 rounded-[14px] bg-[#1A132D] border border-[#312552] p-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#6D48DF]/25 text-[#C4B5FD] flex items-center justify-center shrink-0 mt-0.5">
                       <MonitorSmartphone
                         className="w-4 h-4"
                         aria-hidden="true"
@@ -288,7 +288,7 @@ export function InstallGuideModal({
                           '2. Piliin ang "Install WishPix Teacher App"'
                         )}
                       </p>
-                      <p className="text-[11px] text-[#94A8BE] mt-0.5">
+                      <p className="text-[11px] text-[#C4B5FD] mt-0.5">
                         {t(
                           "WishPix will launch in its own standalone window and create a shortcut on your device.",
                           "Magbubukas ang WishPix sa sarili nitong window at gagawa ng shortcut sa iyong device."
@@ -309,7 +309,7 @@ export function InstallGuideModal({
                     onClose();
                     onContinueInBrowser();
                   }}
-                  className="flex-1 rounded-[10px] bg-[#132F4C] hover:bg-[#1B3F66] border border-[#274B73] text-white font-semibold text-[12px] py-2.5 px-3.5 flex items-center justify-center gap-1.5 transition cursor-pointer"
+                  className="flex-1 rounded-[12px] bg-[#312552] hover:bg-[#3B2D63] border border-[#A78BFA]/25 text-white font-semibold text-[12px] py-2.5 px-3.5 flex items-center justify-center gap-1.5 transition cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>
@@ -321,7 +321,7 @@ export function InstallGuideModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 rounded-[10px] bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold text-[12px] py-2.5 px-3.5 transition cursor-pointer"
+                className="flex-1 rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white font-bold text-[12px] py-2.5 px-3.5 transition cursor-pointer"
               >
                 {t("Got It", "Nakuha Ko")}
               </button>

@@ -1711,7 +1711,7 @@ export function OnboardingTourProvider({
         ),
         nextBtnText: t("Next →", "Susunod →"),
         prevBtnText: t("← Back", "← Bumalik"),
-        doneBtnText: t("Complete ✨", "Tapos na ✨"),
+        doneBtnText: t("Complete ", "Tapos na "),
         steps: validSteps,
 
         onPopoverRender: (popover, { state }) => {

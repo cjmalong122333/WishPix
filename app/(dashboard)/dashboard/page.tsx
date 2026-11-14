@@ -55,13 +55,13 @@ export default function DashboardPage() {
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Greeting Header */}
       <div>
-        <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
+        <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
           {t(
             `Good morning, ${kiosk.educatorName}`,
             `Magandang umaga, ${kiosk.educatorName}`
           )}
         </h1>
-        <p className="text-[11.5px] sm:text-[13px] text-[#64748B] mt-0.5">
+        <p className="text-[11.5px] sm:text-[13px] text-[#766F8E] mt-0.5">
           {t(
             "Here's what's happening at your kiosk today.",
             "Narito ang nangyayari sa iyong kiosk ngayong araw."
@@ -84,7 +84,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
           <h2
             id="todays-summary-heading"
-            className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
+            className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
           >
             {t("TODAY'S SUMMARY", "BUOD NGAYONG ARAW")}
           </h2>
@@ -92,7 +92,7 @@ export default function DashboardPage() {
             id="tour-summary-refresh"
             type="button"
             onClick={handleRefreshSummary}
-            className="text-[11px] sm:text-[12px] font-semibold text-[#0077C8] hover:underline cursor-pointer"
+            className="text-[11px] sm:text-[12px] font-semibold text-[#6D48DF] hover:underline cursor-pointer"
           >
             {isRefreshing
               ? t("Updated!", "Na-update!")

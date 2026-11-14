@@ -30,7 +30,7 @@ import {
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
 const SWATCH_LABEL_FILIPINO: Record<string, string> = {
-  "deep-blue": "Deep Blue",
+  "deep-blue": "WishPix Violet",
   ocean: "Ocean",
   midnight: "Midnight",
   slate: "Slate",
@@ -144,10 +144,10 @@ export default function SettingsPage() {
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Page Title */}
       <div>
-        <h1 className="text-[20px] sm:text-[24px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
+        <h1 className="text-[20px] sm:text-[24px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
           {t("Settings", "Mga Setting")}
         </h1>
-        <p className="text-[11px] sm:text-[13px] text-[#64748B] mt-0.5">
+        <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
           {t(
             "Language, audio, display and system preferences.",
             "Mga kagustuhan sa wika, audio, display at sistema."
@@ -161,16 +161,16 @@ export default function SettingsPage() {
         <section
           id="tour-settings-language"
           aria-labelledby="language-settings-heading"
-          className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
-          <div className="pb-3 border-b border-[#F1F5F9]">
+          <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
               id="language-settings-heading"
-              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#231B3B]"
             >
               {t("Language", "Wika")}
             </h2>
-            <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
               {t(
                 "Interface language for the teacher application.",
                 "Wika ng interface para sa aplikasyon ng guro."
@@ -179,10 +179,10 @@ export default function SettingsPage() {
           </div>
 
           <div className="pt-3.5">
-            <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+            <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
               {t("Display language", "Wika ng display")}
             </p>
-            <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
               {t(
                 "Navigation and page titles update immediately.",
                 "Agad na mag-a-update ang nabigasyon at mga pamagat ng pahina."
@@ -192,7 +192,7 @@ export default function SettingsPage() {
             <div
               role="radiogroup"
               aria-label="Display language"
-              className="mt-3 rounded-[11px] bg-[#EEF2F6] p-1 grid grid-cols-2 gap-1"
+              className="mt-3 rounded-[11px] bg-[#FAF8FF] border border-[#E2DCF3] p-1 grid grid-cols-2 gap-1"
             >
               {(["English", "Filipino"] as const).map((lang) => {
                 const isSelected = displayLanguage === lang;
@@ -205,8 +205,8 @@ export default function SettingsPage() {
                     onClick={() => setDisplayLanguage(lang)}
                     className={`rounded-[8px] py-2 px-3 text-[11.5px] sm:text-[12.5px] transition cursor-pointer ${
                       isSelected
-                        ? "bg-white text-[#0F253E] font-bold shadow-xs"
-                        : "text-[#475569] hover:text-[#0F253E] font-medium"
+                        ? "bg-[#6D48DF] text-white font-bold shadow-xs"
+                        : "text-[#4A4168] hover:text-[#231B3B] font-medium"
                     }`}
                   >
                     {lang}
@@ -221,16 +221,16 @@ export default function SettingsPage() {
         <section
           id="tour-settings-audio"
           aria-labelledby="audio-settings-heading"
-          className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
-          <div className="pb-3 border-b border-[#F1F5F9]">
+          <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
               id="audio-settings-heading"
-              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#231B3B]"
             >
               {t("Audio", "Audio")}
             </h2>
-            <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
               {t("Kiosk speaker output.", "Lakas ng tunog sa speaker ng kiosk.")}
             </p>
           </div>
@@ -240,11 +240,11 @@ export default function SettingsPage() {
               <div>
                 <label
                   htmlFor="kiosk-volume-slider"
-                  className="block text-[12px] sm:text-[13px] font-bold text-[#0F253E]"
+                  className="block text-[12px] sm:text-[13px] font-bold text-[#231B3B]"
                 >
                   {t("Volume", "Lakas ng Tunog")}
                 </label>
-                <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                   {t(
                     "Applies to the kiosk speaker.",
                     "Inilalapat sa speaker ng kiosk."
@@ -252,14 +252,14 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              <div className="min-w-[88px] sm:min-w-[100px] rounded-[8px] bg-[#F1F5F9] px-3 py-1.5 text-[11px] sm:text-[12px] font-extrabold text-[#0F253E]">
+              <div className="min-w-[88px] sm:min-w-[100px] rounded-[8px] bg-[#EFE9FC] px-3 py-1.5 text-[11px] sm:text-[12px] font-extrabold text-[#6D48DF]">
                 {volume}%
               </div>
             </div>
 
             <div className="mt-4 flex items-center gap-3">
               <Volume2
-                className="w-4 h-4 text-[#475569] flex-shrink-0"
+                className="w-4 h-4 text-[#6D48DF] flex-shrink-0"
                 aria-hidden="true"
               />
               <input
@@ -269,8 +269,8 @@ export default function SettingsPage() {
                 max={100}
                 value={volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
-                style={{ accentColor: "var(--wp-primary-dark)" }}
-                className="w-full h-2 rounded-lg bg-[#CBD5E1] cursor-pointer"
+                style={{ accentColor: "var(--wp-primary)" }}
+                className="w-full h-2 rounded-lg bg-[#E2DCF3] cursor-pointer"
               />
             </div>
           </div>
@@ -280,16 +280,16 @@ export default function SettingsPage() {
         <section
           id="tour-settings-display"
           aria-labelledby="display-settings-heading"
-          className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
-          <div className="pb-3 border-b border-[#F1F5F9]">
+          <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
               id="display-settings-heading"
-              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#231B3B]"
             >
               {t("Display", "Display")}
             </h2>
-            <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
               {t(
                 "Theme colors for this application.",
                 "Mga kulay ng tema para sa aplikasyong ito."
@@ -317,7 +317,7 @@ export default function SettingsPage() {
                     style={{ backgroundColor: swatch.hex }}
                     className={`w-11 h-11 sm:w-12 sm:h-12 rounded-[12px] flex items-center justify-center transition ${
                       isSelected
-                        ? "ring-2 ring-[#0F253E] ring-offset-2 scale-105"
+                        ? "ring-2 ring-[#231B3B] ring-offset-2 scale-105"
                         : "opacity-90 group-hover:opacity-100"
                     }`}
                   >
@@ -331,8 +331,8 @@ export default function SettingsPage() {
                   <span
                     className={`text-[10px] sm:text-[11px] ${
                       isSelected
-                        ? "font-bold text-[#0F253E]"
-                        : "font-medium text-[#64748B]"
+                        ? "font-bold text-[#231B3B]"
+                        : "font-medium text-[#766F8E]"
                     }`}
                   >
                     {t(
@@ -350,16 +350,16 @@ export default function SettingsPage() {
         <section
           id="tour-settings-system"
           aria-labelledby="system-settings-heading"
-          className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
-          <div className="pb-3 border-b border-[#F1F5F9]">
+          <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
               id="system-settings-heading"
-              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+              className="text-[14px] sm:text-[15.5px] font-extrabold text-[#231B3B]"
             >
               {t("System", "Sistema")}
             </h2>
-            <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
               {t(
                 "Power and security behavior.",
                 "Gawi sa kuryente at seguridad."
@@ -372,10 +372,10 @@ export default function SettingsPage() {
             <div>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                  <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                     {t("Auto sleep", "Auto sleep")}
                   </p>
-                  <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                     {t(
                       "Put the kiosk to sleep when idle.",
                       "Patulugin ang kiosk kapag hindi ginagamit."
@@ -390,7 +390,7 @@ export default function SettingsPage() {
                   aria-label="Toggle auto sleep"
                   onClick={() => setAutoSleepEnabled((prev) => !prev)}
                   className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full p-0.5 transition-colors cursor-pointer ${
-                    autoSleepEnabled ? "bg-[#0077C8]" : "bg-[#CBD5E1]"
+                    autoSleepEnabled ? "bg-[#6D48DF]" : "bg-[#D8CEFA]"
                   }`}
                 >
                   <span
@@ -407,7 +407,7 @@ export default function SettingsPage() {
                   disabled={!autoSleepEnabled}
                   value={autoSleepDuration}
                   onChange={(e) => setAutoSleepDuration(e.target.value)}
-                  className="w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#0F253E] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
+                  className="w-full rounded-[10px] border border-[#E2DCF3] bg-[#FAF8FF] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#231B3B] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#6D48DF] cursor-pointer"
                 >
                   <option value="5 minutes">
                     {t("5 minutes", "5 minuto")}
@@ -424,13 +424,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Auto logout */}
-            <div className="pt-3.5 border-t border-[#F1F5F9]">
+            <div className="pt-3.5 border-t border-[#F2EEFB]">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                  <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                     {t("Auto logout", "Auto logout")}
                   </p>
-                  <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                     {t(
                       "Sign out after a period of no activity.",
                       "Mag-sign out pagkatapos ng walang aktibidad."
@@ -445,7 +445,7 @@ export default function SettingsPage() {
                   aria-label="Toggle auto logout"
                   onClick={() => setAutoLogoutEnabled((prev) => !prev)}
                   className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full p-0.5 transition-colors cursor-pointer ${
-                    autoLogoutEnabled ? "bg-[#0077C8]" : "bg-[#CBD5E1]"
+                    autoLogoutEnabled ? "bg-[#6D48DF]" : "bg-[#D8CEFA]"
                   }`}
                 >
                   <span
@@ -462,7 +462,7 @@ export default function SettingsPage() {
                   disabled={!autoLogoutEnabled}
                   value={autoLogoutDuration}
                   onChange={(e) => setAutoLogoutDuration(e.target.value)}
-                  className="w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#0F253E] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
+                  className="w-full rounded-[10px] border border-[#E2DCF3] bg-[#FAF8FF] px-3.5 py-2 text-[11px] sm:text-[12px] font-bold text-[#231B3B] disabled:opacity-50 focus:bg-white focus:outline-none focus:border-[#6D48DF] cursor-pointer"
                 >
                   <option value="15 minutes">
                     {t("15 minutes", "15 minuto")}
@@ -477,13 +477,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Educator Password Security */}
-            <div className="pt-3.5 border-t border-[#F1F5F9]">
+            <div className="pt-3.5 border-t border-[#F2EEFB]">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                  <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                     {t("Password security", "Seguridad ng password")}
                   </p>
-                  <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                     {t(
                       "Update your educator password (8+ chars, letters & numbers).",
                       "Palitan ang password ng guro (8+ karakter, titik at numero)."
@@ -497,9 +497,9 @@ export default function SettingsPage() {
                     setIsPasswordFormOpen((prev) => !prev);
                     setPasswordStatus(null);
                   }}
-                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#0F253E] font-bold text-[11.5px] sm:text-[12px] px-3 py-2 transition cursor-pointer shrink-0"
+                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#FAF8FF] hover:bg-[#EFE9FC] border border-[#E2DCF3] text-[#231B3B] font-bold text-[11.5px] sm:text-[12px] px-3 py-2 transition cursor-pointer shrink-0"
                 >
-                  <KeyRound className="w-3.5 h-3.5 text-[#0077C8]" aria-hidden="true" />
+                  <KeyRound className="w-3.5 h-3.5 text-[#6D48DF]" aria-hidden="true" />
                   <span>
                     {isPasswordFormOpen
                       ? t("Cancel", "Kanselahin")
@@ -511,12 +511,12 @@ export default function SettingsPage() {
               {isPasswordFormOpen && (
                 <form
                   onSubmit={handlePasswordSubmit}
-                  className="mt-3 rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5"
+                  className="mt-3 rounded-[12px] bg-[#FAF8FF] border border-[#E2DCF3] p-3.5 space-y-2.5"
                 >
                   <div>
                     <label
                       htmlFor="settings-current-password"
-                      className="block text-[11px] font-bold text-[#0F253E] mb-1"
+                      className="block text-[11px] font-bold text-[#231B3B] mb-1"
                     >
                       {t("Current password", "Kasalukuyang password")}
                     </label>
@@ -535,7 +535,7 @@ export default function SettingsPage() {
                           "Enter current password",
                           "Ilagay ang kasalukuyang password"
                         )}
-                        className="w-full rounded-[8px] border border-[#CBD5E1] bg-white pl-3 pr-9 py-2 text-[12px] text-[#0F253E] focus:border-[#0077C8] focus:outline-none"
+                        className="w-full rounded-[8px] border border-[#E2DCF3] bg-white pl-3 pr-9 py-2 text-[12px] text-[#231B3B] focus:border-[#6D48DF] focus:outline-none"
                       />
                       <button
                         type="button"
@@ -544,7 +544,7 @@ export default function SettingsPage() {
                           "Toggle current password visibility",
                           "Ipakita o itago ang kasalukuyang password"
                         )}
-                        className="absolute right-2.5 p-1 text-[#64748B] hover:text-[#0F253E] cursor-pointer"
+                        className="absolute right-2.5 p-1 text-[#766F8E] hover:text-[#231B3B] cursor-pointer"
                       >
                         {showCurrentPw ? (
                           <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
@@ -558,7 +558,7 @@ export default function SettingsPage() {
                   <div>
                     <label
                       htmlFor="settings-new-password"
-                      className="block text-[11px] font-bold text-[#0F253E] mb-1"
+                      className="block text-[11px] font-bold text-[#231B3B] mb-1"
                     >
                       {t("New password", "Bagong password")}
                     </label>
@@ -577,7 +577,7 @@ export default function SettingsPage() {
                           "At least 8 characters (letters & numbers)",
                           "Hindi bababa sa 8 karakter (titik at numero)"
                         )}
-                        className="w-full rounded-[8px] border border-[#CBD5E1] bg-white pl-3 pr-9 py-2 text-[12px] text-[#0F253E] focus:border-[#0077C8] focus:outline-none"
+                        className="w-full rounded-[8px] border border-[#E2DCF3] bg-white pl-3 pr-9 py-2 text-[12px] text-[#231B3B] focus:border-[#6D48DF] focus:outline-none"
                       />
                       <button
                         type="button"
@@ -586,7 +586,7 @@ export default function SettingsPage() {
                           "Toggle new password visibility",
                           "Ipakita o itago ang bagong password"
                         )}
-                        className="absolute right-2.5 p-1 text-[#64748B] hover:text-[#0F253E] cursor-pointer"
+                        className="absolute right-2.5 p-1 text-[#766F8E] hover:text-[#231B3B] cursor-pointer"
                       >
                         {showNewPw ? (
                           <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
@@ -614,7 +614,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={isSavingPassword}
-                      className="inline-flex items-center gap-1.5 rounded-[8px] bg-[#0077C8] hover:bg-[#0062A6] disabled:opacity-60 text-white font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-[8px] bg-[#6D48DF] hover:bg-[#5B36CA] disabled:opacity-60 text-white font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
                     >
                       {isSavingPassword && (
                         <Loader2
@@ -634,12 +634,12 @@ export default function SettingsPage() {
             </div>
 
             {/* Educator Account Sign Out */}
-            <div className="pt-3.5 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <div className="pt-3.5 border-t border-[#F2EEFB] flex items-center justify-between gap-3">
               <div>
-                <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                   {t("Teacher account", "Account ng guro")}
                 </p>
-                <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+                <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                   {t(
                     "Sign out of this educator session now.",
                     "Mag-sign out sa kasalukuyang sesyon ng guro."
@@ -661,21 +661,21 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* 5. Interactive Onboarding Walkthrough Hub (Signature Dark Navy & Cyan Glow Card) */}
+        {/* 5. Interactive Onboarding Walkthrough Hub (Signature Deep Plum & Lavender Glow Card) */}
         <section
           id="tour-settings-onboarding"
           aria-labelledby="onboarding-tour-settings-heading"
-          className="relative overflow-hidden lg:col-span-2 rounded-[18px] bg-[#0F233A] border border-[#38BDF8]/30 p-4 sm:p-6 text-white shadow-[0_12px_30px_rgba(15,35,58,0.2)] transition-colors duration-200"
+          className="relative overflow-hidden lg:col-span-2 rounded-[20px] bg-[#231B3B] border border-[#A78BFA]/30 p-4 sm:p-6 text-white shadow-[0_14px_34px_rgba(35,27,59,0.22)] transition-colors duration-200"
         >
-          {/* Ambient Cyan Radial Glow */}
+          {/* Ambient Violet Radial Glow */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-12 -right-10 w-52 h-52 rounded-full bg-[#0284C7]/25 blur-2xl"
+            className="pointer-events-none absolute -top-12 -right-10 w-52 h-52 rounded-full bg-[#6D48DF]/30 blur-2xl"
           />
 
           <div className="relative pb-4 border-b border-white/10 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#7DD3FC] text-[9.5px] font-extrabold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#6D48DF]/25 border border-[#A78BFA]/35 text-[#DDD6FE] text-[9.5px] font-extrabold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3 h-3" aria-hidden="true" />
                 <span>{t("WISHPIX ONBOARDING HUB", "SENTRO NG GABAY")}</span>
               </div>
@@ -688,7 +688,7 @@ export default function SettingsPage() {
                   "Interactive na Gabay sa Bawat Pahina"
                 )}
               </h2>
-              <p className="text-[11px] sm:text-[12px] text-[#94A8BE] mt-0.5 max-w-2xl">
+              <p className="text-[11px] sm:text-[12px] text-[#C4B5FD]/80 mt-0.5 max-w-2xl">
                 {t(
                   "Every module in WishPix includes a hands-on guided tour. Click any module below to jump straight into its interactive walkthrough.",
                   "Ang bawat bahagi ng WishPix ay may sariling interactive na gabay. Pumili ng pahina sa ibaba upang buksan ang gabay nito."
@@ -700,7 +700,7 @@ export default function SettingsPage() {
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold ${
                 completedPagesCount === totalTourPages
                   ? "bg-[#113934] text-[#4ADE80] border border-[#22C55E]/40"
-                  : "bg-[#0284C7]/20 text-[#7DD3FC] border border-[#38BDF8]/35"
+                  : "bg-[#6D48DF]/25 text-[#DDD6FE] border border-[#A78BFA]/35"
               }`}
             >
               <Compass className="w-3.5 h-3.5" aria-hidden="true" />
@@ -715,15 +715,15 @@ export default function SettingsPage() {
 
           {/* Progress Bar */}
           <div className="relative mt-4">
-            <div className="flex items-center justify-between text-[10.5px] font-bold text-[#B8CDE2] mb-1.5">
+            <div className="flex items-center justify-between text-[10.5px] font-bold text-[#DDD6FE] mb-1.5">
               <span>
                 {t("Educator Onboarding Progress", "Progreso ng Gabay ng Guro")}
               </span>
-              <span className="text-[#38BDF8]">{progressPercentage}%</span>
+              <span className="text-[#C4B5FD]">{progressPercentage}%</span>
             </div>
             <div className="w-full h-2 rounded-full bg-black/30 border border-white/10 overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#0077C8] to-[#38BDF8] transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-[#6D48DF] to-[#A78BFA] transition-all duration-300"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -741,14 +741,14 @@ export default function SettingsPage() {
                   className={`group text-left rounded-[11px] px-3 py-2.5 border transition cursor-pointer active:scale-[0.98] flex items-center justify-between gap-2 ${
                     isDone
                       ? "bg-white/10 hover:bg-white/15 border-white/20 text-white"
-                      : "bg-black/20 hover:bg-white/10 border-white/10 text-[#CBD5E1] hover:text-white"
+                      : "bg-black/20 hover:bg-white/10 border-white/10 text-[#DDD6FE] hover:text-white"
                   }`}
                 >
                   <div className="min-w-0">
                     <p className="text-[11px] font-bold truncate">
                       {t(meta.labelEn, meta.labelFil)}
                     </p>
-                    <p className="text-[9.5px] text-[#94A8BE] mt-0.5">
+                    <p className="text-[9.5px] text-[#C4B5FD]/75 mt-0.5">
                       {t(
                         `${meta.stepsCount} steps`,
                         `${meta.stepsCount} hakbang`
@@ -761,7 +761,7 @@ export default function SettingsPage() {
                       <Check className="w-3 h-3 stroke-[2.75]" aria-hidden="true" />
                     </span>
                   ) : (
-                    <span className="w-5 h-5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30 text-[#38BDF8] group-hover:bg-[#38BDF8] group-hover:text-[#0F233A] flex items-center justify-center shrink-0 transition-colors">
+                    <span className="w-5 h-5 rounded-full bg-[#A78BFA]/20 border border-[#A78BFA]/35 text-[#DDD6FE] group-hover:bg-[#A78BFA] group-hover:text-[#231B3B] flex items-center justify-center shrink-0 transition-colors">
                       <Play className="w-2.5 h-2.5 fill-current" aria-hidden="true" />
                     </span>
                   )}
@@ -772,7 +772,7 @@ export default function SettingsPage() {
 
           {/* Bottom Action Controls */}
           <div className="relative mt-4 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <p className="text-[11px] text-[#94A8BE]">
+            <p className="text-[11px] text-[#C4B5FD]/80">
               {t(
                 "Tip: Click the 'Tour' pill in the top bar anytime to replay the guide for the page you are viewing.",
                 "Tip: Pindutin ang 'Gabay' button sa itaas anumang oras upang ulitin ang paliwanag sa pahina."
@@ -783,7 +783,7 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={resetAndReplayTour}
-                className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0284C7] border border-[#38BDF8]/40 text-white font-bold text-[12px] px-4 py-2 shadow-[0_4px_12px_rgba(2,132,199,0.3)] transition cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] border border-[#A78BFA]/40 text-white font-bold text-[12px] px-4 py-2 shadow-[0_4px_12px_rgba(109,72,223,0.35)] transition cursor-pointer active:scale-95"
               >
                 <Compass className="w-4 h-4" aria-hidden="true" />
                 <span>{t("Tour This Page", "Gabay sa Pahinang Ito")}</span>
@@ -792,7 +792,7 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={resetAllPageTours}
-                className="inline-flex items-center gap-1.5 rounded-[10px] bg-white/10 hover:bg-white/15 border border-white/15 text-[#E2E8F0] font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-[10px] bg-white/10 hover:bg-white/15 border border-white/15 text-[#EDE7FC] font-bold text-[11.5px] px-3.5 py-2 transition cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>
@@ -806,17 +806,17 @@ export default function SettingsPage() {
         {/* 6. App & Browser Access Card (Full Width on Desktop) */}
         <section
           aria-labelledby="app-access-settings-heading"
-          className="lg:col-span-2 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+          className="lg:col-span-2 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
-          <div className="pb-3 border-b border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2">
+          <div className="pb-3 border-b border-[#F2EEFB] flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2
                 id="app-access-settings-heading"
-                className="text-[14px] sm:text-[15.5px] font-extrabold text-[#0F253E]"
+                className="text-[14px] sm:text-[15.5px] font-extrabold text-[#231B3B]"
               >
                 {t("App & Browser Access", "Pag-access sa App at Browser")}
               </h2>
-              <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+              <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
                 {t(
                   "Choose whether to use WishPix as a downloaded standalone app or inside your web browser.",
                   "Piliin kung gagamitin ang WishPix bilang naka-download na app o sa loob ng iyong web browser."
@@ -828,7 +828,7 @@ export default function SettingsPage() {
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
                 isStandalone || isInstalled
                   ? "bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]"
-                  : "bg-[#F0F7FF] text-[#0066B2] border border-[#BAE0FD]"
+                  : "bg-[#EFE9FC] text-[#6D48DF] border border-[#D8CEFA]"
               }`}
             >
               {isStandalone || isInstalled ? (
@@ -851,7 +851,7 @@ export default function SettingsPage() {
 
           <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
-              <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+              <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                 {isStandalone
                   ? t(
                       "WishPix is installed on this device",
@@ -862,7 +862,7 @@ export default function SettingsPage() {
                       "I-download ang WishPix Teacher App"
                     )}
               </p>
-              <p className="text-[11px] sm:text-[11.5px] text-[#64748B]">
+              <p className="text-[11px] sm:text-[11.5px] text-[#766F8E]">
                 {isStandalone
                   ? t(
                       "You are currently accessing WishPix through the standalone desktop/mobile app.",
@@ -880,7 +880,7 @@ export default function SettingsPage() {
                 <button
                   type="button"
                   onClick={() => triggerInstall()}
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#0077C8] hover:bg-[#0062A6] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer active:scale-95"
+                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer active:scale-95"
                 >
                   <Download className="w-4 h-4" aria-hidden="true" />
                   <span>
@@ -893,7 +893,7 @@ export default function SettingsPage() {
                 <button
                   type="button"
                   onClick={handleResetAccessPreference}
-                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] font-bold text-[11.5px] px-3.5 py-2.5 transition cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#FAF8FF] hover:bg-[#EFE9FC] border border-[#E2DCF3] text-[#4A4168] font-bold text-[11.5px] px-3.5 py-2.5 transition cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>

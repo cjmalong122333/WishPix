@@ -46,11 +46,11 @@ export function QuickActionsPanel({
       <div className="mb-2.5 sm:mb-3">
         <h2
           id="quick-actions-heading"
-          className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
+          className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#6D48DF]"
         >
           {t("QUICK ACTIONS", "MABILISANG AKSYON")}
         </h2>
-        <p className="text-[10.5px] sm:text-[12px] text-[#94A3B8] mt-0.5">
+        <p className="text-[10.5px] sm:text-[12px] text-[#766F8E] mt-0.5">
           {t(
             "Control the current session.",
             "Kontrolin ang kasalukuyang sesyon."
@@ -62,7 +62,7 @@ export function QuickActionsPanel({
         <div
           role="status"
           aria-live="polite"
-          className="mb-3 rounded-[10px] bg-[#E6F2FF] border border-[#B9DCFF] px-3.5 py-2 text-[11.5px] font-semibold text-[#005A9C]"
+          className="mb-3 rounded-[12px] bg-[#EFE9FC] border border-[#D5C5F7] px-3.5 py-2 text-[11.5px] font-semibold text-[#6D48DF]"
         >
           {feedbackMessage}
         </div>
@@ -76,10 +76,10 @@ export function QuickActionsPanel({
               <Link
                 key={action.id}
                 href={action.href ?? "/session-setup"}
-                className="w-full rounded-[14px] bg-[#0077C8] hover:opacity-95 active:scale-[0.99] px-4 py-3.5 sm:py-4 text-white shadow-[0_6px_16px_rgba(0,119,200,0.22)] flex items-center justify-between gap-3 transition"
+                className="w-full rounded-[18px] bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-[0.99] px-4 py-3.5 sm:py-4 text-white shadow-[0_6px_18px_rgba(109,72,223,0.24)] flex items-center justify-between gap-3 transition"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-9 h-9 rounded-[10px] bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-[11px] bg-white/20 flex items-center justify-center flex-shrink-0">
                     <Play
                       className="w-4 h-4 text-white fill-white"
                       aria-hidden="true"
@@ -108,7 +108,7 @@ export function QuickActionsPanel({
               ? "bg-[#FFE4E6] text-[#E11D48]"
               : action.variant === "muted-amber"
                 ? "bg-[#FEF3C7] text-[#D97706]"
-                : "bg-[#F1F5F9] text-[#475569]";
+                : "bg-[#EFE9FC] text-[#6D48DF]";
 
           return (
             <button
@@ -116,10 +116,10 @@ export function QuickActionsPanel({
               type="button"
               data-tour-action="true"
               onClick={() => handleActionClick(action)}
-              className="w-full rounded-[14px] bg-white hover:bg-[#F8FAFC] border border-[#E6EDF5] px-4 py-3 sm:py-3.5 text-left flex items-center gap-3.5 shadow-[0_1px_4px_rgba(15,37,62,0.02)] transition cursor-pointer"
+              className="w-full rounded-[18px] bg-white hover:bg-[#FAF8FF] border border-[#F2EEFB] px-4 py-3 sm:py-3.5 text-left flex items-center gap-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.03)] transition cursor-pointer"
             >
               <div
-                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] flex items-center justify-center flex-shrink-0 ${iconBoxStyle}`}
+                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 ${iconBoxStyle}`}
               >
                 {action.icon === "pause" && (
                   <Pause
@@ -142,10 +142,10 @@ export function QuickActionsPanel({
               </div>
 
               <div className="min-w-0">
-                <p className="text-[12px] sm:text-[13px] font-bold text-[#334E68] leading-snug">
+                <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B] leading-snug">
                   {action.title}
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-[#94A3B8] truncate mt-0.5">
+                <p className="text-[10px] sm:text-[11px] text-[#766F8E] truncate mt-0.5">
                   {action.description}
                 </p>
               </div>
@@ -155,9 +155,9 @@ export function QuickActionsPanel({
       </div>
 
       {/* Bottom Next Step Prompt Banner */}
-      <div className="mt-3 sm:mt-4 rounded-[12px] border border-[#D8E8F8] bg-[#EBF4FC] px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-3">
-        <p className="text-[10.5px] sm:text-[12px] font-medium text-[#334E68] flex items-center gap-1.5">
-          <span className="text-[#94A3B8] font-bold" aria-hidden="true">
+      <div className="mt-3 sm:mt-4 rounded-[14px] border border-[#E2D6FA] bg-[#EFE9FC] px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-3">
+        <p className="text-[10.5px] sm:text-[12px] font-medium text-[#231B3B] flex items-center gap-1.5">
+          <span className="text-[#6D48DF] font-bold" aria-hidden="true">
             &gt;
           </span>
           <span>
@@ -169,7 +169,7 @@ export function QuickActionsPanel({
         </p>
         <Link
           href="/session-setup"
-          className="text-[10.5px] sm:text-[12px] font-bold text-[#0077C8] hover:underline inline-flex items-center gap-1 flex-shrink-0"
+          className="text-[10.5px] sm:text-[12px] font-bold text-[#6D48DF] hover:underline inline-flex items-center gap-1 flex-shrink-0"
         >
           <span>{t("Plan activity", "Planuhin ang aktibidad")}</span>
           <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />

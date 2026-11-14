@@ -89,23 +89,23 @@ export function InstallPrompt() {
       aria-modal="true"
       aria-labelledby="phone-install-popup-title"
       aria-describedby="phone-install-popup-description"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#061220]/75 backdrop-blur-xs animate-[wishpix-fade-in_200ms_ease-out_both]"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231B3B]/70 backdrop-blur-xs animate-[wishpix-fade-in_200ms_ease-out_both]"
     >
-      <div className="relative w-full max-w-[360px] overflow-hidden rounded-[20px] bg-[#0F233A] border border-[#38BDF8]/40 p-5 text-white shadow-[0_24px_48px_rgba(4,12,24,0.72)] animate-[wishpix-popover-enter_240ms_cubic-bezier(0.22,1,0.36,1)_both]">
-        {/* Ambient Cyan Glow */}
+      <div className="relative w-full max-w-[360px] overflow-hidden rounded-[22px] bg-[#231B3B] border border-[#A78BFA]/40 p-5 text-white shadow-[0_24px_48px_rgba(20,12,42,0.72)] animate-[wishpix-popover-enter_240ms_cubic-bezier(0.22,1,0.36,1)_both]">
+        {/* Ambient Violet Glow */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-12 -right-12 w-36 h-36 rounded-full bg-[#0284C7]/25 blur-2xl"
+          className="pointer-events-none absolute -top-12 -right-12 w-36 h-36 rounded-full bg-[#6D48DF]/30 blur-2xl"
         />
 
         <div className="relative flex flex-col items-center text-center">
           {/* Phone App Icon Badge */}
-          <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#0077C8] to-[#085081] border border-[#38BDF8]/45 text-white flex items-center justify-center shadow-[0_6px_18px_rgba(2,132,199,0.4)]">
+          <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#6D48DF] to-[#5333B8] border border-[#A78BFA]/45 text-white flex items-center justify-center shadow-[0_6px_18px_rgba(109,72,223,0.4)]">
             <Smartphone className="w-6 h-6" aria-hidden="true" />
           </div>
 
           {/* Pill Badge */}
-          <div className="mt-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#7DD3FC] text-[10px] font-extrabold uppercase tracking-wider">
+          <div className="mt-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#6D48DF]/30 border border-[#A78BFA]/35 text-[#DDD6FE] text-[10px] font-extrabold uppercase tracking-wider">
             <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
             <span>{t("Mobile App Available", "May Mobile App")}</span>
           </div>
@@ -120,7 +120,7 @@ export function InstallPrompt() {
 
           <p
             id="phone-install-popup-description"
-            className="mt-1.5 text-[12.5px] text-[#B8CDE2] leading-relaxed"
+            className="mt-1.5 text-[12.5px] text-[#C4B5FD] leading-relaxed"
           >
             {t(
               "Do you want to install the WishPix app on your phone?",
@@ -134,7 +134,7 @@ export function InstallPrompt() {
               type="button"
               onClick={handleNo}
               disabled={isInstalling}
-              className="w-full rounded-[12px] bg-white/8 hover:bg-white/14 active:scale-[0.98] disabled:opacity-60 border border-white/15 text-[#CBD5E1] hover:text-white font-bold text-[13.5px] py-2.5 px-4 transition cursor-pointer"
+              className="w-full rounded-[12px] bg-white/10 hover:bg-white/15 active:scale-[0.98] disabled:opacity-60 border border-white/15 text-[#DDD6FE] hover:text-white font-bold text-[13.5px] py-2.5 px-4 transition cursor-pointer"
             >
               {t("No", "Hindi")}
             </button>
@@ -143,7 +143,7 @@ export function InstallPrompt() {
               type="button"
               onClick={handleYes}
               disabled={isInstalling}
-              className="w-full inline-flex items-center justify-center gap-1.5 rounded-[12px] bg-[#0077C8] hover:bg-[#0284C7] active:scale-[0.98] disabled:opacity-60 border border-[#38BDF8]/45 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_4px_14px_rgba(2,132,199,0.4)] transition cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-[0.98] disabled:opacity-60 border border-[#A78BFA]/45 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_4px_14px_rgba(109,72,223,0.4)] transition cursor-pointer"
             >
               <Download
                 className="w-3.5 h-3.5 stroke-[2.3]"

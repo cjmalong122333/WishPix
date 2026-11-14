@@ -72,25 +72,25 @@ export default function LiveSessionPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
-      {/* Top Dark Navy Live Session Monitor Banner */}
+      {/* Top Deep Plum Live Session Monitor Banner */}
       <section
         id="tour-live-banner"
         aria-label="Live Session Monitor"
-        className="relative overflow-hidden rounded-[18px] bg-[#0F233A] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(15,35,58,0.18)] transition-colors duration-200"
+        className="relative overflow-hidden rounded-[20px] bg-[#231B3B] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(35,27,59,0.2)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-10 -right-8 w-44 h-44 rounded-full bg-[#0284C7]/25 blur-2xl"
+          className="pointer-events-none absolute -bottom-10 -right-8 w-44 h-44 rounded-full bg-[#6D48DF]/30 blur-2xl"
         />
 
         {/* Top Row */}
         <div className="relative flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <Activity
-              className="w-3.5 h-3.5 text-[#38BDF8] stroke-[2.2] flex-shrink-0"
+              className="w-3.5 h-3.5 text-[#A78BFA] stroke-[2.2] flex-shrink-0"
               aria-hidden="true"
             />
-            <p className="text-[9.5px] sm:text-[10.5px] font-bold tracking-[0.12em] text-[#CBD5E1] uppercase truncate">
+            <p className="text-[9.5px] sm:text-[10.5px] font-bold tracking-[0.12em] text-[#E2DCF3] uppercase truncate">
               {t("LIVE SESSION", "LIVE NA SESYON")} •{" "}
               {KIOSK_INFO.roomName.toUpperCase()}
             </p>
@@ -121,7 +121,7 @@ export default function LiveSessionPage() {
             <h1 className="text-[16px] sm:text-[20px] font-extrabold text-white tracking-tight">
               {t("Live Session Monitor", "Monitor ng Live na Sesyon")}
             </h1>
-            <p className="text-[11px] sm:text-[12.5px] text-[#94A8BE] mt-1 leading-relaxed max-w-xl">
+            <p className="text-[11px] sm:text-[12.5px] text-[#C4B5FD] mt-1 leading-relaxed max-w-xl">
               {t(
                 "Watch children use the kiosk in real time and manage safety filters.",
                 "Subaybayan ang paggamit ng mga bata sa kiosk nang real-time at pamahalaan ang safety filters."
@@ -133,7 +133,7 @@ export default function LiveSessionPage() {
             <button
               type="button"
               onClick={handlePauseSession}
-              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-white/15 hover:bg-white/25 border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[12px] bg-white/15 hover:bg-white/25 border border-white/15 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 transition flex-shrink-0 cursor-pointer"
             >
               <Pause className="w-3.5 h-3.5 fill-white text-white" />
               <span>{t("Pause Session", "I-pause ang Sesyon")}</span>
@@ -141,7 +141,7 @@ export default function LiveSessionPage() {
           ) : (
             <Link
               href="/session-setup"
-              className="w-full lg:w-auto lg:min-w-[180px] rounded-[10px] bg-[#0077C8] hover:opacity-95 text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,119,200,0.3)] transition flex-shrink-0"
+              className="w-full lg:w-auto lg:min-w-[180px] rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white text-[12px] sm:text-[13px] font-bold py-2.5 px-5 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(109,72,223,0.35)] transition flex-shrink-0"
             >
               <Play
                 className="w-3.5 h-3.5 fill-white text-white"
@@ -161,16 +161,16 @@ export default function LiveSessionPage() {
           <section
             id="tour-live-pipeline"
             aria-labelledby="current-status-heading"
-            className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <div className="flex items-center justify-between">
               <h2
                 id="current-status-heading"
-                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
+                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
               >
                 {t("CURRENT STATUS", "KASALUKUYANG STATUS")}
               </h2>
-              <span className="rounded-full bg-[#F1F5F9] px-2.5 py-0.5 text-[10px] font-bold text-[#475569]">
+              <span className="rounded-full bg-[#EFE9FC] px-2.5 py-0.5 text-[10px] font-bold text-[#6D48DF]">
                 {isSessionActive
                   ? (LIVE_STATUS_STAGES.find((s) => s.step === activeStage)
                       ?.label ?? "Waiting")
@@ -192,8 +192,8 @@ export default function LiveSessionPage() {
                     <div
                       className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center transition ${
                         isActive
-                          ? "bg-[#0077C8] text-white shadow-xs"
-                          : "bg-[#F1F5F9] text-[#94A3B8] group-hover:bg-[#E2E8F0]"
+                          ? "bg-[#6D48DF] text-white shadow-xs"
+                          : "bg-[#F5F1FE] text-[#8881A3] group-hover:bg-[#EDE7FC]"
                       }`}
                     >
                       {stage.step}
@@ -201,8 +201,8 @@ export default function LiveSessionPage() {
                     <span
                       className={`mt-1.5 text-[9.5px] sm:text-[10.5px] ${
                         isActive
-                          ? "font-bold text-[#0F253E]"
-                          : "font-medium text-[#94A3B8]"
+                          ? "font-bold text-[#231B3B]"
+                          : "font-medium text-[#8881A3]"
                       }`}
                     >
                       {stage.label}
@@ -217,29 +217,29 @@ export default function LiveSessionPage() {
           <section
             id="tour-live-queue"
             aria-labelledby="current-queue-heading"
-            className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <div className="flex items-center justify-between mb-3">
               <h2
                 id="current-queue-heading"
-                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
+                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
               >
                 {t("CURRENT QUEUE", "KASALUKUYANG PILA")}
               </h2>
-              <span className="text-[10.5px] sm:text-[11px] font-medium text-[#94A3B8]">
+              <span className="text-[10.5px] sm:text-[11px] font-medium text-[#8881A3]">
                 {t("0 children waiting", "0 bata ang naghihintay")}
               </span>
             </div>
 
-            <div className="rounded-[12px] bg-[#F4F7FA] py-5 sm:py-6 px-4 flex flex-col items-center text-center">
+            <div className="rounded-[14px] bg-[#FAF8FF] border border-[#F2EEFB] py-5 sm:py-6 px-4 flex flex-col items-center text-center">
               <UserPlus
-                className="w-6 h-6 text-[#CBD5E1] stroke-[1.8]"
+                className="w-6 h-6 text-[#C4B5FD] stroke-[1.8]"
                 aria-hidden="true"
               />
-              <p className="mt-2 text-[11.5px] sm:text-[12.5px] font-bold text-[#334E68]">
+              <p className="mt-2 text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B]">
                 {t("No children in the queue", "Walang bata sa pila")}
               </p>
-              <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#94A3B8]">
+              <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#766F8E]">
                 {t(
                   "Kiosk is ready for the next participant.",
                   "Handa na ang kiosk para sa susunod na kalahok."
@@ -247,7 +247,7 @@ export default function LiveSessionPage() {
               </p>
             </div>
 
-            <p className="mt-2.5 text-center text-[9.5px] sm:text-[10.5px] italic text-[#94A3B8]">
+            <p className="mt-2.5 text-center text-[9.5px] sm:text-[10.5px] italic text-[#8881A3]">
               {t(
                 "Children are numbered by position only. No names are stored.",
                 "Naka-numero lamang ang mga bata ayon sa pila. Walang pangalang iniimbak."
@@ -265,11 +265,11 @@ export default function LiveSessionPage() {
           <div className="flex items-center justify-between mb-2.5 sm:mb-3">
             <h2
               id="live-feed-heading"
-              className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748B]"
+              className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
             >
               {t("LIVE GENERATION FEED", "LIVE GENERATION FEED")}
             </h2>
-            <span className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8]">
+            <span className="text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF]">
               {t("Updated live", "Live na ina-update")}
             </span>
           </div>
@@ -283,28 +283,28 @@ export default function LiveSessionPage() {
                   ? "bg-[#FFE4E6] text-[#E11D48]"
                   : item.badgeVariant === "success"
                     ? "bg-[#DCFCE7] text-[#15803D]"
-                    : "bg-[#E0F2FE] text-[#0284C7]";
+                    : "bg-[#EDE7FC] text-[#6D48DF]";
 
               const iconBoxClass =
                 item.icon === "ban"
                   ? "bg-[#FFF1F2] text-[#E11D48]"
                   : item.icon === "plane"
                     ? "bg-[#DCFCE7] text-[#15803D]"
-                    : "bg-[#E0F2FE] text-[#0284C7]";
+                    : "bg-[#EDE7FC] text-[#6D48DF]";
 
               return (
                 <article
                   key={item.id}
-                  className={`rounded-[14px] bg-white p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.02)] ${
+                  className={`rounded-[16px] bg-white p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)] ${
                     isDanger
                       ? "border-[1.5px] border-[#FDA4AF]"
-                      : "border border-[#E6EDF5]"
+                      : "border border-[#F2EEFB]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-3 min-w-0">
                       <div
-                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] flex items-center justify-center flex-shrink-0 ${iconBoxClass}`}
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 ${iconBoxClass}`}
                       >
                         {item.icon === "ban" && (
                           <Ban
@@ -328,7 +328,7 @@ export default function LiveSessionPage() {
 
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <h3 className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                          <h3 className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                             {item.title}
                           </h3>
                           <span
@@ -337,20 +337,20 @@ export default function LiveSessionPage() {
                             {item.badgeText}
                           </span>
                         </div>
-                        <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
+                        <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E] mt-0.5">
                           {item.subtitle}
                         </p>
                       </div>
                     </div>
 
-                    <span className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8] flex-shrink-0">
+                    <span className="text-[9.5px] sm:text-[10.5px] text-[#8881A3] flex-shrink-0">
                       {item.timestamp}
                     </span>
                   </div>
 
                   {item.requiresAction && (
                     <div className="mt-3 pt-2.5 border-t border-[#FFF1F2] flex items-center justify-between gap-2">
-                      <span className="text-[10px] sm:text-[11px] font-medium text-[#64748B]">
+                      <span className="text-[10px] sm:text-[11px] font-medium text-[#766F8E]">
                         {item.actionNote}
                       </span>
 

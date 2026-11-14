@@ -4,12 +4,12 @@ export function WishPixHero() {
   return (
     <div className="flex flex-col items-center text-center select-none">
       {/* Top Overline */}
-      <p className="text-[9.5px] sm:text-[11px] lg:text-[12px] font-bold tracking-[0.16em] text-[#155E95] uppercase mb-3.5 lg:mb-5">
+      <p className="text-[9.5px] sm:text-[11px] lg:text-[12px] font-extrabold tracking-[0.16em] text-[#6D48DF] uppercase mb-3.5 lg:mb-5">
         LOCAL. SECURE. MADE FOR TEACHERS.
       </p>
 
       {/* Dark Rounded Square Badge with Teacher & Classroom Kiosk Illustration */}
-      <div className="w-[104px] h-[96px] sm:w-[120px] sm:h-[110px] lg:w-[152px] lg:h-[140px] rounded-[16px] lg:rounded-[22px] bg-[#0B1F35] shadow-[0_12px_28px_rgba(9,30,54,0.28)] border border-white/10 flex items-center justify-center p-2.5 lg:p-3.5">
+      <div className="w-[104px] h-[96px] sm:w-[120px] sm:h-[110px] lg:w-[152px] lg:h-[140px] rounded-[18px] lg:rounded-[24px] bg-[#231B3B] shadow-[0_12px_28px_rgba(35,27,59,0.24)] border border-[#A78BFA]/20 flex items-center justify-center p-2.5 lg:p-3.5">
         <svg
           viewBox="0 0 120 108"
           fill="none"
@@ -115,15 +115,15 @@ export function WishPixHero() {
         </svg>
       </div>
 
-      {/* Main Blue Title */}
-      <h1 className="mt-3.5 lg:mt-5 text-[20px] sm:text-[24px] lg:text-[30px] font-extrabold tracking-tight text-[#0077C8] leading-[1.2]">
+      {/* Main Violet Title */}
+      <h1 className="mt-3.5 lg:mt-5 text-[20px] sm:text-[24px] lg:text-[30px] font-extrabold tracking-tight text-[#231B3B] leading-[1.2]">
         Welcome to the WishPix
         <br />
         Teacher App
       </h1>
 
       {/* Subtitle */}
-      <p className="mt-1 lg:mt-2 text-[11.5px] sm:text-[13px] lg:text-[14.5px] font-medium text-[#1D78C1]">
+      <p className="mt-1 lg:mt-2 text-[11.5px] sm:text-[13px] lg:text-[14.5px] font-semibold text-[#6D48DF]">
         Small voices. Big imagination.
       </p>
     </div>

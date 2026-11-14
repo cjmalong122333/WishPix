@@ -100,15 +100,15 @@ export default function ActivityLogsPage() {
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* Top White Insights Header Card */}
-      <section className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]">
-        <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#0077C8]">
+      <section className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#6D48DF]">
           <History className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           <span>{t("INSIGHTS", "MGA INSIGHT")}</span>
         </div>
-        <h1 className="text-[18px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#0F253E] tracking-tight mt-1">
+        <h1 className="text-[18px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#231B3B] tracking-tight mt-1">
           {t("Activity Logs", "Talaan ng Aktibidad")}
         </h1>
-        <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
+        <p className="text-[11px] sm:text-[12.5px] text-[#766F8E] mt-0.5">
           {t(
             "Historical usage without any child names.",
             "Talaan ng paggamit nang walang pangalan ng mga bata."
@@ -120,14 +120,14 @@ export default function ActivityLogsPage() {
       <section
         id="tour-logs-filter-bar"
         aria-label="Filter and export activity logs"
-        className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_8px_rgba(15,37,62,0.03)]"
+        className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
       >
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-[12.5px] sm:text-[14px] font-extrabold text-[#0F253E]">
+            <h2 className="text-[12.5px] sm:text-[14px] font-extrabold text-[#231B3B]">
               {t("Historical usage", "Kasaysayan ng paggamit")}
             </h2>
-            <p className="text-[10px] sm:text-[11px] text-[#94A3B8] mt-0.5">
+            <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-0.5">
               {totalRecords} {t("records", "rekord")}
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function ActivityLogsPage() {
             id="tour-logs-export-btn"
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
             <span>{t("Export CSV", "I-export ang CSV")}</span>
@@ -148,7 +148,7 @@ export default function ActivityLogsPage() {
           <div>
             <label
               htmlFor="activity-filter"
-              className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] mb-1"
+              className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#8881A3] mb-1"
             >
               {t("ACTIVITY", "AKTIBIDAD")}
             </label>
@@ -160,7 +160,7 @@ export default function ActivityLogsPage() {
                   setActivityFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full appearance-none rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] pl-3 pr-8 py-2 text-[11px] sm:text-[12px] font-semibold text-[#0F253E] focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
+                className="w-full appearance-none rounded-[10px] border border-[#E2DCF3] bg-[#FAF8FF] pl-3 pr-8 py-2 text-[11px] sm:text-[12px] font-semibold text-[#231B3B] focus:bg-white focus:outline-none focus:border-[#6D48DF] cursor-pointer"
               >
                 {ACTIVITY_FILTERS.map((act) => (
                   <option key={act} value={act}>
@@ -169,7 +169,7 @@ export default function ActivityLogsPage() {
                 ))}
               </select>
               <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#64748B]"
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#766F8E]"
                 aria-hidden="true"
               />
             </div>
@@ -178,7 +178,7 @@ export default function ActivityLogsPage() {
           <div>
             <label
               htmlFor="theme-filter"
-              className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] mb-1"
+              className="block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.1em] text-[#8881A3] mb-1"
             >
               {t("THEME", "TEMA")}
             </label>
@@ -190,7 +190,7 @@ export default function ActivityLogsPage() {
                   setThemeFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full appearance-none rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] pl-3 pr-8 py-2 text-[11px] sm:text-[12px] font-semibold text-[#0F253E] focus:bg-white focus:outline-none focus:border-[#0077C8] cursor-pointer"
+                className="w-full appearance-none rounded-[10px] border border-[#E2DCF3] bg-[#FAF8FF] pl-3 pr-8 py-2 text-[11px] sm:text-[12px] font-semibold text-[#231B3B] focus:bg-white focus:outline-none focus:border-[#6D48DF] cursor-pointer"
               >
                 {THEME_FILTERS.map((thm) => (
                   <option key={thm} value={thm}>
@@ -199,7 +199,7 @@ export default function ActivityLogsPage() {
                 ))}
               </select>
               <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#64748B]"
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#766F8E]"
                 aria-hidden="true"
               />
             </div>
@@ -220,20 +220,20 @@ export default function ActivityLogsPage() {
               ? "bg-[#F0FDF4] border border-[#BBF7D0] text-[#15803D]"
               : record.printStatus === "Failed"
                 ? "bg-[#FFE4E6] border border-[#FECDD3] text-[#E11D48]"
-                : "bg-[#F1F5F9] border border-[#E2E8F0] text-[#475569]";
+                : "bg-[#FAF8FF] border border-[#E2DCF3] text-[#4A4168]";
 
           return (
             <article
               key={record.id}
-              className="rounded-[14px] bg-white border border-[#E6EDF5] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(15,37,62,0.02)]"
+              className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
             >
               {/* Top Row */}
-              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#F1F5F9]">
-                <p className="text-[11px] sm:text-[12px] text-[#64748B]">
-                  <span className="font-extrabold text-[#0F253E]">
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#F2EEFB]">
+                <p className="text-[11px] sm:text-[12px] text-[#766F8E]">
+                  <span className="font-extrabold text-[#231B3B]">
                     {record.date}
                   </span>{" "}
-                  <span className="mx-1 text-[#CBD5E1]">•</span>
+                  <span className="mx-1 text-[#D8CEFA]">•</span>
                   <span>{record.time}</span>
                 </p>
 
@@ -265,19 +265,19 @@ export default function ActivityLogsPage() {
               {/* Bottom Row */}
               <div className="pt-2.5 grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                  <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                     {t("THEME", "TEMA")}
                   </p>
-                  <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                  <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                     {record.theme}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                  <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                     {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                   </p>
-                  <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                  <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                     {record.activityType}
                   </p>
                 </div>
@@ -290,16 +290,16 @@ export default function ActivityLogsPage() {
       {/* Pagination Footer Card */}
       <div
         id="tour-logs-pagination"
-        className="rounded-[14px] bg-white border border-[#E6EDF5] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_2px_8px_rgba(15,37,62,0.02)]"
+        className="rounded-[16px] bg-white border border-[#F2EEFB] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
       >
-        <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B]">
+        <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E]">
           {t("Showing", "Ipinapakita")}{" "}
-          <span className="font-semibold text-[#0F253E]">
+          <span className="font-semibold text-[#231B3B]">
             {totalRecords === 0 ? 0 : startIndex + 1}–
             {Math.min(startIndex + PAGE_SIZE, totalRecords)}
           </span>{" "}
           {t("of", "ng")}{" "}
-          <span className="font-semibold text-[#0F253E]">{totalRecords}</span>
+          <span className="font-semibold text-[#231B3B]">{totalRecords}</span>
         </p>
 
         <div className="flex items-center gap-2">
@@ -307,7 +307,7 @@ export default function ActivityLogsPage() {
             type="button"
             disabled={safePage <= 1}
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="rounded-[9px] border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F1F5F9] disabled:opacity-45 disabled:pointer-events-none px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-semibold text-[#64748B] transition cursor-pointer"
+            className="rounded-[9px] border border-[#E2DCF3] bg-[#FAF8FF] hover:bg-[#EFE9FC] disabled:opacity-45 disabled:pointer-events-none px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-semibold text-[#766F8E] transition cursor-pointer"
           >
             {t("Previous", "Nakaraan")}
           </button>
@@ -316,7 +316,7 @@ export default function ActivityLogsPage() {
             type="button"
             disabled={safePage >= totalPages}
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            className="rounded-[9px] border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] disabled:opacity-45 disabled:pointer-events-none px-3.5 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#0F253E] transition cursor-pointer"
+            className="rounded-[9px] border border-[#E2DCF3] bg-white hover:bg-[#FAF8FF] disabled:opacity-45 disabled:pointer-events-none px-3.5 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#231B3B] transition cursor-pointer"
           >
             {t("Next", "Susunod")}
           </button>

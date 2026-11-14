@@ -93,29 +93,29 @@ export function ConnectionCheckCard() {
       href={targetDashboardUrl}
       aria-labelledby="system-check-heading"
       title="Tap to continue to Dashboard"
-      className="block w-full rounded-[16px] bg-[#162F4D] border border-white/25 px-5 sm:px-6 pt-5 pb-5 text-white shadow-[0_18px_38px_rgba(7,22,40,0.42)] cursor-pointer no-underline"
+      className="block w-full rounded-[24px] bg-white border border-[#F2EEFB] px-6 sm:px-8 pt-6 pb-6 text-[#231B3B] shadow-[0_8px_30px_rgba(109,72,223,0.06)] cursor-pointer no-underline"
     >
       {/* Card Top Brand */}
-      <p className="text-[15px] sm:text-[16px] font-bold text-white text-center tracking-tight mb-3">
+      <p className="text-[15px] sm:text-[16px] font-extrabold text-[#231B3B] text-center tracking-tight mb-3">
         WishPix
       </p>
 
       {/* Overline & Heading */}
-      <p className="text-[9px] sm:text-[9.5px] font-semibold tracking-[0.14em] text-[#94A8BE] uppercase">
+      <p className="text-[9px] sm:text-[9.5px] font-extrabold tracking-[0.14em] text-[#6D48DF] uppercase">
         SYSTEM CHECK
       </p>
       <h2
         id="system-check-heading"
-        className="text-[19px] sm:text-[21px] font-bold text-white tracking-tight mt-0.5 leading-snug"
+        className="text-[19px] sm:text-[21px] font-extrabold text-[#231B3B] tracking-tight mt-0.5 leading-snug"
       >
         Getting ready...
       </h2>
-      <p className="text-[10.5px] sm:text-[11px] text-[#8FA5BC] mt-1">
+      <p className="text-[10.5px] sm:text-[11px] text-[#766F8E] mt-1 font-medium">
         Making sure everything is connected before starting
       </p>
 
       {/* Divider Line */}
-      <hr className="border-t border-white/20 my-3.5" />
+      <hr className="border-t border-[#F3EFFC] my-4" />
 
       {/* Connection Status Checklist */}
       <ul className="space-y-3.5">
@@ -125,7 +125,7 @@ export function ConnectionCheckCard() {
       </ul>
 
       {/* Bottom Note */}
-      <p className="text-[9.5px] sm:text-[10px] font-medium text-[#B0C4D8] mt-4">
+      <p className="text-[9.5px] sm:text-[10px] font-semibold text-[#7A7393] mt-4">
         {isAllReady
           ? "All systems are ready, redirecting to dashboard..."
           : "This only takes a moment."}
@@ -141,31 +141,31 @@ function ConnectionRow({ item }: { item: ConnectionCheckItem }) {
     <li className="flex items-center gap-3">
       <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
         {isOnline && (
-          <span className="w-5 h-5 rounded-full bg-[#22C55E] flex items-center justify-center text-white shadow-[0_0_8px_rgba(34,197,94,0.45)]">
+          <span className="w-5 h-5 rounded-full bg-[#22C55E] flex items-center justify-center text-white shadow-[0_0_8px_rgba(34,197,94,0.35)]">
             <Check className="w-3 h-3 stroke-[3]" aria-hidden="true" />
           </span>
         )}
         {item.state === "checking" && (
           <span
-            className="w-5 h-5 rounded-full border-[1.75px] border-[#94A8BE] border-t-white animate-spin"
+            className="w-5 h-5 rounded-full border-[1.75px] border-[#E2DCF3] border-t-[#6D48DF] animate-spin"
             aria-hidden="true"
           />
         )}
         {item.state === "waiting" && (
           <span
-            className="w-5 h-5 rounded-full border-[1.75px] border-[#94A8BE]/80"
+            className="w-5 h-5 rounded-full border-[1.75px] border-[#E2DCF3]"
             aria-hidden="true"
           />
         )}
       </div>
 
       <div className="leading-tight">
-        <p className="text-[11.5px] sm:text-[12px] font-bold text-white">
+        <p className="text-[11.5px] sm:text-[12px] font-bold text-[#231B3B]">
           {item.label}
         </p>
         <p
           className={`text-[10px] sm:text-[10.5px] mt-0.5 font-medium ${
-            isOnline ? "text-[#22C55E]" : "text-[#8FA5BC]"
+            isOnline ? "text-[#16A34A]" : "text-[#766F8E]"
           }`}
         >
           {item.statusText}

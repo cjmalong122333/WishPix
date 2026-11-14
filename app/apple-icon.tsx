@@ -17,7 +17,7 @@ export default function AppleIcon() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0B1F35 0%, #085081 100%)",
+          background: "linear-gradient(135deg, #231B3B 0%, #6D48DF 100%)",
           color: "#FFFFFF",
           fontFamily: "sans-serif",
         }}
@@ -37,7 +37,7 @@ export default function AppleIcon() {
               width: 14,
               height: 14,
               borderRadius: 9999,
-              background: "#38BDF8",
+              background: "#DDD6FE",
               marginLeft: 6,
             }}
           />
@@ -48,7 +48,7 @@ export default function AppleIcon() {
             fontSize: 16,
             fontWeight: 700,
             letterSpacing: "0.14em",
-            color: "#7DD3FC",
+            color: "#EDE7FC",
           }}
         >
           WISHPIX

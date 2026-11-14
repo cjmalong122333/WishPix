@@ -15,7 +15,6 @@ import {
   Settings,
   ShieldCheck,
   SlidersHorizontal,
-  WandSparkles,
   X,
 } from "lucide-react";
 import { NAVIGATION_SECTIONS } from "@/config/navigation";
@@ -72,7 +71,7 @@ export function NavigationDrawer({
       {isDesktopSidebarOpen && (
         <aside
           aria-label="Desktop sidebar navigation"
-          className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto w-[265px] xl:w-[280px] shrink-0 bg-[#085081] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
+          className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto w-[265px] xl:w-[280px] shrink-0 bg-[#231B3B] text-white flex-col justify-between border-r border-white/10 select-none transition-colors duration-200"
         >
           <SidebarContent
             kiosk={kiosk}
@@ -90,7 +89,7 @@ export function NavigationDrawer({
           aria-modal="true"
           aria-label="Navigation menu"
         >
-          <aside className="wishpix-drawer-slide relative z-10 w-[82%] max-w-[290px] h-full bg-[#085081] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(0,18,36,0.45)] overflow-y-auto select-none transition-colors duration-200">
+          <aside className="wishpix-drawer-slide relative z-10 w-[82%] max-w-[290px] h-full bg-[#231B3B] text-white flex flex-col justify-between shadow-[8px_0_30px_rgba(20,12,42,0.5)] overflow-y-auto select-none transition-colors duration-200">
             <SidebarContent
               kiosk={kiosk}
               onNavigate={onCloseMobile}
@@ -104,7 +103,7 @@ export function NavigationDrawer({
           <div
             onClick={onCloseMobile}
             aria-hidden="true"
-            className="wishpix-backdrop-fade flex-1 bg-[#09192C]/50 backdrop-blur-[1px] cursor-pointer"
+            className="wishpix-backdrop-fade flex-1 bg-[#231B3B]/50 backdrop-blur-[1px] cursor-pointer"
           />
         </div>
       )}
@@ -136,15 +135,28 @@ function SidebarContent({
         {/* Top Brand Header */}
         <div className="px-5 pt-5 pb-3.5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-[10px] bg-white text-[#085081] flex items-center justify-center shadow-xs flex-shrink-0">
-              <WandSparkles
-                className="w-4 h-4 stroke-[2.2]"
+            <div className="w-9 h-9 rounded-[11px] bg-[#6D48DF] text-white flex items-center justify-center shadow-[0_6px_16px_rgba(109,72,223,0.35)] flex-shrink-0">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4"
                 aria-hidden="true"
-              />
+              >
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
             </div>
-            <span className="text-[17px] font-extrabold tracking-tight text-white">
-              WishPix
-            </span>
+            <div className="leading-none">
+              <span className="block text-[17px] font-extrabold tracking-tight text-white">
+                WishPix
+              </span>
+              <span className="block text-[8px] font-extrabold uppercase tracking-[0.14em] text-[#C4B5FD] mt-0.5">
+                IMAGINATION STATION
+              </span>
+            </div>
           </div>
 
           {showCloseButton && onClose && (
@@ -160,14 +172,14 @@ function SidebarContent({
         </div>
 
         {/* Connected Kiosk Status Card */}
-        <div className="mx-3.5 mt-1 rounded-[12px] bg-[#1D6393] border border-white/15 px-3.5 py-3 flex items-start justify-between gap-2.5 transition-colors duration-200">
+        <div className="mx-3.5 mt-1 rounded-[14px] bg-[#312552] border border-[#A78BFA]/20 px-3.5 py-3 flex items-start justify-between gap-2.5 transition-colors duration-200">
           <div className="flex items-start gap-2.5 min-w-0">
             <Monitor
-              className="w-4 h-4 text-white/85 stroke-[1.9] mt-1 flex-shrink-0"
+              className="w-4 h-4 text-[#C4B5FD] stroke-[1.9] mt-1 flex-shrink-0"
               aria-hidden="true"
             />
             <div className="min-w-0 leading-tight">
-              <p className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-white/75">
+              <p className="text-[8.5px] font-bold uppercase tracking-[0.12em] text-[#C4B5FD]">
                 {t("CONNECTED KIOSK", "KONEKTADONG KIOSK")}
               </p>
               <p className="text-[12.5px] font-bold text-white truncate mt-0.5">
@@ -194,7 +206,7 @@ function SidebarContent({
         >
           {NAVIGATION_SECTIONS.map((section) => (
             <div key={section.id}>
-              <p className="px-2.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-white/65 mb-1.5">
+              <p className="px-2.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#C4B5FD]/80 mb-1.5">
                 {t(
                   section.title,
                   SECTION_TITLE_FILIPINO[section.title] ?? section.title
@@ -212,9 +224,9 @@ function SidebarContent({
                         href={item.href}
                         prefetch
                         onClick={onNavigate}
-                        className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition-all duration-200 ease-out active:scale-[0.98] ${
+                        className={`flex items-center justify-between rounded-[12px] px-3 py-2.5 text-[12.5px] transition-all duration-200 ease-out active:scale-[0.98] ${
                           isActive
-                            ? "bg-white text-[#085081] font-bold shadow-xs"
+                            ? "bg-[#6D48DF] text-white font-bold shadow-[0_4px_14px_rgba(109,72,223,0.35)]"
                             : "text-white/90 hover:bg-white/10 hover:translate-x-0.5 hover:text-white font-medium"
                         }`}
                       >
@@ -246,7 +258,7 @@ function SidebarContent({
       {/* Bottom Teacher / System Version Footer + Logout Button */}
       <div className="px-3.5 py-3.5 border-t border-white/10 space-y-2.5">
         <div className="px-1 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#35749F] text-white text-[10.5px] font-bold flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+          <div className="w-8 h-8 rounded-full bg-[#6D48DF] text-white text-[10.5px] font-bold flex items-center justify-center flex-shrink-0 transition-colors duration-200">
             {kiosk.educatorInitials || "WP"}
           </div>
           <div className="leading-tight min-w-0">
@@ -255,7 +267,7 @@ function SidebarContent({
                 ? `${kiosk.educatorName} (${t("Teacher", "Guro")})`
                 : t("WishPix Teacher", "Guro ng WishPix")}
             </p>
-            <p className="text-[10px] text-white/70 mt-0.5">
+            <p className="text-[10px] text-[#C4B5FD] mt-0.5">
               {kiosk.systemVersion}
             </p>
           </div>
@@ -285,7 +297,7 @@ function NavIcon({
   isActive: boolean;
 }) {
   const className = `w-4 h-4 flex-shrink-0 ${
-    isActive ? "text-[#085081] stroke-[2.2]" : "text-white/75 stroke-[1.85]"
+    isActive ? "text-white stroke-[2.2]" : "text-[#C4B5FD] stroke-[1.85]"
   }`;
 
   switch (name) {

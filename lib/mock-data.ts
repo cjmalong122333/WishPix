@@ -611,21 +611,21 @@ export const ANALYTICS_MONTHLY_USAGE: AnalyticsUsagePoint[] = [
 ];
 
 export const THEME_DISTRIBUTION: ThemeShareItem[] = [
-  { id: "animals", name: "Animals", percentage: 31, color: "#0F253E" },
-  { id: "fruits", name: "Fruits", percentage: 24, color: "#0066FF" },
+  { id: "animals", name: "Animals", percentage: 31, color: "#231B3B" },
+  { id: "fruits", name: "Fruits", percentage: 24, color: "#6D48DF" },
   {
     id: "transportation",
     name: "Transportation",
     percentage: 20,
-    color: "#38BDF8",
+    color: "#8B5CF6",
   },
   {
     id: "community-helpers",
     name: "Community Helpers",
     percentage: 14,
-    color: "#818CF8",
+    color: "#A78BFA",
   },
-  { id: "colors", name: "Colors", percentage: 11, color: "#C4B5FD" },
+  { id: "colors", name: "Colors", percentage: 11, color: "#DDD6FE" },
 ];
 
 export const ACTIVITY_MIX: ActivityMixItem[] = [
@@ -633,22 +633,22 @@ export const ACTIVITY_MIX: ActivityMixItem[] = [
     id: "color-create",
     name: "Color & Create",
     percentage: 46,
-    barColor: "bg-[#0F253E]",
-    textColor: "text-[#0F253E]",
+    barColor: "bg-[#231B3B]",
+    textColor: "text-[#231B3B]",
   },
   {
     id: "trace-learn",
     name: "Trace & Learn",
     percentage: 33,
-    barColor: "bg-[#0066FF]",
-    textColor: "text-[#0066FF]",
+    barColor: "bg-[#6D48DF]",
+    textColor: "text-[#6D48DF]",
   },
   {
     id: "free-play",
     name: "Free Play",
     percentage: 21,
-    barColor: "bg-[#38BDF8]",
-    textColor: "text-[#0284C7]",
+    barColor: "bg-[#A78BFA]",
+    textColor: "text-[#6D48DF]",
   },
 ];
 
@@ -668,7 +668,7 @@ export const REPORT_TYPES: ReportTypeOption[] = [
 ];
 
 export const THEME_SWATCHES: ThemeSwatchOption[] = [
-  { id: "deep-blue", label: "Deep Blue", hex: "#0F253E" },
+  { id: "deep-blue", label: "WishPix Violet", hex: "#6D48DF" },
   { id: "ocean", label: "Ocean", hex: "#14827B" },
   { id: "midnight", label: "Midnight", hex: "#3B5980" },
   { id: "slate", label: "Slate", hex: "#546875" },

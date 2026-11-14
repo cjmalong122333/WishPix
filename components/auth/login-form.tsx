@@ -98,7 +98,7 @@ export function LoginForm() {
     >
       <div>
         <p className="text-[10.5px] sm:text-[11.5px] lg:text-[12px] font-extrabold tracking-[0.06em] text-[#6D48DF] uppercase">
-          FOR PARENTS &amp; EDUCATORS
+          FOR EDUCATORS &amp; TEACHERS
         </p>
 
         <h2

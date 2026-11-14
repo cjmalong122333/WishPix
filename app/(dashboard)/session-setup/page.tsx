@@ -184,10 +184,10 @@ export default function SessionSetupPage() {
       {/* Page Title & Step Badge */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#0F253E] tracking-tight">
+          <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
             {t("Session Setup", "Pag-setup ng Sesyon")}
           </h1>
-          <p className="text-[11px] sm:text-[13px] text-[#64748B] mt-0.5">
+          <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
             {t(
               "Choose activity, theme and safety, then start.",
               "Pumili ng aktibidad, tema at kaligtasan, pagkatapos ay magsimula."
@@ -195,7 +195,7 @@ export default function SessionSetupPage() {
           </p>
         </div>
 
-        <span className="rounded-full bg-[#E6F2FF] border border-[#B9DCFF] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] flex-shrink-0">
+        <span className="rounded-full bg-[#EFE9FC] border border-[#D5C5F7] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] flex-shrink-0">
           {t(`Step ${currentStep} of 4`, `Hakbang ${currentStep} ng 4`)}
         </span>
       </div>
@@ -205,7 +205,7 @@ export default function SessionSetupPage() {
         id="tour-setup-stepper"
         role="tablist"
         aria-label="Session setup steps"
-        className="rounded-[12px] bg-[#E6EEF6] p-1 grid grid-cols-4 gap-1"
+        className="rounded-[14px] bg-[#EFE9FC] p-1 grid grid-cols-4 gap-1"
       >
         {SETUP_STEPS.map((step) => {
           const isActive = step.number === currentStep;
@@ -218,21 +218,21 @@ export default function SessionSetupPage() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setCurrentStep(step.number)}
-              className={`rounded-[9px] py-1.5 sm:py-2 px-1.5 sm:px-2 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[12px] transition cursor-pointer ${
+              className={`rounded-[10px] py-1.5 sm:py-2 px-1.5 sm:px-2 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[12px] transition cursor-pointer ${
                 isActive
-                  ? "bg-white text-[#0077C8] font-bold shadow-xs"
+                  ? "bg-white text-[#6D48DF] font-bold shadow-xs"
                   : isCompleted
                     ? "text-[#15803D] font-bold hover:bg-white/50"
-                    : "text-[#64748B] hover:text-[#0F253E] font-medium"
+                    : "text-[#766F8E] hover:text-[#231B3B] font-medium"
               }`}
             >
               <span
                 className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full text-[9.5px] sm:text-[10.5px] font-bold flex items-center justify-center flex-shrink-0 ${
                   isActive
-                    ? "bg-[#0077C8] text-white"
+                    ? "bg-[#6D48DF] text-white"
                     : isCompleted
                       ? "bg-[#16A34A] text-white"
-                      : "bg-[#CBD5E1] text-[#475569]"
+                      : "bg-[#D5C5F7] text-[#4A4168]"
                 }`}
               >
                 {isCompleted ? (
@@ -266,11 +266,11 @@ export default function SessionSetupPage() {
               <div>
                 <h2
                   id="activity-setup-heading"
-                  className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
+                  className="text-[13px] sm:text-[15px] font-bold text-[#231B3B]"
                 >
                   {t("Activity Setup", "Pag-setup ng Aktibidad")}
                 </h2>
-                <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
+                <p className="text-[11px] sm:text-[12.5px] text-[#766F8E] mt-0.5">
                   {t(
                     "Choose how children will use the kiosk.",
                     "Piliin kung paano gagamitin ng mga bata ang kiosk."
@@ -279,13 +279,13 @@ export default function SessionSetupPage() {
               </div>
 
               {/* Primary Activity Cards */}
-              <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-3 sm:p-4 space-y-2.5 sm:space-y-3 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
+              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 sm:space-y-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 {SESSION_ACTIVITIES.map((activity) => {
                   const isSelected = activity.id === selectedActivityId;
 
                   const iconBoxClasses =
                     activity.accent === "blue"
-                      ? "bg-[#E6F2FF] text-[#0077C8]"
+                      ? "bg-[#EDE7FC] text-[#6D48DF]"
                       : activity.accent === "purple"
                         ? "bg-[#F3E8FF] text-[#9333EA]"
                         : "bg-[#DCFCE7] text-[#15803D]";
@@ -295,10 +295,10 @@ export default function SessionSetupPage() {
                       key={activity.id}
                       type="button"
                       onClick={() => handleSelectActivity(activity.id)}
-                      className={`w-full rounded-[13px] p-3.5 sm:p-4 text-left flex items-center justify-between gap-3 transition cursor-pointer ${
+                      className={`w-full rounded-[14px] p-3.5 sm:p-4 text-left flex items-center justify-between gap-3 transition cursor-pointer ${
                         isSelected
-                          ? "bg-[#F5FAFF] border-[1.75px] border-[#0077C8] shadow-[0_2px_10px_rgba(0,119,200,0.08)]"
-                          : "bg-white border border-[#E6EDF5] hover:bg-[#F8FAFC]"
+                          ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
+                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
                       }`}
                     >
                       <div className="flex items-center gap-3.5 min-w-0">
@@ -326,10 +326,10 @@ export default function SessionSetupPage() {
                         </div>
 
                         <div className="min-w-0">
-                          <p className="text-[12.5px] sm:text-[13.5px] font-bold text-[#0F253E]">
+                          <p className="text-[12.5px] sm:text-[13.5px] font-bold text-[#231B3B]">
                             {activity.title}
                           </p>
-                          <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
+                          <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E] mt-0.5">
                             {activity.description}
                           </p>
                         </div>
@@ -338,7 +338,7 @@ export default function SessionSetupPage() {
                       {/* Right Radio / Check Circle */}
                       <div className="flex-shrink-0">
                         {isSelected ? (
-                          <span className="w-5 h-5 rounded-full border-[1.5px] border-[#0077C8] text-[#0077C8] bg-white flex items-center justify-center">
+                          <span className="w-5 h-5 rounded-full border-[1.5px] border-[#6D48DF] text-[#6D48DF] bg-white flex items-center justify-center">
                             <Check
                               className="w-3 h-3 stroke-[2.75]"
                               aria-hidden="true"
@@ -346,7 +346,7 @@ export default function SessionSetupPage() {
                           </span>
                         ) : (
                           <span
-                            className="w-5 h-5 rounded-full border border-[#CBD5E1] block"
+                            className="w-5 h-5 rounded-full border border-[#D5C5F7] block"
                             aria-hidden="true"
                           />
                         )}
@@ -359,7 +359,7 @@ export default function SessionSetupPage() {
               {/* Sub-Options Card */}
               {selectedActivity?.subOptions &&
                 selectedActivity.subOptions.length > 0 && (
-                  <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-3 sm:p-4 space-y-2.5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
+                  <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                     {selectedActivity.subOptions.map((sub) => {
                       const isSubSelected = sub.id === selectedSubOptionId;
                       return (
@@ -373,23 +373,23 @@ export default function SessionSetupPage() {
                           }
                           className={`w-full rounded-[12px] p-3 sm:p-3.5 text-left flex items-center gap-3 transition cursor-pointer ${
                             isSubSelected
-                              ? "bg-[#F5FAFF] border-[1.5px] border-[#0077C8]"
-                              : "bg-white border border-[#E6EDF5] hover:bg-[#F8FAFC]"
+                              ? "bg-[#FAF8FF] border-[1.5px] border-[#6D48DF]"
+                              : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
                           }`}
                         >
                           <span
                             className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
                               isSubSelected
-                                ? "border-[4.5px] border-[#0077C8] bg-white"
-                                : "border border-[#CBD5E1]"
+                                ? "border-[4.5px] border-[#6D48DF] bg-white"
+                                : "border border-[#D5C5F7]"
                             }`}
                             aria-hidden="true"
                           />
                           <div className="min-w-0">
-                            <p className="text-[12px] sm:text-[13px] font-bold text-[#0F253E]">
+                            <p className="text-[12px] sm:text-[13px] font-bold text-[#231B3B]">
                               {sub.title}
                             </p>
-                            <p className="text-[10px] sm:text-[11px] text-[#64748B] mt-0.5">
+                            <p className="text-[10px] sm:text-[11px] text-[#766F8E] mt-0.5">
                               {sub.description}
                             </p>
                           </div>
@@ -405,16 +405,16 @@ export default function SessionSetupPage() {
           {currentStep === 2 && (
             <section
               aria-labelledby="theme-setup-heading"
-              className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]"
+              className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
             >
               <div>
                 <h2
                   id="theme-setup-heading"
-                  className="text-[14px] sm:text-[16px] font-extrabold text-[#005A9C]"
+                  className="text-[14px] sm:text-[16px] font-extrabold text-[#6D48DF]"
                 >
                   {t("Theme Setup", "Pag-setup ng Tema")}
                 </h2>
-                <p className="text-[11px] sm:text-[12px] text-[#64748B] mt-0.5 leading-relaxed">
+                <p className="text-[11px] sm:text-[12px] text-[#766F8E] mt-0.5 leading-relaxed">
                   {t(
                     "Pick the learning topic. It is pushed to the kiosk when you continue.",
                     "Piliin ang paksa ng pag-aaral. Ipapadala ito sa kiosk kapag nagpatuloy ka."
@@ -432,8 +432,8 @@ export default function SessionSetupPage() {
                       onClick={() => setSelectedThemeId(theme.id)}
                       className={`rounded-[14px] p-3 sm:p-3.5 text-left flex flex-col justify-between gap-2.5 transition cursor-pointer ${
                         isSelected
-                          ? "bg-[#F5FAFF] border-[1.75px] border-[#0077C8] shadow-[0_2px_10px_rgba(0,119,200,0.08)]"
-                          : "bg-white border border-[#E6EDF5] hover:bg-[#F8FAFC]"
+                          ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
+                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -441,7 +441,7 @@ export default function SessionSetupPage() {
                           icon={theme.icon}
                           accent={theme.accent}
                         />
-                        <span className="text-[12px] sm:text-[13px] font-bold text-[#0F253E] leading-tight">
+                        <span className="text-[12px] sm:text-[13px] font-bold text-[#231B3B] leading-tight">
                           {theme.title}
                         </span>
                       </div>
@@ -450,7 +450,7 @@ export default function SessionSetupPage() {
                         {theme.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-md bg-[#F1F5F9] px-1.5 py-0.5 text-[9.5px] sm:text-[10px] font-medium text-[#475569]"
+                            className="rounded-md bg-[#F5F1FE] px-1.5 py-0.5 text-[9.5px] sm:text-[10px] font-medium text-[#4A4168]"
                           >
                             {tag}
                           </span>
@@ -465,15 +465,15 @@ export default function SessionSetupPage() {
                   onClick={() => setSelectedThemeId("custom")}
                   className={`rounded-[14px] p-3 sm:p-3.5 flex flex-col justify-between gap-2.5 transition cursor-pointer ${
                     selectedThemeId === "custom"
-                      ? "bg-[#F5FAFF] border-[1.75px] border-dashed border-[#0077C8]"
-                      : "bg-[#FAFCFF] border-[1.5px] border-dashed border-[#CBD5E1] hover:border-[#94A3B8]"
+                      ? "bg-[#FAF8FF] border-[1.75px] border-dashed border-[#6D48DF]"
+                      : "bg-[#FAF8FF] border-[1.5px] border-dashed border-[#D5C5F7] hover:border-[#A78BFA]"
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-[7px] bg-[#DCFCE7] text-[#15803D] flex items-center justify-center flex-shrink-0">
                       <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                     </span>
-                    <span className="text-[12px] sm:text-[13px] font-bold text-[#0F253E] leading-tight">
+                    <span className="text-[12px] sm:text-[13px] font-bold text-[#231B3B] leading-tight">
                       Custom Theme
                     </span>
                   </div>
@@ -488,7 +488,7 @@ export default function SessionSetupPage() {
                     }}
                     placeholder="e.g. YOUR LIFE"
                     aria-label="Custom theme name"
-                    className="w-full rounded-[8px] bg-white border border-[#E2E8F0] px-2.5 py-1.5 text-[10.5px] sm:text-[11px] font-medium text-[#0F253E] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#0077C8]"
+                    className="w-full rounded-[8px] bg-white border border-[#E2DCF3] px-2.5 py-1.5 text-[10.5px] sm:text-[11px] font-medium text-[#231B3B] placeholder:text-[#8881A3] focus:outline-none focus:border-[#6D48DF]"
                   />
                 </div>
               </div>
@@ -504,11 +504,11 @@ export default function SessionSetupPage() {
               <div>
                 <h2
                   id="safety-setup-heading"
-                  className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
+                  className="text-[13px] sm:text-[15px] font-bold text-[#231B3B]"
                 >
                   {t("Safety Setup", "Pag-setup ng Kaligtasan")}
                 </h2>
-                <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
+                <p className="text-[11px] sm:text-[12.5px] text-[#766F8E] mt-0.5">
                   {t(
                     "Child Safe Mode decides what the kiosk will accept.",
                     "Ang Child Safe Mode ang magpapasya kung ano ang tatanggapin ng kiosk."
@@ -516,7 +516,7 @@ export default function SessionSetupPage() {
                 </p>
               </div>
 
-              <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 space-y-3.5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
+              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 {/* 3 Safety Mode Cards */}
                 <div className="space-y-2.5 sm:space-y-3">
                   {SAFETY_MODES.map((mode) => {
@@ -526,18 +526,18 @@ export default function SessionSetupPage() {
                         key={mode.id}
                         type="button"
                         onClick={() => setSafetyMode(mode.id)}
-                        className={`w-full rounded-[13px] p-3.5 sm:p-4 text-left transition cursor-pointer ${
+                        className={`w-full rounded-[14px] p-3.5 sm:p-4 text-left transition cursor-pointer ${
                           isSelected
-                            ? "bg-[#F8FBFF] border-[1.75px] border-[#0B5384] shadow-[0_2px_10px_rgba(11,83,132,0.08)]"
-                            : "bg-white border border-[#E6EDF5] hover:bg-[#F8FAFC]"
+                            ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
+                            : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div
                             className={`w-8 h-8 rounded-[9px] flex items-center justify-center ${
                               isSelected
-                                ? "bg-[#0B5384] text-white"
-                                : "bg-[#F1F5F9] text-[#64748B]"
+                                ? "bg-[#6D48DF] text-white"
+                                : "bg-[#F5F1FE] text-[#766F8E]"
                             }`}
                           >
                             {mode.icon === "lock" && (
@@ -555,25 +555,25 @@ export default function SessionSetupPage() {
                           </div>
 
                           {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-[#0B5384] text-white flex items-center justify-center">
+                            <span className="w-5 h-5 rounded-full bg-[#6D48DF] text-white flex items-center justify-center">
                               <Check className="w-3 h-3 stroke-[2.75]" />
                             </span>
                           )}
                         </div>
 
-                        <p className="mt-2.5 text-[12.5px] sm:text-[13.5px] font-extrabold text-[#0F253E] tracking-wide">
+                        <p className="mt-2.5 text-[12.5px] sm:text-[13.5px] font-extrabold text-[#231B3B] tracking-wide">
                           {mode.title}
                         </p>
                         <p
                           className={`text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.12em] mt-0.5 ${
                             mode.id === "STRICT"
-                              ? "text-[#94A3B8]"
-                              : "text-[#0077C8]"
+                              ? "text-[#8881A3]"
+                              : "text-[#6D48DF]"
                           }`}
                         >
                           {mode.subtitle}
                         </p>
-                        <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-1.5 leading-relaxed">
+                        <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E] mt-1.5 leading-relaxed">
                           {mode.description}
                         </p>
                       </button>
@@ -582,12 +582,12 @@ export default function SessionSetupPage() {
                 </div>
 
                 {/* Optional Fine-Tuning Rules */}
-                <div className="pt-3 border-t border-[#EDF2F7] space-y-3.5">
+                <div className="pt-3 border-t border-[#F3EFFC] space-y-3.5">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[11.5px] sm:text-[12.5px] font-extrabold text-[#005A9C]">
+                    <span className="text-[11.5px] sm:text-[12.5px] font-extrabold text-[#6D48DF]">
                       {t("Optional", "Opsyonal")}
                     </span>
-                    <span className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8]">
+                    <span className="text-[10.5px] sm:text-[11.5px] text-[#8881A3]">
                       {t(
                         "Fine-tune the rules.",
                         "I-customize ang mga panuntunan."
@@ -599,11 +599,11 @@ export default function SessionSetupPage() {
                   <div>
                     <label
                       htmlFor="blocked-word-input"
-                      className="block text-[11px] sm:text-[12px] font-bold text-[#0F253E]"
+                      className="block text-[11px] sm:text-[12px] font-bold text-[#231B3B]"
                     >
                       Custom Blocked Words
                     </label>
-                    <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
+                    <p className="text-[9.5px] sm:text-[10.5px] text-[#8881A3]">
                       {t("Always rejected", "Palaging hinaharang")}
                     </p>
                     <div className="mt-1.5 flex items-center gap-2">
@@ -619,13 +619,13 @@ export default function SessionSetupPage() {
                           }
                         }}
                         placeholder="Type a word, press Enter"
-                        className="flex-1 rounded-[9px] border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[11px] sm:text-[12px] text-[#0F253E] placeholder:text-[#94A3B8] focus:bg-white focus:outline-none focus:border-[#0077C8]"
+                        className="flex-1 rounded-[10px] border border-[#E2DCF3] bg-[#FBF9FF] px-3 py-2 text-[11px] sm:text-[12px] text-[#231B3B] placeholder:text-[#8881A3] focus:bg-white focus:outline-none focus:border-[#6D48DF]"
                       />
                       <button
                         type="button"
                         onClick={handleAddBlockedWord}
                         aria-label="Add blocked word"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:opacity-95 text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
@@ -660,11 +660,11 @@ export default function SessionSetupPage() {
                   <div>
                     <label
                       htmlFor="allowed-word-input"
-                      className="block text-[11px] sm:text-[12px] font-bold text-[#0F253E]"
+                      className="block text-[11px] sm:text-[12px] font-bold text-[#231B3B]"
                     >
                       Custom Allowed Words
                     </label>
-                    <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
+                    <p className="text-[9.5px] sm:text-[10.5px] text-[#8881A3]">
                       {t("Always accepted", "Palaging tinatanggap")}
                     </p>
                     <div className="mt-1.5 flex items-center gap-2">
@@ -680,13 +680,13 @@ export default function SessionSetupPage() {
                           }
                         }}
                         placeholder="Type a word, press Enter"
-                        className="flex-1 rounded-[9px] border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[11px] sm:text-[12px] text-[#0F253E] placeholder:text-[#94A3B8] focus:bg-white focus:outline-none focus:border-[#0077C8]"
+                        className="flex-1 rounded-[10px] border border-[#E2DCF3] bg-[#FBF9FF] px-3 py-2 text-[11px] sm:text-[12px] text-[#231B3B] placeholder:text-[#8881A3] focus:bg-white focus:outline-none focus:border-[#6D48DF]"
                       />
                       <button
                         type="button"
                         onClick={handleAddAllowedWord}
                         aria-label="Add allowed word"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[9px] bg-[#0B5384] hover:opacity-95 text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white flex items-center justify-center flex-shrink-0 transition cursor-pointer"
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                       </button>
@@ -719,10 +719,10 @@ export default function SessionSetupPage() {
 
                   {/* Language Restrictions */}
                   <div>
-                    <p className="text-[11px] sm:text-[12px] font-bold text-[#0F253E]">
+                    <p className="text-[11px] sm:text-[12px] font-bold text-[#231B3B]">
                       Language Restrictions
                     </p>
-                    <p className="text-[9.5px] sm:text-[10.5px] text-[#94A3B8]">
+                    <p className="text-[9.5px] sm:text-[10.5px] text-[#8881A3]">
                       {t(
                         "Languages the kiosk will listen for",
                         "Mga wikang pakikinggan ng kiosk"
@@ -736,10 +736,10 @@ export default function SessionSetupPage() {
                             key={lang}
                             type="button"
                             onClick={() => handleToggleLanguage(lang)}
-                            className={`inline-flex items-center gap-1.5 rounded-[8px] px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold transition cursor-pointer ${
+                            className={`inline-flex items-center gap-1.5 rounded-[10px] px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold transition cursor-pointer ${
                               isChecked
-                                ? "bg-[#EBF5FF] border border-[#93C5FD] text-[#0066B2]"
-                                : "bg-[#F8FAFC] border border-[#E2E8F0] text-[#64748B] hover:text-[#0F253E]"
+                                ? "bg-[#EFE9FC] border border-[#D5C5F7] text-[#6D48DF]"
+                                : "bg-[#FAF8FF] border border-[#E2DCF3] text-[#766F8E] hover:text-[#231B3B]"
                             }`}
                           >
                             {isChecked && (
@@ -757,7 +757,7 @@ export default function SessionSetupPage() {
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2 text-[11px] sm:text-[12px] font-semibold text-[#64748B] transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#FAF8FF] border border-[#E2DCF3] px-3.5 py-2 text-[11px] sm:text-[12px] font-semibold text-[#766F8E] transition cursor-pointer"
                     >
                       <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
                       <span>{t("Back", "Bumalik")}</span>
@@ -766,7 +766,7 @@ export default function SessionSetupPage() {
                     <button
                       type="button"
                       onClick={() => setCurrentStep(4)}
-                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-4 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-4 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
                     >
                       <span>{t("Save Settings", "I-save ang Setting")}</span>
                       <ArrowRight
@@ -789,11 +789,11 @@ export default function SessionSetupPage() {
               <div>
                 <h2
                   id="start-session-heading"
-                  className="text-[13px] sm:text-[15px] font-bold text-[#0F253E]"
+                  className="text-[13px] sm:text-[15px] font-bold text-[#231B3B]"
                 >
                   {t("Start Session", "Simulan ang Sesyon")}
                 </h2>
-                <p className="text-[11px] sm:text-[12.5px] text-[#64748B] mt-0.5">
+                <p className="text-[11px] sm:text-[12.5px] text-[#766F8E] mt-0.5">
                   {t(
                     "Review what will be sent to the kiosk.",
                     "Suriin ang ipapadala sa kiosk."
@@ -801,12 +801,12 @@ export default function SessionSetupPage() {
                 </p>
               </div>
 
-              <div className="rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 space-y-3.5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]">
+              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 <div>
-                  <h3 className="text-[14px] sm:text-[16px] font-extrabold text-[#005A9C]">
+                  <h3 className="text-[14px] sm:text-[16px] font-extrabold text-[#6D48DF]">
                     {t("Start Session", "Simulan ang Sesyon")}
                   </h3>
-                  <p className="text-[10.5px] sm:text-[11.5px] text-[#64748B] mt-0.5">
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E] mt-0.5">
                     {t(
                       "Review what will be sent to the kiosk.",
                       "Suriin ang ipapadala sa kiosk."
@@ -815,16 +815,16 @@ export default function SessionSetupPage() {
                 </div>
 
                 {/* Review Item 1: Activity Type */}
-                <div className="rounded-[12px] border border-[#E6EDF5] bg-[#F8FAFC] p-3 sm:p-3.5 flex items-center justify-between gap-3">
+                <div className="rounded-[12px] border border-[#F2EEFB] bg-[#FAF8FF] p-3 sm:p-3.5 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-[9px] bg-[#E6F2FF] text-[#0077C8] flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-[9px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                       <Palette className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                         {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                       </p>
-                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
+                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] truncate mt-0.5">
                         {activityReviewLabel}
                       </p>
                     </div>
@@ -832,23 +832,23 @@ export default function SessionSetupPage() {
                   <button
                     type="button"
                     onClick={() => setCurrentStep(1)}
-                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
+                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] hover:underline flex-shrink-0 cursor-pointer"
                   >
                     {t("Edit", "Baguhin")}
                   </button>
                 </div>
 
                 {/* Review Item 2: Theme */}
-                <div className="rounded-[12px] border border-[#E6EDF5] bg-[#F8FAFC] p-3 sm:p-3.5 flex items-center justify-between gap-3">
+                <div className="rounded-[12px] border border-[#F2EEFB] bg-[#FAF8FF] p-3 sm:p-3.5 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-[9px] bg-[#F1F5F9] text-[#475569] flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-[9px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                       <PawPrint className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                         {t("THEME", "TEMA")}
                       </p>
-                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
+                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] truncate mt-0.5">
                         {themeSummaryLabel}
                       </p>
                     </div>
@@ -856,23 +856,23 @@ export default function SessionSetupPage() {
                   <button
                     type="button"
                     onClick={() => setCurrentStep(2)}
-                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
+                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] hover:underline flex-shrink-0 cursor-pointer"
                   >
                     {t("Edit", "Baguhin")}
                   </button>
                 </div>
 
                 {/* Review Item 3: Safety Rules */}
-                <div className="rounded-[12px] border border-[#E6EDF5] bg-[#F8FAFC] p-3 sm:p-3.5 flex items-center justify-between gap-3">
+                <div className="rounded-[12px] border border-[#F2EEFB] bg-[#FAF8FF] p-3 sm:p-3.5 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-[9px] bg-[#0B5384] text-white flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-[9px] bg-[#6D48DF] text-white flex items-center justify-center flex-shrink-0">
                       <Shield className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                      <p className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                         {t("SAFETY RULES", "PANUNTUNAN SA KALIGTASAN")}
                       </p>
-                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] truncate mt-0.5">
+                      <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] truncate mt-0.5">
                         {safetyMode}
                       </p>
                     </div>
@@ -880,7 +880,7 @@ export default function SessionSetupPage() {
                   <button
                     type="button"
                     onClick={() => setCurrentStep(3)}
-                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#0077C8] hover:underline flex-shrink-0 cursor-pointer"
+                    className="text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] hover:underline flex-shrink-0 cursor-pointer"
                   >
                     {t("Edit", "Baguhin")}
                   </button>
@@ -891,7 +891,7 @@ export default function SessionSetupPage() {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#64748B] transition cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#FAF8FF] border border-[#E2DCF3] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#766F8E] transition cursor-pointer"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>{t("Back", "Bumalik")}</span>
@@ -900,7 +900,7 @@ export default function SessionSetupPage() {
                   <button
                     type="button"
                     onClick={() => router.push("/live-session?session=active")}
-                    className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-[#0B5384] hover:opacity-95 text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(11,83,132,0.25)] transition cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_14px_rgba(109,72,223,0.3)] transition cursor-pointer"
                   >
                     <Play
                       className="w-3.5 h-3.5 fill-white text-white"
@@ -918,30 +918,30 @@ export default function SessionSetupPage() {
         <section
           id="tour-setup-summary"
           aria-labelledby="session-summary-heading"
-          className="lg:col-span-5 rounded-[16px] bg-white border border-[#E6EDF5] p-4 sm:p-5 shadow-[0_2px_10px_rgba(15,37,62,0.03)]"
+          className="lg:col-span-5 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <h2
             id="session-summary-heading"
-            className="text-[14px] sm:text-[15.5px] font-extrabold text-[#005A9C]"
+            className="text-[14px] sm:text-[15.5px] font-extrabold text-[#6D48DF]"
           >
             {t("Session Summary", "Buod ng Sesyon")}
           </h2>
-          <p className="text-[10.5px] sm:text-[11.5px] text-[#94A3B8] mt-0.5">
+          <p className="text-[10.5px] sm:text-[11.5px] text-[#8881A3] mt-0.5">
             {t("Sent to kiosk on start", "Ipapadala sa kiosk sa pagsisimula")}
           </p>
 
-          <div className="mt-3.5 divide-y divide-[#EEF2F6]">
+          <div className="mt-3.5 divide-y divide-[#F3EFFC]">
             {/* Row 1: Activity Type */}
             <div className="py-2.5 flex items-start gap-3">
               <Palette
-                className="w-4 h-4 text-[#0077C8] mt-0.5 flex-shrink-0"
+                className="w-4 h-4 text-[#6D48DF] mt-0.5 flex-shrink-0"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                   {t("ACTIVITY TYPE", "URI NG AKTIBIDAD")}
                 </p>
-                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                   {activitySummaryLabel}
                 </p>
               </div>
@@ -950,14 +950,14 @@ export default function SessionSetupPage() {
             {/* Row 2: Theme */}
             <div className="py-2.5 flex items-start gap-3">
               <Flower2
-                className="w-4 h-4 text-[#0077C8] mt-0.5 flex-shrink-0"
+                className="w-4 h-4 text-[#6D48DF] mt-0.5 flex-shrink-0"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                   {t("THEME", "TEMA")}
                 </p>
-                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                   {currentStep === 1 && selectedThemeId === "animals"
                     ? t("Not selected", "Hindi pa napili")
                     : themeSummaryLabel}
@@ -968,14 +968,14 @@ export default function SessionSetupPage() {
             {/* Row 3: Safety Rules */}
             <div className="py-2.5 flex items-start gap-3">
               <ShieldCheck
-                className="w-4 h-4 text-[#0077C8] mt-0.5 flex-shrink-0"
+                className="w-4 h-4 text-[#6D48DF] mt-0.5 flex-shrink-0"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                   {t("SAFETY RULES", "PANUNTUNAN SA KALIGTASAN")}
                 </p>
-                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                   {safetyMode}
                 </p>
               </div>
@@ -984,14 +984,14 @@ export default function SessionSetupPage() {
             {/* Row 4: Languages */}
             <div className="py-2.5 flex items-start gap-3">
               <Globe
-                className="w-4 h-4 text-[#0077C8] mt-0.5 flex-shrink-0"
+                className="w-4 h-4 text-[#6D48DF] mt-0.5 flex-shrink-0"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#94A3B8]">
+                <p className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#8881A3]">
                   {t("LANGUAGES", "MGA WIKA")}
                 </p>
-                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#0F253E] mt-0.5">
+                <p className="text-[11.5px] sm:text-[12.5px] font-bold text-[#231B3B] mt-0.5">
                   {selectedLanguages.join(", ")}
                 </p>
               </div>
@@ -1023,7 +1023,7 @@ export default function SessionSetupPage() {
           <button
             type="button"
             onClick={handleBack}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#64748B] transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[12px] bg-white hover:bg-[#FAF8FF] border border-[#E2DCF3] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#766F8E] transition cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
             <span>{t("Back", "Bumalik")}</span>
@@ -1032,7 +1032,7 @@ export default function SessionSetupPage() {
           <button
             type="button"
             onClick={handleNext}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0077C8] hover:opacity-95 text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_12px_rgba(0,119,200,0.25)] transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_14px_rgba(109,72,223,0.28)] transition cursor-pointer"
           >
             <span>{t("Continue", "Magpatuloy")}</span>
             <ArrowRight
@@ -1054,7 +1054,7 @@ function ThemeIconBadge({
   accent: ThemeOption["accent"];
 }) {
   const accentStyles: Record<ThemeOption["accent"], string> = {
-    blue: "bg-[#E6F2FF] text-[#0077C8]",
+    blue: "bg-[#EDE7FC] text-[#6D48DF]",
     orange: "bg-[#FEF3C7] text-[#D97706]",
     red: "bg-[#FFE4E6] text-[#E11D48]",
     green: "bg-[#DCFCE7] text-[#15803D]",

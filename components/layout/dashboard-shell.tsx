@@ -201,7 +201,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <OnboardingTourProvider>
-      <div className="relative flex-1 flex min-h-screen w-full bg-[#F2F6FA] text-[#0F253E]">
+      <div className="relative flex-1 flex min-h-screen w-full bg-[#FAF8FF] text-[#231B3B] selection:bg-[#EDE7FC] selection:text-[#6D48DF]">
         {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
         <NavigationDrawer
           isOpen={isMobileDrawerOpen}
@@ -229,12 +229,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         {/* Logout Confirmation Modal */}
         {isLogoutModalOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#09192C]/60 backdrop-blur-[2px]"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231B3B]/60 backdrop-blur-[2px]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="logout-modal-title"
           >
-            <div className="w-full max-w-sm rounded-[18px] bg-white border border-[#E2E8F0] p-5 sm:p-6 shadow-[0_20px_50px_rgba(9,25,44,0.28)] text-[#0F253E]">
+            <div className="w-full max-w-sm rounded-[22px] bg-white border border-[#F2EEFB] p-5 sm:p-6 shadow-[0_20px_50px_rgba(35,27,59,0.25)] text-[#231B3B]">
               <div className="flex items-start justify-between gap-3">
                 <div className="w-10 h-10 rounded-[12px] bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] flex items-center justify-center shrink-0">
                   <LogOut className="w-5 h-5 stroke-[2.2]" aria-hidden="true" />
@@ -245,7 +245,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   disabled={isLoggingOut}
                   onClick={() => setIsLogoutModalOpen(false)}
                   aria-label={t("Close dialog", "Isara ang dialog")}
-                  className="p-1.5 rounded-lg text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F253E] transition cursor-pointer disabled:opacity-50"
+                  className="p-1.5 rounded-lg text-[#766F8E] hover:bg-[#F5F1FE] hover:text-[#231B3B] transition cursor-pointer disabled:opacity-50"
                 >
                   <X className="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -253,11 +253,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
               <h2
                 id="logout-modal-title"
-                className="mt-3.5 text-[16px] sm:text-[17px] font-extrabold text-[#0F253E] tracking-tight"
+                className="mt-3.5 text-[16px] sm:text-[17px] font-extrabold text-[#231B3B] tracking-tight"
               >
                 {t("Log out of WishPix?", "Mag-logout sa WishPix?")}
               </h2>
-              <p className="mt-1.5 text-[12px] sm:text-[12.5px] text-[#64748B] leading-relaxed">
+              <p className="mt-1.5 text-[12px] sm:text-[12.5px] text-[#766F8E] leading-relaxed">
                 {t(
                   "You will be returned to the Educator Login screen. Any active classroom kiosk activity will continue running until paused or ended.",
                   "Ibabalik ka sa screen ng Login ng Guro. Ang anumang aktibong sesyon sa kiosk ay magpapatuloy hanggang sa i-pause o tapusin."
@@ -269,7 +269,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   type="button"
                   disabled={isLoggingOut}
                   onClick={() => setIsLogoutModalOpen(false)}
-                  className="rounded-[10px] bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#334E68] font-bold text-[12px] px-4 py-2.5 transition cursor-pointer disabled:opacity-50"
+                  className="rounded-[12px] bg-[#F5F1FE] hover:bg-[#EDE7FC] text-[#231B3B] font-bold text-[12px] px-4 py-2.5 transition cursor-pointer disabled:opacity-50"
                 >
                   {t("Cancel", "Kanselahin")}
                 </button>

@@ -191,7 +191,7 @@ export function PageTransition({
       {/* Subtle Top Scroll-Up Aurora Indicator */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none fixed top-0 inset-x-0 z-40 h-1 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent transition-opacity duration-300 ${
+        className={`pointer-events-none fixed top-0 inset-x-0 z-40 h-1 bg-gradient-to-r from-transparent via-[#6D48DF] to-transparent transition-opacity duration-300 ${
           isScrollingUp && showScrollTop ? "opacity-90" : "opacity-0"
         }`}
       />
@@ -210,13 +210,13 @@ export function PageTransition({
         type="button"
         onClick={handleBackToTop}
         aria-label={t("Scroll back to top", "Bumalik sa itaas")}
-        className={`fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-[#085081] text-white px-3.5 py-2.5 text-[11.5px] font-bold shadow-[0_10px_25px_rgba(8,80,129,0.35)] border border-white/20 cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95 ${
+        className={`fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-[#6D48DF] text-white px-3.5 py-2.5 text-[11.5px] font-bold shadow-[0_10px_25px_rgba(109,72,223,0.35)] border border-white/20 cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95 ${
           showScrollTop
             ? "translate-y-0 opacity-100 pointer-events-auto"
             : "translate-y-6 opacity-0 pointer-events-none"
         } ${
           isScrollingUp
-            ? "ring-4 ring-[#38BDF8]/35 shadow-[0_12px_30px_rgba(0,119,200,0.45)]"
+            ? "ring-4 ring-[#A78BFA]/35 shadow-[0_12px_30px_rgba(109,72,223,0.45)]"
             : ""
         }`}
       >
@@ -230,7 +230,7 @@ export function PageTransition({
         <span className="hidden sm:inline">{t("Top", "Itaas")}</span>
         {isScrollingUp && (
           <Sparkles
-            className="w-3 h-3 text-[#38BDF8] animate-pulse"
+            className="w-3 h-3 text-[#DDD6FE] animate-pulse"
             aria-hidden="true"
           />
         )}

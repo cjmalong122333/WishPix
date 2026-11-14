@@ -9,7 +9,7 @@ export default function DashboardLayout({
   return (
     <Suspense
       fallback={
-        <div className="flex-1 bg-[#F2F6FA] p-4 animate-pulse" />
+        <div className="flex-1 bg-[#FAF8FF] p-4 animate-pulse" />
       }
     >
       <DashboardShell>{children}</DashboardShell>

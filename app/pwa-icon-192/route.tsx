@@ -11,10 +11,10 @@ export async function GET() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0B1F35 0%, #085081 100%)",
+          background: "linear-gradient(135deg, #231B3B 0%, #6D48DF 100%)",
           borderRadius: 42,
-          border: "6px solid rgba(56, 189, 248, 0.35)",
-          color: "#38BDF8",
+          border: "6px solid rgba(196, 181, 253, 0.4)",
+          color: "#DDD6FE",
           fontFamily: "sans-serif",
         }}
       >
@@ -34,7 +34,7 @@ export async function GET() {
               width: 16,
               height: 16,
               borderRadius: 9999,
-              background: "#38BDF8",
+              background: "#DDD6FE",
               marginLeft: 6,
             }}
           />
@@ -45,7 +45,7 @@ export async function GET() {
             fontSize: 18,
             fontWeight: 700,
             letterSpacing: "0.14em",
-            color: "#7DD3FC",
+            color: "#EDE7FC",
           }}
         >
           WISHPIX
