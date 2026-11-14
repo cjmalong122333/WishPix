@@ -38,6 +38,16 @@ export async function proxy(request: NextRequest) {
   const session = await verifySessionToken(rawCookie);
   const isAuthenticated = Boolean(session?.educatorId);
 
+  const userAgent = request.headers.get("user-agent") || "";
+  const isAndroidApk = /WishPixAndroidWrapper/i.test(userAgent);
+
+  if (pathname === "/" && isAndroidApk) {
+    const targetPath = isAuthenticated ? "/dashboard" : "/login";
+    return applySecurityHeaders(
+      NextResponse.redirect(new URL(targetPath, request.url))
+    );
+  }
+
   if (isProtectedRoute && !isAuthenticated) {
     const loginUrl = new URL("/login", request.url);
     if (pathname !== "/checking-connections" && pathname !== "/dashboard") {

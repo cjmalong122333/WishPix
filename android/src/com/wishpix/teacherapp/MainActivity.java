@@ -96,12 +96,25 @@ public class MainActivity extends Activity {
             if (data != null) {
                 String paramUrl = data.getQueryParameter("url");
                 if (paramUrl != null && !paramUrl.trim().isEmpty()) {
-                    saveServerUrl(paramUrl.trim());
-                    return paramUrl.trim();
+                    String normalized = ensureLoginLandingUrl(paramUrl.trim());
+                    saveServerUrl(normalized);
+                    return normalized;
                 }
             }
         }
-        return prefs.getString(KEY_SERVER_URL, DEFAULT_URL);
+        return ensureLoginLandingUrl(prefs.getString(KEY_SERVER_URL, DEFAULT_URL));
+    }
+
+    private String ensureLoginLandingUrl(String rawUrl) {
+        try {
+            Uri uri = Uri.parse(rawUrl);
+            String path = uri.getPath();
+            if (path == null || path.isEmpty() || "/".equals(path)) {
+                return uri.buildUpon().path("/login").build().toString();
+            }
+        } catch (Exception ignored) {
+        }
+        return rawUrl;
     }
 
     private void saveServerUrl(String url) {
@@ -223,9 +236,11 @@ public class MainActivity extends Activity {
                     if (!entered.startsWith("http://") && !entered.startsWith("https://")) {
                         entered = "https://" + entered;
                     }
-                    saveServerUrl(entered);
+                    String normalized = ensureLoginLandingUrl(entered);
+                    urlInput.setText(normalized);
+                    saveServerUrl(normalized);
                     connectionOverlay.setVisibility(View.GONE);
-                    webView.loadUrl(entered);
+                    webView.loadUrl(normalized);
                 }
             }
         });

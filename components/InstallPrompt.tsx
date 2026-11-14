@@ -1,112 +1,83 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import {
-  Download,
-  MonitorSmartphone,
-  Smartphone,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { Download, Smartphone, Sparkles } from "lucide-react";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{
-    outcome: "accepted" | "dismissed";
-    platform: string;
-  }>;
-  prompt(): Promise<void>;
+const DISMISS_SESSION_KEY = "wishpix_install_prompt_dismissed_v1";
+
+let memoryDismissed = false;
+const dismissListeners = new Set<() => void>();
+
+function subscribeDismiss(listener: () => void): () => void {
+  dismissListeners.add(listener);
+  return () => {
+    dismissListeners.delete(listener);
+  };
 }
 
-const DISMISS_SESSION_KEY = "wishpix_install_prompt_dismissed_v1";
-const PUBLIC_PATHS = new Set([
-  "/",
-  "/about",
-  "/team",
-  "/login",
-  "/loading-screen",
-]);
+function getDismissSnapshot(): boolean {
+  if (memoryDismissed) return true;
+  if (typeof window === "undefined") return false;
+  try {
+    return window.sessionStorage.getItem(DISMISS_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
-export function InstallPrompt() {
-  const pathname = usePathname();
-  const { t } = useAppSettings();
-  const { isStandalone, platform, openInstallGuide } = usePwaInstall();
+function getServerDismissSnapshot(): boolean {
+  return true;
+}
 
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
-  const [isDismissed, setIsDismissed] = useState(false);
-  const [isInstalling, setIsInstalling] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the default browser mini-infobar from appearing on mobile/desktop
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-    };
-
-    const handleAppInstalled = () => {
-      setDeferredPrompt(null);
-      setIsDismissed(true);
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    window.addEventListener("appinstalled", handleAppInstalled);
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
-      window.removeEventListener("appinstalled", handleAppInstalled);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      setIsInstalling(true);
-      try {
-        await deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-
-        if (outcome === "accepted") {
-          setDeferredPrompt(null);
-          setIsDismissed(true);
-        } else {
-          setIsDismissed(true);
-        }
-      } catch {
-        setIsDismissed(true);
-        openInstallGuide();
-      } finally {
-        setIsInstalling(false);
-      }
-      return;
-    }
-
-    // Fallback when native prompt hasn't fired yet (e.g. Android manual guide / APK modal)
-    setIsDismissed(true);
-    openInstallGuide();
-  };
-
-  const handleDismiss = () => {
-    setIsDismissed(true);
+function markPromptDismissed() {
+  memoryDismissed = true;
+  if (typeof window !== "undefined") {
     try {
       window.sessionStorage.setItem(DISMISS_SESSION_KEY, "1");
     } catch {
       // Ignore storage errors
     }
+  }
+  dismissListeners.forEach((listener) => listener());
+}
+
+export function InstallPrompt() {
+  const pathname = usePathname();
+  const { t } = useAppSettings();
+  const { isPhone, isStandalone, isInstalled, triggerInstall } =
+    usePwaInstall();
+
+  const isDismissed = useSyncExternalStore(
+    subscribeDismiss,
+    getDismissSnapshot,
+    getServerDismissSnapshot
+  );
+
+  const [isInstalling, setIsInstalling] = useState(false);
+
+  const handleYes = async () => {
+    setIsInstalling(true);
+    try {
+      markPromptDismissed();
+      await triggerInstall();
+    } finally {
+      setIsInstalling(false);
+    }
+  };
+
+  const handleNo = () => {
+    markPromptDismissed();
   };
 
   const isVisible =
-    !PUBLIC_PATHS.has(pathname) &&
+    isPhone &&
     !isStandalone &&
+    !isInstalled &&
     !isDismissed &&
-    (Boolean(deferredPrompt) || platform === "android");
+    pathname !== "/loading-screen";
 
   if (!isVisible) {
     return null;
@@ -114,97 +85,74 @@ export function InstallPrompt() {
 
   return (
     <div
-      role="region"
-      aria-label={t(
-        "Install WishPix Application",
-        "I-install ang WishPix Application"
-      )}
-      className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 sm:w-full sm:max-w-[415px] animate-[wishpix-popover-enter_260ms_cubic-bezier(0.22,1,0.36,1)_both]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="phone-install-popup-title"
+      aria-describedby="phone-install-popup-description"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#061220]/75 backdrop-blur-xs animate-[wishpix-fade-in_200ms_ease-out_both]"
     >
-      <div className="relative overflow-hidden rounded-[16px] bg-[#0F233A] border border-[#38BDF8]/35 p-4 sm:p-4.5 text-white shadow-[0_20px_44px_rgba(4,12,24,0.62)]">
+      <div className="relative w-full max-w-[360px] overflow-hidden rounded-[20px] bg-[#0F233A] border border-[#38BDF8]/40 p-5 text-white shadow-[0_24px_48px_rgba(4,12,24,0.72)] animate-[wishpix-popover-enter_240ms_cubic-bezier(0.22,1,0.36,1)_both]">
         {/* Ambient Cyan Glow */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#0284C7]/25 blur-2xl"
+          className="pointer-events-none absolute -top-12 -right-12 w-36 h-36 rounded-full bg-[#0284C7]/25 blur-2xl"
         />
 
-        {/* Dismiss / Close Button */}
-        <button
-          type="button"
-          onClick={handleDismiss}
-          aria-label={t(
-            "Dismiss install prompt",
-            "Isara ang prompt sa pag-install"
-          )}
-          className="absolute top-3 right-3 p-1.5 rounded-lg text-[#94A8BE] hover:text-white hover:bg-white/10 transition cursor-pointer"
-        >
-          <X className="w-4 h-4" aria-hidden="true" />
-        </button>
-
-        <div className="relative flex items-start gap-3.5 pr-6">
-          {/* App Icon Badge */}
-          <div className="w-11 h-11 rounded-[12px] bg-gradient-to-br from-[#0077C8] to-[#085081] border border-[#38BDF8]/40 text-white flex items-center justify-center shrink-0 shadow-[0_4px_14px_rgba(2,132,199,0.35)]">
-            {platform === "android" ? (
-              <Smartphone className="w-5 h-5" aria-hidden="true" />
-            ) : (
-              <MonitorSmartphone className="w-5 h-5" aria-hidden="true" />
-            )}
+        <div className="relative flex flex-col items-center text-center">
+          {/* Phone App Icon Badge */}
+          <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#0077C8] to-[#085081] border border-[#38BDF8]/45 text-white flex items-center justify-center shadow-[0_6px_18px_rgba(2,132,199,0.4)]">
+            <Smartphone className="w-6 h-6" aria-hidden="true" />
           </div>
 
-          <div className="min-w-0 flex-1">
-            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#7DD3FC] text-[9.5px] font-extrabold uppercase tracking-wider mb-1">
-              <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
-              <span>
-                {platform === "android"
-                  ? t("Android App Ready", "Handa para sa Android")
-                  : t("Desktop & Mobile App", "Desktop at Mobile App")}
-              </span>
-            </div>
-
-            <h3 className="text-[14px] sm:text-[15px] font-extrabold text-white tracking-tight leading-snug">
-              {t("Download WishPix App", "I-download ang WishPix App")}
-            </h3>
-
-            <p className="mt-1 text-[11.5px] text-[#B8CDE2] leading-relaxed">
-              {t(
-                "Install WishPix on your Android or Desktop device for a dedicated full-screen classroom window.",
-                "I-install ang WishPix sa iyong Android o Desktop para sa sariling full-screen window."
-              )}
-            </p>
+          {/* Pill Badge */}
+          <div className="mt-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#0284C7]/20 border border-[#38BDF8]/30 text-[#7DD3FC] text-[10px] font-extrabold uppercase tracking-wider">
+            <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
+            <span>{t("Mobile App Available", "May Mobile App")}</span>
           </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="relative mt-3.5 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
-          <a
-            href="/wishpix-android.apk"
-            download="WishPix-Teacher-App.apk"
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#132F4C] hover:bg-[#1B3F66] border border-[#38BDF8]/30 text-[#7DD3FC] hover:text-white font-bold text-[11.5px] px-3 py-2 transition cursor-pointer"
+          {/* Prompt Question */}
+          <h2
+            id="phone-install-popup-title"
+            className="mt-2.5 text-[17px] font-extrabold text-white tracking-tight leading-snug"
           >
-            <Smartphone className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>{t("Download .APK", "I-download ang .APK")}</span>
-          </a>
+            {t("Install WishPix App?", "I-install ang WishPix App?")}
+          </h2>
 
-          <div className="flex items-center gap-2 ml-auto">
+          <p
+            id="phone-install-popup-description"
+            className="mt-1.5 text-[12.5px] text-[#B8CDE2] leading-relaxed"
+          >
+            {t(
+              "Do you want to install the WishPix app on your phone?",
+              "Gusto mo bang i-install ang WishPix app sa iyong telepono?"
+            )}
+          </p>
+
+          {/* Yes / No Buttons */}
+          <div className="mt-5 w-full grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={handleDismiss}
-              className="rounded-[10px] bg-white/8 hover:bg-white/14 border border-white/12 text-[#CBD5E1] hover:text-white font-semibold text-[11.5px] px-3 py-2 transition cursor-pointer"
+              onClick={handleNo}
+              disabled={isInstalling}
+              className="w-full rounded-[12px] bg-white/8 hover:bg-white/14 active:scale-[0.98] disabled:opacity-60 border border-white/15 text-[#CBD5E1] hover:text-white font-bold text-[13.5px] py-2.5 px-4 transition cursor-pointer"
             >
-              {t("Not Now", "Mamaya Na")}
+              {t("No", "Hindi")}
             </button>
 
             <button
               type="button"
-              onClick={handleInstallClick}
+              onClick={handleYes}
               disabled={isInstalling}
-              className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#0077C8] hover:bg-[#0284C7] active:scale-[0.98] disabled:opacity-60 border border-[#38BDF8]/40 text-white font-bold text-[12px] px-3.5 py-2 shadow-[0_4px_14px_rgba(2,132,199,0.4)] transition cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-[12px] bg-[#0077C8] hover:bg-[#0284C7] active:scale-[0.98] disabled:opacity-60 border border-[#38BDF8]/45 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_4px_14px_rgba(2,132,199,0.4)] transition cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 stroke-[2.3]" aria-hidden="true" />
+              <Download
+                className="w-3.5 h-3.5 stroke-[2.3]"
+                aria-hidden="true"
+              />
               <span>
                 {isInstalling
                   ? t("Installing...", "Ini-install...")
-                  : t("Install App", "I-install ang App")}
+                  : t("Yes", "Oo")}
               </span>
             </button>
           </div>

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { StarLoader } from "@/components/layout/star-loader";
+import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 import { PublicNavbar } from "@/components/public/public-navbar";
 
 interface PublicShellProps {
@@ -13,10 +14,18 @@ interface PublicShellProps {
 let hasShownInitialStarLoadInMemory = false;
 
 function PublicShellContent({ children, footerText }: PublicShellProps) {
+  const router = useRouter();
   const pathname = usePathname();
+  const { isStandalone } = usePwaInstall();
   const [isLoadingStar, setIsLoadingStar] = useState(
     () => !hasShownInitialStarLoadInMemory
   );
+
+  useEffect(() => {
+    if (isStandalone && pathname === "/") {
+      router.replace("/login");
+    }
+  }, [isStandalone, pathname, router]);
 
   useEffect(() => {
     if (hasShownInitialStarLoadInMemory) {
@@ -50,6 +59,10 @@ function PublicShellContent({ children, footerText }: PublicShellProps) {
       setIsLoadingStar(true);
     }
   };
+
+  if (isStandalone && pathname === "/") {
+    return <StarLoader fullScreen />;
+  }
 
   if (isLoadingStar) {
     return (

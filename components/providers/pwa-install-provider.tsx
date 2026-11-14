@@ -33,6 +33,8 @@ interface PwaInstallContextValue {
   isInstalled: boolean;
   /** Detected user platform for tailored install guidance */
   platform: DetectedPlatform;
+  /** True when the user is visiting from a phone device */
+  isPhone: boolean;
   /** User's current choice between App and Browser */
   accessChoice: AccessModeChoice;
   /** Whether the choice is persisted in localStorage */
@@ -164,6 +166,39 @@ function getServerPlatformSnapshot(): DetectedPlatform {
   return "desktop";
 }
 
+function subscribePhone(listener: () => void): () => void {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const mediaQuery = window.matchMedia("(max-width: 767px)");
+  mediaQuery.addEventListener("change", listener);
+  return () => {
+    mediaQuery.removeEventListener("change", listener);
+  };
+}
+
+function getPhoneSnapshot(): boolean {
+  if (typeof window === "undefined") return false;
+  const ua = window.navigator.userAgent || "";
+  const uaDataMobile = Boolean(
+    (window.navigator as Navigator & { userAgentData?: { mobile?: boolean } })
+      .userAgentData?.mobile
+  );
+  const isPhoneUa =
+    uaDataMobile ||
+    /iPhone|iPod|Android.*Mobile|Windows Phone|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(
+      ua
+    );
+  const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+  const isMobileTouchOs = /Android|iPhone|iPod/i.test(ua) && isMobileViewport;
+
+  return isPhoneUa || isMobileTouchOs;
+}
+
+function getServerPhoneSnapshot(): boolean {
+  return false;
+}
+
 const PwaInstallContext = createContext<PwaInstallContextValue | null>(null);
 
 export function PwaInstallProvider({
@@ -187,6 +222,12 @@ export function PwaInstallProvider({
     subscribeNoop,
     getPlatformSnapshot,
     getServerPlatformSnapshot
+  );
+
+  const isPhone = useSyncExternalStore(
+    subscribePhone,
+    getPhoneSnapshot,
+    getServerPhoneSnapshot
   );
 
   const [justInstalled, setJustInstalled] = useState(false);
@@ -286,6 +327,7 @@ export function PwaInstallProvider({
         canPromptNative: Boolean(deferredPrompt),
         isInstalled: isStandalone || justInstalled,
         platform,
+        isPhone,
         accessChoice: choiceState.choice,
         isChoiceRemembered: choiceState.remembered,
         setAccessChoice,

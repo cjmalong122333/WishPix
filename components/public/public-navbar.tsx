@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
 interface PublicNavbarProps {
   onNavigate?: (href: string) => void;
@@ -16,6 +17,12 @@ const NAV_LINKS = [
 
 export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
   const pathname = usePathname();
+  const { isStandalone } = usePwaInstall();
+
+  const brandHref = isStandalone ? "/login" : "/";
+  const visibleNavLinks = isStandalone
+    ? NAV_LINKS.filter((item) => item.href !== "/")
+    : NAV_LINKS;
 
   return (
     <header className="w-full max-w-[1200px] 2xl:max-w-[1320px] mx-auto pt-3 sm:pt-5 lg:pt-[clamp(14px,2.2vh,28px)] px-3 sm:px-6 lg:px-8 shrink-0">
@@ -23,8 +30,8 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
         {/* Top Row on Mobile / Left on sm+: WishPix Brand Mark + Mobile Log in */}
         <div className="flex items-center justify-between gap-3">
           <Link
-            href="/"
-            onClick={() => onNavigate?.("/")}
+            href={brandHref}
+            onClick={() => onNavigate?.(brandHref)}
             className="inline-flex items-center gap-2.5 sm:gap-3.5 no-underline group min-w-0"
           >
             <div className="w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-[12px] sm:rounded-[14px] bg-[#6D48DF] group-hover:bg-[#5E38D0] transition-colors flex items-center justify-center text-white shadow-[0_4px_12px_rgba(109,72,223,0.25)] shrink-0">
@@ -71,7 +78,7 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
           className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-3 md:gap-5 lg:gap-7 border-t border-[#F3EFFC] sm:border-t-0 pt-2 sm:pt-0"
         >
           <div className="flex items-center justify-around sm:justify-end w-full sm:w-auto gap-1 sm:gap-2 md:gap-3">
-            {NAV_LINKS.map((item) => {
+            {visibleNavLinks.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
