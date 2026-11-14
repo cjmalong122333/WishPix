@@ -885,3 +885,193 @@ body.driver-active .wishpix-scroll-item {
   color: #ffffff !important;
   background-color: rgba(255, 255, 255, 0.14) !important;
 }
+
+/* ==========================================================================
+   Public Pages (Home, About, Team) Content Show & Mascot Animations
+   ========================================================================== */
+@keyframes wishpix-content-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.003);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-pop-scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(14px);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.02) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes wishpix-content-slide-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-24px) scale(0.985);
+  }
+  65% {
+    opacity: 1;
+    transform: translateX(2px) scale(1.002);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-slide-right {
+  0% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.985);
+  }
+  65% {
+    opacity: 1;
+    transform: translateX(-2px) scale(1.002);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes wishpix-pixi-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes wishpix-sparkle-twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.24) rotate(12deg);
+    opacity: 0.55;
+  }
+}
+
+.wishpix-reveal-hidden {
+  opacity: 0;
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-fade-up {
+  animation: wishpix-content-fade-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-pop-scale {
+  animation: wishpix-content-pop-scale 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-left {
+  animation: wishpix-content-slide-left 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-right {
+  animation: wishpix-content-slide-right 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-pixi-wave {
+  transform-box: fill-box;
+  transform-origin: left bottom;
+  animation: wishpix-pixi-wave 2.8s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.wishpix-sparkle-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wishpix-sparkle-twinkle 2.4s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.wishpix-sparkle-twinkle-delayed {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wishpix-sparkle-twinkle 2.4s ease-in-out 1.2s infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.wishpix-public-card-hover {
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms ease;
+}
+
+.wishpix-public-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(109, 72, 223, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wishpix-public-card-hover,
+  .wishpix-public-card-hover:hover {
+    transition: none;
+    transform: none;
+  }
+}

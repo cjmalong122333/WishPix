@@ -10,7 +10,7 @@ export function PixiMascot({ className = "w-48 h-48" }: PixiMascotProps) {
       viewBox="0 0 240 230"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`select-none ${className}`}
+      className={`select-none wishpix-float-pulse ${className}`}
       role="img"
       aria-label="Pixi, your WishPix star companion waving hello"
     >
@@ -19,29 +19,45 @@ export function PixiMascot({ className = "w-48 h-48" }: PixiMascotProps) {
       <path
         d="M42 46 C42 54, 34 56, 28 56 C34 56, 42 58, 42 66 C42 58, 50 56, 56 56 C50 56, 42 54, 42 46 Z"
         fill="#96EED6"
+        className="wishpix-sparkle-twinkle"
       />
       {/* Top-Left Tiny Yellow Dot */}
-      <circle cx="67" cy="27" r="3" fill="#FDE073" />
+      <circle
+        cx="67"
+        cy="27"
+        r="3"
+        fill="#FDE073"
+        className="wishpix-sparkle-twinkle-delayed"
+      />
 
       {/* Top-Right Yellow 4-Point Sparkle */}
       <path
         d="M180 22 C180 30, 172 32, 166 32 C172 32, 180 34, 180 42 C180 34, 188 32, 194 32 C188 32, 180 30, 180 22 Z"
         fill="#FDE073"
+        className="wishpix-sparkle-twinkle-delayed"
       />
 
       {/* Bottom-Left Yellow 4-Point Sparkle */}
       <path
         d="M32 146 C32 154, 24 156, 18 156 C24 156, 32 158, 32 166 C32 158, 40 156, 46 156 C40 156, 32 154, 32 146 Z"
         fill="#FDE073"
+        className="wishpix-sparkle-twinkle-delayed"
       />
 
       {/* Bottom-Right Mint 4-Point Sparkle */}
       <path
         d="M196 155 C196 164, 187 166, 180 166 C187 166, 196 168, 196 177 C196 168, 205 166, 212 166 C205 166, 196 164, 196 155 Z"
         fill="#96EED6"
+        className="wishpix-sparkle-twinkle"
       />
       {/* Bottom-Right Tiny Mint Dot */}
-      <circle cx="174" cy="194" r="3" fill="#96EED6" />
+      <circle
+        cx="174"
+        cy="194"
+        r="3"
+        fill="#96EED6"
+        className="wishpix-sparkle-twinkle"
+      />
 
       {/* ==================== LEFT ARM (TUCKED SIDE ARM) ==================== */}
       <path
@@ -61,6 +77,7 @@ export function PixiMascot({ className = "w-48 h-48" }: PixiMascotProps) {
         strokeWidth="4.8"
         strokeLinecap="round"
         strokeLinejoin="round"
+        className="wishpix-pixi-wave"
       />
 
       {/* ==================== LEGS / FEET ==================== */}

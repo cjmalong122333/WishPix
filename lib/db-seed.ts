@@ -11,9 +11,13 @@ import {
 export const DEFAULT_KIOSK_ID = "kiosk-rainbow-room";
 export const DEFAULT_EDUCATOR_ID = "educator-jamie";
 
+let isDatabaseSeeded = false;
 let seedPromise: Promise<void> | null = null;
 
 export async function ensureDatabaseSeeded(): Promise<void> {
+  if (isDatabaseSeeded) {
+    return;
+  }
   if (seedPromise) {
     return seedPromise;
   }
@@ -35,6 +39,7 @@ export async function ensureDatabaseSeeded(): Promise<void> {
             });
           }
         }
+        isDatabaseSeeded = true;
         return;
       }
 
@@ -250,6 +255,8 @@ export async function ensureDatabaseSeeded(): Promise<void> {
           },
         });
       }
+
+      isDatabaseSeeded = true;
     } finally {
       seedPromise = null;
     }

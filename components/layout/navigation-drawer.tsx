@@ -210,6 +210,7 @@ function SidebarContent({
                     <li key={item.id} className="relative">
                       <Link
                         href={item.href}
+                        prefetch
                         onClick={onNavigate}
                         className={`flex items-center justify-between rounded-[10px] px-3 py-2.5 text-[12.5px] transition-all duration-200 ease-out active:scale-[0.98] ${
                           isActive

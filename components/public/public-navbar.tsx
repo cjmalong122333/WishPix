@@ -5,17 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
 
-interface PublicNavbarProps {
-  onNavigate?: (href: string) => void;
-}
-
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Team", href: "/team" },
 ];
 
-export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
+export function PublicNavbar() {
   const pathname = usePathname();
   const { isStandalone } = usePwaInstall();
 
@@ -31,7 +27,7 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
         <div className="flex items-center justify-between gap-3">
           <Link
             href={brandHref}
-            onClick={() => onNavigate?.(brandHref)}
+            prefetch
             className="inline-flex items-center gap-2.5 sm:gap-3.5 no-underline group min-w-0"
           >
             <div className="w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-[12px] sm:rounded-[14px] bg-[#6D48DF] group-hover:bg-[#5E38D0] transition-colors flex items-center justify-center text-white shadow-[0_4px_12px_rgba(109,72,223,0.25)] shrink-0">
@@ -64,7 +60,7 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
           {/* Mobile-only compact Log in button on top right */}
           <Link
             href="/login"
-            onClick={() => onNavigate?.("/login")}
+            prefetch
             aria-current={pathname === "/login" ? "page" : undefined}
             className="sm:hidden px-4 py-2 rounded-full bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-[0.98] text-white text-[12.5px] font-bold shadow-[0_4px_12px_rgba(109,72,223,0.25)] transition-all no-underline shrink-0"
           >
@@ -84,7 +80,7 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => onNavigate?.(item.href)}
+                  prefetch
                   aria-current={isActive ? "page" : undefined}
                   className={`flex-1 sm:flex-initial text-center px-3.5 sm:px-5 lg:px-6 py-1.5 sm:py-2 rounded-full text-[13px] sm:text-[14px] lg:text-[15px] font-bold transition-all no-underline ${
                     isActive
@@ -100,7 +96,7 @@ export function PublicNavbar({ onNavigate }: PublicNavbarProps) {
 
           <Link
             href="/login"
-            onClick={() => onNavigate?.("/login")}
+            prefetch
             aria-current={pathname === "/login" ? "page" : undefined}
             className="hidden sm:inline-flex items-center justify-center px-6 md:px-8 lg:px-9 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-[0.98] text-white text-[13.5px] sm:text-[14px] lg:text-[15px] font-bold shadow-[0_4px_14px_rgba(109,72,223,0.28)] transition-all no-underline shrink-0"
           >
