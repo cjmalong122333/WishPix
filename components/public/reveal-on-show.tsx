@@ -1,30 +1,104 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { usePathname } from "next/navigation";
 
 export type RevealVariant =
   | "fade-up"
+  | "fade-down"
   | "pop-scale"
   | "slide-left"
-  | "slide-right";
+  | "slide-right"
+  | "blur-in";
+
+interface PublicDisplayContextValue {
+  displayCycle: number;
+  triggerDisplayReplay: () => void;
+}
+
+const PublicDisplayContext = createContext<PublicDisplayContextValue>({
+  displayCycle: 0,
+  triggerDisplayReplay: () => {},
+});
+
+export function usePublicDisplay() {
+  return useContext(PublicDisplayContext);
+}
+
+export function PublicDisplayProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [displayCycle, setDisplayCycle] = useState(0);
+
+  const triggerDisplayReplay = useCallback(() => {
+    setDisplayCycle((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        setDisplayCycle((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, []);
+
+  return (
+    <PublicDisplayContext.Provider
+      value={{ displayCycle, triggerDisplayReplay }}
+    >
+      {children}
+    </PublicDisplayContext.Provider>
+  );
+}
 
 interface RevealOnShowProps {
   children: React.ReactNode;
   variant?: RevealVariant;
   delayMs?: number;
   className?: string;
-  as?: "div" | "section" | "footer" | "header" | "p" | "h1" | "h2";
+  as?:
+    | "div"
+    | "section"
+    | "footer"
+    | "header"
+    | "nav"
+    | "span"
+    | "p"
+    | "h1"
+    | "h2"
+    | "h3";
   id?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
 }
 
-const VARIANT_CLASS_MAP: Record<RevealVariant, string> = {
-  "fade-up": "wishpix-reveal-fade-up",
-  "pop-scale": "wishpix-reveal-pop-scale",
-  "slide-left": "wishpix-reveal-slide-left",
-  "slide-right": "wishpix-reveal-slide-right",
+const VARIANT_CLASS_MAP: Record<RevealVariant, [string, string]> = {
+  "fade-up": ["wishpix-reveal-fade-up-a", "wishpix-reveal-fade-up-b"],
+  "fade-down": ["wishpix-reveal-fade-down-a", "wishpix-reveal-fade-down-b"],
+  "pop-scale": ["wishpix-reveal-pop-scale-a", "wishpix-reveal-pop-scale-b"],
+  "slide-left": ["wishpix-reveal-slide-left-a", "wishpix-reveal-slide-left-b"],
+  "slide-right": [
+    "wishpix-reveal-slide-right-a",
+    "wishpix-reveal-slide-right-b",
+  ],
+  "blur-in": ["wishpix-reveal-blur-in-a", "wishpix-reveal-blur-in-b"],
 };
 
 export function RevealOnShow({
@@ -38,9 +112,10 @@ export function RevealOnShow({
   "aria-labelledby": ariaLabelledby,
 }: RevealOnShowProps) {
   const pathname = usePathname();
+  const { displayCycle } = usePublicDisplay();
   const ref = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [animCycle, setAnimCycle] = useState(0);
+  const [viewportCycle, setViewportCycle] = useState(0);
   const hasLeftViewportRef = useRef(false);
 
   useEffect(() => {
@@ -62,7 +137,7 @@ export function RevealOnShow({
             setIsVisible(true);
             if (hasLeftViewportRef.current) {
               hasLeftViewportRef.current = false;
-              setAnimCycle((prev) => prev + 1);
+              setViewportCycle((prev) => prev + 1);
             }
           } else {
             hasLeftViewportRef.current = true;
@@ -71,8 +146,8 @@ export function RevealOnShow({
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: "0px 0px -12px 0px",
+        threshold: 0.06,
+        rootMargin: "0px 0px -10px 0px",
       }
     );
 
@@ -81,15 +156,17 @@ export function RevealOnShow({
     return () => {
       observer.disconnect();
     };
-  }, [pathname]);
+  }, [pathname, displayCycle]);
 
-  // Once the user scrolls an element out of view and back in, use a compact
-  // stagger so viewport re-entry feels immediate and responsive.
+  const totalCycle = displayCycle + viewportCycle;
+  const parityIndex = totalCycle % 2;
+
+  // On scroll re-entry, keep stagger compact so elements glide in immediately
   const effectiveDelay =
-    animCycle > 0 ? Math.min(delayMs, 180) : delayMs;
+    viewportCycle > 0 ? Math.min(delayMs, 160) : delayMs;
 
   const animationClass = isVisible
-    ? VARIANT_CLASS_MAP[variant]
+    ? VARIANT_CLASS_MAP[variant][parityIndex]
     : "wishpix-reveal-hidden";
 
   return (
@@ -98,7 +175,8 @@ export function RevealOnShow({
       id={id}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
-      data-reveal-cycle={animCycle}
+      data-reveal-cycle={totalCycle}
+      data-reveal-parity={parityIndex === 0 ? "a" : "b"}
       style={
         {
           "--reveal-delay": `${effectiveDelay}ms`,

@@ -929,65 +929,137 @@ body.driver-active .wishpix-scroll-item {
 }
 
 /* ==========================================================================
-   Public Pages (Home, About, Team) Content Show & Mascot Animations
+   Public Pages (Home, About, Team) Ultra-Smooth Content & Mascot Animations
    ========================================================================== */
-@keyframes wishpix-content-fade-up {
+@keyframes wishpix-content-fade-up-a {
   0% {
     opacity: 0;
-    transform: translateY(22px) scale(0.985);
-  }
-  65% {
-    opacity: 1;
-    transform: translateY(-2px) scale(1.003);
+    transform: translate3d(0, 16px, 0) scale(0.985);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
-@keyframes wishpix-content-pop-scale {
+@keyframes wishpix-content-fade-up-b {
   0% {
     opacity: 0;
-    transform: scale(0.9) translateY(14px);
-  }
-  70% {
-    opacity: 1;
-    transform: scale(1.02) translateY(-2px);
+    transform: translate3d(0, 16px, 0) scale(0.985);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
-@keyframes wishpix-content-slide-left {
+@keyframes wishpix-content-fade-down-a {
   0% {
     opacity: 0;
-    transform: translateX(-24px) scale(0.985);
-  }
-  65% {
-    opacity: 1;
-    transform: translateX(2px) scale(1.002);
+    transform: translate3d(0, -12px, 0) scale(0.99);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
-@keyframes wishpix-content-slide-right {
+@keyframes wishpix-content-fade-down-b {
   0% {
     opacity: 0;
-    transform: translateX(24px) scale(0.985);
-  }
-  65% {
-    opacity: 1;
-    transform: translateX(-2px) scale(1.002);
+    transform: translate3d(0, -12px, 0) scale(0.99);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-pop-scale-a {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-pop-scale-b {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-slide-left-a {
+  0% {
+    opacity: 0;
+    transform: translate3d(-18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-slide-left-b {
+  0% {
+    opacity: 0;
+    transform: translate3d(-18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-slide-right-a {
+  0% {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-slide-right-b {
+  0% {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes wishpix-content-blur-in-a {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes wishpix-content-blur-in-b {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -996,14 +1068,8 @@ body.driver-active .wishpix-scroll-item {
   100% {
     transform: rotate(0deg);
   }
-  25% {
-    transform: rotate(8deg);
-  }
   50% {
-    transform: rotate(-4deg);
-  }
-  75% {
-    transform: rotate(6deg);
+    transform: rotate(7deg);
   }
 }
 
@@ -1014,8 +1080,8 @@ body.driver-active .wishpix-scroll-item {
     opacity: 0.95;
   }
   50% {
-    transform: scale(1.24) rotate(12deg);
-    opacity: 0.55;
+    transform: scale(1.18) rotate(8deg);
+    opacity: 0.6;
   }
 }
 
@@ -1027,9 +1093,11 @@ body.driver-active .wishpix-scroll-item {
   }
 }
 
-.wishpix-reveal-fade-up {
-  animation: wishpix-content-fade-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.wishpix-reveal-fade-up,
+.wishpix-reveal-fade-up-a {
+  animation: wishpix-content-fade-up-a 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
   will-change: opacity, transform;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -1038,9 +1106,10 @@ body.driver-active .wishpix-scroll-item {
   }
 }
 
-.wishpix-reveal-pop-scale {
-  animation: wishpix-content-pop-scale 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.wishpix-reveal-fade-up-b {
+  animation: wishpix-content-fade-up-b 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
   will-change: opacity, transform;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -1049,9 +1118,11 @@ body.driver-active .wishpix-scroll-item {
   }
 }
 
-.wishpix-reveal-slide-left {
-  animation: wishpix-content-slide-left 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.wishpix-reveal-fade-down,
+.wishpix-reveal-fade-down-a {
+  animation: wishpix-content-fade-down-a 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
   will-change: opacity, transform;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -1060,9 +1131,110 @@ body.driver-active .wishpix-scroll-item {
   }
 }
 
-.wishpix-reveal-slide-right {
-  animation: wishpix-content-slide-right 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.wishpix-reveal-fade-down-b {
+  animation: wishpix-content-fade-down-b 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-pop-scale,
+.wishpix-reveal-pop-scale-a {
+  animation: wishpix-content-pop-scale-a 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-pop-scale-b {
+  animation: wishpix-content-pop-scale-b 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-left,
+.wishpix-reveal-slide-left-a {
+  animation: wishpix-content-slide-left-a 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-left-b {
+  animation: wishpix-content-slide-left-b 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-right,
+.wishpix-reveal-slide-right-a {
+  animation: wishpix-content-slide-right-a 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-slide-right-b {
+  animation: wishpix-content-slide-right-b 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-blur-in,
+.wishpix-reveal-blur-in-a {
+  animation: wishpix-content-blur-in-a 660ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.wishpix-reveal-blur-in-b {
+  animation: wishpix-content-blur-in-b 660ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
   will-change: opacity, transform;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -1074,7 +1246,7 @@ body.driver-active .wishpix-scroll-item {
 .wishpix-pixi-wave {
   transform-box: fill-box;
   transform-origin: left bottom;
-  animation: wishpix-pixi-wave 2.8s ease-in-out infinite;
+  animation: wishpix-pixi-wave 3.2s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -1083,7 +1255,7 @@ body.driver-active .wishpix-scroll-item {
 .wishpix-sparkle-twinkle {
   transform-box: fill-box;
   transform-origin: center;
-  animation: wishpix-sparkle-twinkle 2.4s ease-in-out infinite;
+  animation: wishpix-sparkle-twinkle 2.8s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -1092,7 +1264,7 @@ body.driver-active .wishpix-scroll-item {
 .wishpix-sparkle-twinkle-delayed {
   transform-box: fill-box;
   transform-origin: center;
-  animation: wishpix-sparkle-twinkle 2.4s ease-in-out 1.2s infinite;
+  animation: wishpix-sparkle-twinkle 2.8s ease-in-out 1.4s infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -1100,14 +1272,14 @@ body.driver-active .wishpix-scroll-item {
 
 .wishpix-public-card-hover {
   transition:
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 280ms ease;
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 360ms ease;
 }
 
 .wishpix-public-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(109, 72, 223, 0.1);
+  transform: translate3d(0, -3px, 0);
+  box-shadow: 0 12px 32px rgba(109, 72, 223, 0.09);
 }
 
 @media (prefers-reduced-motion: reduce) {
