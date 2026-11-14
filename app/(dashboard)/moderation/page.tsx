@@ -19,6 +19,7 @@ import {
 } from "@/lib/actions";
 import { MODERATION_ITEMS } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { ModerationQueueItem, SafetyRuleMode } from "@/types/kiosk";
 
 type FilterTab = "all" | "pending" | "resolved";
@@ -98,15 +99,25 @@ export default function ModerationPage() {
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
+        <RevealOnShow
+          as="h1"
+          variant="fade-down"
+          delayMs={30}
+          className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight"
+        >
           {t("Moderation Center", "Sentro ng Moderasyon")}
-        </h1>
-        <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
+        </RevealOnShow>
+        <RevealOnShow
+          as="p"
+          variant="blur-in"
+          delayMs={70}
+          className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5"
+        >
           {t(
             "Review prompts blocked by the safety filter.",
             "Suriin ang mga prompt na hinarang ng safety filter."
           )}
-        </p>
+        </RevealOnShow>
       </div>
 
       {/* Top Overview Grid */}
@@ -115,7 +126,12 @@ export default function ModerationPage() {
         className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
       >
         {/* Awaiting Review */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={110}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#766F8E]">
               {t("AWAITING REVIEW", "NAGHIHINTAY NG SURI")}
@@ -136,10 +152,15 @@ export default function ModerationPage() {
               "Mga hinarang na prompt na pagpapasyahan"
             )}
           </p>
-        </article>
+        </RevealOnShow>
 
         {/* Blocked Today */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={165}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.06em] text-[#766F8E]">
               {t("BLOCKED TODAY", "HINARANG NGAYON")}
@@ -157,10 +178,14 @@ export default function ModerationPage() {
           <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-1.5">
             {t("Rejected by Safety Filter", "Tinanggihan ng Safety Filter")}
           </p>
-        </article>
+        </RevealOnShow>
 
         {/* Safety Level Card */}
-        <div className="col-span-2 lg:col-span-1 rounded-[18px] bg-white border border-[#F2EEFB] px-3.5 sm:px-4 py-3 sm:py-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          variant="fade-up"
+          delayMs={220}
+          className="wishpix-public-card-hover col-span-2 lg:col-span-1 rounded-[18px] bg-white border border-[#F2EEFB] px-3.5 sm:px-4 py-3 sm:py-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
               <Shield className="w-4 h-4 stroke-[2.2]" aria-hidden="true" />
@@ -188,11 +213,16 @@ export default function ModerationPage() {
           >
             {t("Change", "Palitan")}
           </button>
-        </div>
+        </RevealOnShow>
       </div>
 
       {/* Filter Pills Row */}
-      <div id="tour-moderation-tabs" className="flex items-center gap-2">
+      <RevealOnShow
+        id="tour-moderation-tabs"
+        variant="fade-up"
+        delayMs={265}
+        className="flex items-center gap-2"
+      >
         <button
           type="button"
           onClick={() => setActiveTab("all")}
@@ -228,11 +258,11 @@ export default function ModerationPage() {
         >
           {t("Resolved", "Nalutas")} ({resolvedCount})
         </button>
-      </div>
+      </RevealOnShow>
 
       {/* Moderation Queue Cards */}
       <div id="tour-moderation-queue" className="space-y-3 sm:space-y-4">
-        {filteredItems.map((item) => {
+        {filteredItems.map((item, idx) => {
           const isPending = item.status === "pending";
 
           const categoryBadgeStyle =
@@ -250,9 +280,12 @@ export default function ModerationPage() {
                 : "bg-[#DCFCE7] text-[#15803D]";
 
           return (
-            <article
-              key={item.id}
-              className={`rounded-[18px] bg-white p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] ${
+            <RevealOnShow
+              as="article"
+              key={`${activeTab}-${item.id}`}
+              variant="fade-up"
+              delayMs={310 + idx * 60}
+              className={`wishpix-public-card-hover rounded-[18px] bg-white p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] ${
                 isPending
                   ? "border-[1.75px] border-[#FBBF24]"
                   : "border border-[#F2EEFB]"
@@ -367,7 +400,7 @@ export default function ModerationPage() {
                   </button>
                 </div>
               )}
-            </article>
+            </RevealOnShow>
           );
         })}
       </div>
@@ -375,12 +408,16 @@ export default function ModerationPage() {
       {/* Inspection Modal */}
       {inspectedItem && (
         <div
-          className="fixed inset-0 z-50 bg-[#231B3B]/50 backdrop-blur-[1px] flex items-center justify-center p-4"
+          className="wishpix-backdrop-fade fixed inset-0 z-50 bg-[#231B3B]/50 backdrop-blur-[1px] flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="inspect-modal-title"
         >
-          <div className="w-full max-w-md rounded-[22px] bg-white border border-[#F2EEFB] p-5 shadow-xl space-y-4">
+          <RevealOnShow
+            variant="pop-scale"
+            delayMs={0}
+            className="w-full max-w-md rounded-[22px] bg-white border border-[#F2EEFB] p-5 shadow-xl space-y-4"
+          >
             <div className="flex items-center justify-between">
               <h2
                 id="inspect-modal-title"
@@ -442,7 +479,7 @@ export default function ModerationPage() {
                 {t("Done", "Tapos na")}
               </button>
             </div>
-          </div>
+          </RevealOnShow>
         </div>
       )}
     </div>

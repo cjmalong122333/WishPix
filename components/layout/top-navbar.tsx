@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Bell,
   Compass,
@@ -14,6 +15,7 @@ import {
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import { useOnboardingTour } from "@/components/providers/onboarding-tour-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
+import { usePublicDisplay } from "@/components/public/reveal-on-show";
 import type { KioskInfo } from "@/types/kiosk";
 
 interface TopNavbarProps {
@@ -23,8 +25,10 @@ interface TopNavbarProps {
 }
 
 export function TopNavbar({ kiosk, onOpenMenu, onLogout }: TopNavbarProps) {
+  const pathname = usePathname();
   const { t } = useAppSettings();
   const { isStandalone, triggerInstall } = usePwaInstall();
+  const { triggerDisplayReplay } = usePublicDisplay();
   const {
     hasCompletedTour,
     completedPagesCount,
@@ -77,7 +81,12 @@ export function TopNavbar({ kiosk, onOpenMenu, onLogout }: TopNavbarProps) {
 
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1 text-[16px] sm:text-[17px] font-extrabold text-[#231B3B] tracking-tight"
+          onClick={() => {
+            if (pathname === "/dashboard") {
+              triggerDisplayReplay();
+            }
+          }}
+          className="inline-flex items-center gap-1 text-[16px] sm:text-[17px] font-extrabold text-[#231B3B] tracking-tight transition-transform duration-300 hover:scale-[1.02]"
         >
           <span>WishPix</span>
           <span
@@ -161,7 +170,7 @@ export function TopNavbar({ kiosk, onOpenMenu, onLogout }: TopNavbarProps) {
             <div
               role="menu"
               aria-label="Educator account menu"
-              className="absolute right-0 mt-2 w-56 rounded-[16px] bg-white border border-[#F2EEFB] shadow-[0_12px_28px_rgba(109,72,223,0.12)] py-2 z-50 text-[#231B3B]"
+              className="wishpix-reveal-pop-scale absolute right-0 mt-2 w-56 rounded-[16px] bg-white border border-[#F2EEFB] shadow-[0_12px_28px_rgba(109,72,223,0.12)] py-2 z-50 text-[#231B3B]"
             >
               <div className="px-3.5 py-2 border-b border-[#F3EFFC]">
                 <p className="text-[12.5px] font-extrabold text-[#231B3B] truncate">

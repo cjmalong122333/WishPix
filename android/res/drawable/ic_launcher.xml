@@ -4,26 +4,22 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Deep Navy Background -->
+    <!-- Deep Violet Background -->
     <path
-        android:fillColor="#0F253E"
+        android:fillColor="#231B3B"
         android:pathData="M0,0h108v108h-108z" />
-    <!-- Inner Rounded Card -->
+    <!-- Inner Rounded Violet Badge -->
     <path
-        android:fillColor="#085081"
-        android:strokeColor="#38BDF8"
+        android:fillColor="#6D48DF"
+        android:strokeColor="#A78BFA"
         android:strokeWidth="2.5"
-        android:pathData="M24,18h60a6,6 0 0,1 6,6v60a6,6 0 0,1 -6,6h-60a6,6 0 0,1 -6,-6v-60a6,6 0 0,1 6,-6z" />
-    <!-- W Letter -->
+        android:pathData="M30,18h48a12,12 0 0,1 12,12v48a12,12 0 0,1 -12,12h-48a12,12 0 0,1 -12,-12v-48a12,12 0 0,1 12,-12z" />
+    <!-- Centered 5-Point Star Only -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M31,39h5.5l4,18l4.5,-18h5l4.5,18l4,-18h5.5l-6.8,28h-5.2l-4.5,-17.5l-4.5,17.5h-5.2z" />
-    <!-- P Letter -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M66,39h10c5.5,0 9,3.2 9,8.5c0,5.3 -3.5,8.5 -9,8.5h-4.5v11h-5.5v-28zM71.5,43.8v7.4h4c2.4,0 3.8,-1.3 3.8,-3.7c0,-2.4 -1.4,-3.7 -3.8,-3.7h-4z" />
-    <!-- Cyan Brand Dot -->
-    <path
-        android:fillColor="#38BDF8"
-        android:pathData="M83,63m-4,0a4,4 0 1,1 8,0a4,4 0 1,1 -8,0" />
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M54,32.7L60.26,45.37L74.24,47.4L64.12,57.27L66.51,71.2L54,64.63L41.49,71.2L43.88,57.27L33.76,47.4L47.74,45.37L54,32.7Z" />
 </vector>

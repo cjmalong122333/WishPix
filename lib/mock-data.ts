@@ -669,7 +669,7 @@ export const REPORT_TYPES: ReportTypeOption[] = [
 
 export const THEME_SWATCHES: ThemeSwatchOption[] = [
   { id: "deep-blue", label: "WishPix Violet", hex: "#6D48DF" },
-  { id: "ocean", label: "Ocean", hex: "#14827B" },
-  { id: "midnight", label: "Midnight", hex: "#3B5980" },
-  { id: "slate", label: "Slate", hex: "#546875" },
+  { id: "amethyst", label: "Royal Amethyst", hex: "#8B5CF6" },
+  { id: "orchid", label: "Orchid Berry", hex: "#9333EA" },
+  { id: "midnight-violet", label: "Midnight Plum", hex: "#4C1D95" },
 ];

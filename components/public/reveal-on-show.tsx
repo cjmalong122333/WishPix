@@ -76,6 +76,7 @@ interface RevealOnShowProps {
   as?:
     | "div"
     | "section"
+    | "article"
     | "footer"
     | "header"
     | "nav"
@@ -83,10 +84,15 @@ interface RevealOnShowProps {
     | "p"
     | "h1"
     | "h2"
-    | "h3";
+    | "h3"
+    | "li"
+    | "ul";
   id?: string;
+  role?: React.AriaRole;
   "aria-label"?: string;
   "aria-labelledby"?: string;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
 }
 
 const VARIANT_CLASS_MAP: Record<RevealVariant, [string, string]> = {
@@ -108,8 +114,11 @@ export function RevealOnShow({
   className = "",
   as: Component = "div",
   id,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
+  role,
+  "aria-label": ariaLabelAttr,
+  "aria-labelledby": ariaLabelledbyAttr,
+  ariaLabel,
+  ariaLabelledBy,
 }: RevealOnShowProps) {
   const pathname = usePathname();
   const { displayCycle } = usePublicDisplay();
@@ -132,6 +141,11 @@ export function RevealOnShow({
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (document.body.classList.contains("driver-active")) {
+          setIsVisible(true);
+          return;
+        }
+
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
@@ -173,8 +187,9 @@ export function RevealOnShow({
     <Component
       ref={ref as React.RefObject<never>}
       id={id}
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledby}
+      role={role}
+      aria-label={ariaLabelAttr ?? ariaLabel}
+      aria-labelledby={ariaLabelledbyAttr ?? ariaLabelledBy}
       data-reveal-cycle={totalCycle}
       data-reveal-parity={parityIndex === 0 ? "a" : "b"}
       style={

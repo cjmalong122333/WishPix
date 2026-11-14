@@ -15,7 +15,7 @@ const BADGE_STYLES: Record<StatAccentVariant, string> = {
 
 export function MetricStatCard({ metric }: MetricStatCardProps) {
   return (
-    <article className="rounded-[18px] bg-white border border-[#F2EEFB] px-3.5 sm:px-4 py-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
+    <article className="group wishpix-public-card-hover w-full rounded-[18px] bg-white border border-[#F2EEFB] px-3.5 sm:px-4 py-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-[11px] sm:text-[11.5px] font-medium text-[#766F8E] leading-snug">
           {metric.label}
@@ -23,7 +23,7 @@ export function MetricStatCard({ metric }: MetricStatCardProps) {
 
         {/* Tinted Pill Icon Box */}
         <div
-          className={`w-7 h-6 rounded-[8px] flex items-center justify-center flex-shrink-0 ${
+          className={`w-7 h-6 rounded-[8px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${
             BADGE_STYLES[metric.variant]
           }`}
         >

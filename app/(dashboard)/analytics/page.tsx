@@ -18,6 +18,7 @@ import {
   THEME_DISTRIBUTION,
 } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { AnalyticsUsagePoint } from "@/types/kiosk";
 
 type TimeRange = "daily" | "weekly" | "monthly";
@@ -72,24 +73,30 @@ export default function AnalyticsPage() {
       {/* Top Header with Live Kiosk Pill */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
-            {t("Analytics", "Pagsusuri (Analytics)")}
-          </h1>
-          <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
-            {t(
-              "Usage, success rate and blocked requests.",
-              "Paggamit, antas ng tagumpay at mga hinarang na kahilingan."
-            )}
-          </p>
+          <RevealOnShow variant="fade-down" delayMs={25}>
+            <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
+              {t("Analytics", "Pagsusuri (Analytics)")}
+            </h1>
+          </RevealOnShow>
+          <RevealOnShow variant="blur-in" delayMs={65}>
+            <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
+              {t(
+                "Usage, success rate and blocked requests.",
+                "Paggamit, antas ng tagumpay at mga hinarang na kahilingan."
+              )}
+            </p>
+          </RevealOnShow>
         </div>
 
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#15803D] flex-shrink-0">
-          <span
-            className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"
-            aria-hidden="true"
-          />
-          <span>{t("Live Kiosk", "Live na Kiosk")}</span>
-        </span>
+        <RevealOnShow variant="pop-scale" delayMs={80} className="flex-shrink-0">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#15803D] flex-shrink-0">
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"
+              aria-hidden="true"
+            />
+            <span>{t("Live Kiosk", "Live na Kiosk")}</span>
+          </span>
+        </RevealOnShow>
       </div>
 
       {/* 6 KPI Summary Cards */}
@@ -98,7 +105,12 @@ export default function AnalyticsPage() {
         className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
       >
         {/* 1. Most Used Theme */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={100}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Most Used Theme", "Pinakaginagamit na Tema")}
@@ -115,10 +127,15 @@ export default function AnalyticsPage() {
               1,033 generations
             </p>
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* 2. Most Used Activity */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={145}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Most Used Activity", "Pinakaginagamit na Aktibidad")}
@@ -135,10 +152,15 @@ export default function AnalyticsPage() {
               46% of sessions
             </p>
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* 3. Total Prints */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={190}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Total Prints", "Kabuuang Print")}
@@ -155,10 +177,15 @@ export default function AnalyticsPage() {
               {t("All time", "Lahat ng panahon")}
             </p>
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* 4. Total Generations */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={235}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Total Generations", "Kabuuang Nalikha")}
@@ -175,10 +202,15 @@ export default function AnalyticsPage() {
               {t("All time", "Lahat ng panahon")}
             </p>
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* 5. Blocked Requests */}
-        <article className="rounded-[18px] bg-white border border-[#FDE68A] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(217,119,6,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={280}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#FDE68A] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(217,119,6,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Blocked Requests", "Hinarang na Kahilingan")}
@@ -195,10 +227,15 @@ export default function AnalyticsPage() {
               {t("Rejected by Safety", "Tinanggihan ng Safety")}
             </p>
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* 6. Success Rate */}
-        <article className="rounded-[18px] bg-white border border-[#BBF7D0] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(22,163,74,0.04)] flex flex-col justify-between">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={325}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#BBF7D0] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(22,163,74,0.04)] flex flex-col justify-between"
+        >
           <div className="flex items-start justify-between gap-2">
             <span className="text-[10.5px] sm:text-[11.5px] font-medium text-[#766F8E]">
               {t("Success Rate", "Antas ng Tagumpay")}
@@ -215,14 +252,17 @@ export default function AnalyticsPage() {
               {t("Passing safety", "Pumasa sa safety")}
             </p>
           </div>
-        </article>
+        </RevealOnShow>
       </div>
 
       {/* Usage Over Time Card */}
-      <section
+      <RevealOnShow
+        as="section"
         id="tour-analytics-chart"
-        aria-labelledby="usage-over-time-heading"
-        className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        ariaLabelledBy="usage-over-time-heading"
+        variant="fade-up"
+        delayMs={370}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
       >
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -339,15 +379,18 @@ export default function AnalyticsPage() {
             ))}
           </div>
         </div>
-      </section>
+      </RevealOnShow>
 
       {/* Bottom 2 Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Theme Distribution Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-analytics-themes"
-          aria-labelledby="theme-distribution-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="theme-distribution-heading"
+          variant="slide-left"
+          delayMs={420}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <h2
             id="theme-distribution-heading"
@@ -427,13 +470,16 @@ export default function AnalyticsPage() {
               ))}
             </ul>
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* Activity Mix Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-analytics-mix"
-          aria-labelledby="activity-mix-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
+          ariaLabelledBy="activity-mix-heading"
+          variant="slide-right"
+          delayMs={450}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)] flex flex-col justify-between"
         >
           <div>
             <h2
@@ -474,7 +520,7 @@ export default function AnalyticsPage() {
               </div>
             ))}
           </div>
-        </section>
+        </RevealOnShow>
       </div>
     </div>
   );

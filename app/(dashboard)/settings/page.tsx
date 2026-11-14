@@ -28,12 +28,13 @@ import {
   useOnboardingTour,
 } from "@/components/providers/onboarding-tour-provider";
 import { usePwaInstall } from "@/components/providers/pwa-install-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 
 const SWATCH_LABEL_FILIPINO: Record<string, string> = {
   "deep-blue": "WishPix Violet",
-  ocean: "Ocean",
-  midnight: "Midnight",
-  slate: "Slate",
+  amethyst: "Royal Amethyst",
+  orchid: "Orchid Berry",
+  "midnight-violet": "Midnight Plum",
 };
 
 export default function SettingsPage() {
@@ -144,24 +145,31 @@ export default function SettingsPage() {
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Page Title */}
       <div>
-        <h1 className="text-[20px] sm:text-[24px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
-          {t("Settings", "Mga Setting")}
-        </h1>
-        <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
-          {t(
-            "Language, audio, display and system preferences.",
-            "Mga kagustuhan sa wika, audio, display at sistema."
-          )}
-        </p>
+        <RevealOnShow variant="fade-down" delayMs={25}>
+          <h1 className="text-[20px] sm:text-[24px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
+            {t("Settings", "Mga Setting")}
+          </h1>
+        </RevealOnShow>
+        <RevealOnShow variant="blur-in" delayMs={65}>
+          <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
+            {t(
+              "Language, audio, display and system preferences.",
+              "Mga kagustuhan sa wika, audio, display at sistema."
+            )}
+          </p>
+        </RevealOnShow>
       </div>
 
       {/* Settings Cards: Stacked on Mobile, 2x2 Grid on Desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-start">
         {/* 1. Language Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-settings-language"
-          aria-labelledby="language-settings-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="language-settings-heading"
+          variant="fade-up"
+          delayMs={100}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
@@ -215,13 +223,16 @@ export default function SettingsPage() {
               })}
             </div>
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* 2. Audio Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-settings-audio"
-          aria-labelledby="audio-settings-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="audio-settings-heading"
+          variant="fade-up"
+          delayMs={150}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
@@ -274,13 +285,16 @@ export default function SettingsPage() {
               />
             </div>
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* 3. Display Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-settings-display"
-          aria-labelledby="display-settings-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="display-settings-heading"
+          variant="fade-up"
+          delayMs={200}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
@@ -344,13 +358,16 @@ export default function SettingsPage() {
               );
             })}
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* 4. System Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-settings-system"
-          aria-labelledby="system-settings-heading"
-          className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="system-settings-heading"
+          variant="fade-up"
+          delayMs={250}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="pb-3 border-b border-[#F2EEFB]">
             <h2
@@ -659,13 +676,16 @@ export default function SettingsPage() {
               </button>
             </div>
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* 5. Interactive Onboarding Walkthrough Hub (Signature Deep Plum & Lavender Glow Card) */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-settings-onboarding"
-          aria-labelledby="onboarding-tour-settings-heading"
-          className="relative overflow-hidden lg:col-span-2 rounded-[20px] bg-[#231B3B] border border-[#A78BFA]/30 p-4 sm:p-6 text-white shadow-[0_14px_34px_rgba(35,27,59,0.22)] transition-colors duration-200"
+          ariaLabelledBy="onboarding-tour-settings-heading"
+          variant="pop-scale"
+          delayMs={300}
+          className="wishpix-public-card-hover relative overflow-hidden lg:col-span-2 rounded-[20px] bg-[#231B3B] border border-[#A78BFA]/30 p-4 sm:p-6 text-white shadow-[0_14px_34px_rgba(35,27,59,0.22)] transition-colors duration-200"
         >
           {/* Ambient Violet Radial Glow */}
           <div
@@ -801,12 +821,15 @@ export default function SettingsPage() {
               </button>
             </div>
           </div>
-        </section>
+        </RevealOnShow>
 
         {/* 6. App & Browser Access Card (Full Width on Desktop) */}
-        <section
-          aria-labelledby="app-access-settings-heading"
-          className="lg:col-span-2 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        <RevealOnShow
+          as="section"
+          ariaLabelledBy="app-access-settings-heading"
+          variant="fade-up"
+          delayMs={350}
+          className="wishpix-public-card-hover lg:col-span-2 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="pb-3 border-b border-[#F2EEFB] flex flex-wrap items-center justify-between gap-2">
             <div>
@@ -911,7 +934,7 @@ export default function SettingsPage() {
               )}
             </div>
           </div>
-        </section>
+        </RevealOnShow>
       </div>
     </div>
   );

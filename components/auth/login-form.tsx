@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import {
   authenticateEducatorAction,
   type AuthErrorCode,
@@ -94,23 +95,36 @@ export function LoginForm() {
   return (
     <section
       aria-labelledby="login-heading"
-      className="w-full rounded-[24px] sm:rounded-[28px] bg-white border border-[#F2EEFB] shadow-[0_6px_28px_rgba(109,72,223,0.05)] px-6 sm:px-9 lg:px-10 py-6 sm:py-8 lg:py-[clamp(22px,3.2vh,38px)] flex flex-col justify-center"
+      className="wishpix-public-card-hover w-full rounded-[24px] sm:rounded-[28px] bg-white border border-[#F2EEFB] shadow-[0_6px_28px_rgba(109,72,223,0.05)] px-6 sm:px-9 lg:px-10 py-6 sm:py-8 lg:py-[clamp(22px,3.2vh,38px)] flex flex-col justify-center"
     >
       <div>
-        <p className="text-[10.5px] sm:text-[11.5px] lg:text-[12px] font-extrabold tracking-[0.06em] text-[#6D48DF] uppercase">
+        <RevealOnShow
+          as="p"
+          variant="fade-down"
+          delayMs={150}
+          className="text-[10.5px] sm:text-[11.5px] lg:text-[12px] font-extrabold tracking-[0.06em] text-[#6D48DF] uppercase"
+        >
           FOR EDUCATORS &amp; TEACHERS
-        </p>
+        </RevealOnShow>
 
-        <h2
+        <RevealOnShow
+          as="h2"
           id="login-heading"
+          variant="fade-up"
+          delayMs={200}
           className="mt-2 text-[clamp(25px,2.9vw,36px)] font-extrabold text-[#231B3B] tracking-tight leading-tight"
         >
           Welcome back!
-        </h2>
+        </RevealOnShow>
 
-        <p className="mt-1.5 sm:mt-2 text-[13.5px] sm:text-[15px] text-[#766F8E]">
+        <RevealOnShow
+          as="p"
+          variant="blur-in"
+          delayMs={245}
+          className="mt-1.5 sm:mt-2 text-[13.5px] sm:text-[15px] text-[#766F8E]"
+        >
           Log in to start your next learning adventure.
-        </p>
+        </RevealOnShow>
       </div>
 
       <form
@@ -119,7 +133,7 @@ export function LoginForm() {
         noValidate
       >
         {/* Email Address Field */}
-        <div>
+        <RevealOnShow variant="fade-up" delayMs={290}>
           <label
             htmlFor="educator-email"
             className="block text-[13px] sm:text-[14px] font-bold text-[#231B3B] mb-1.5 sm:mb-2"
@@ -144,10 +158,10 @@ export function LoginForm() {
             placeholder="you@example.com"
             className="w-full rounded-[12px] sm:rounded-[14px] border border-[#E2DCF3] bg-[#FBF9FF] px-3.5 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[14.5px] text-[#231B3B] placeholder:text-[#8881A3] focus:border-[#6D48DF] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6D48DF]/20 disabled:opacity-60 transition"
           />
-        </div>
+        </RevealOnShow>
 
         {/* Password Field */}
-        <div>
+        <RevealOnShow variant="fade-up" delayMs={340}>
           <label
             htmlFor="educator-password"
             className="block text-[13px] sm:text-[14px] font-bold text-[#231B3B] mb-1.5 sm:mb-2"
@@ -182,7 +196,7 @@ export function LoginForm() {
           </div>
 
           {showForgotNote && (
-            <p className="mt-2 rounded-[12px] bg-[#EFE9FC] px-3.5 py-2.5 text-[12px] font-medium text-[#5A3BB8]">
+            <p className="wishpix-reveal-fade-up mt-2 rounded-[12px] bg-[#EFE9FC] px-3.5 py-2.5 text-[12px] font-medium text-[#5A3BB8]">
               Please contact your WishPix school or centre administrator to
               reset your password.
             </p>
@@ -193,7 +207,7 @@ export function LoginForm() {
             <div
               role="alert"
               aria-live="polite"
-              className={`mt-3 rounded-[12px] px-3.5 py-2.5 text-[12px] font-medium flex items-start gap-2.5 ${
+              className={`wishpix-reveal-pop-scale mt-3 rounded-[12px] px-3.5 py-2.5 text-[12px] font-medium flex items-start gap-2.5 ${
                 errorCode === "ACCOUNT_LOCKED"
                   ? "bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C]"
                   : "bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626]"
@@ -237,23 +251,25 @@ export function LoginForm() {
               </div>
             </div>
           )}
-        </div>
+        </RevealOnShow>
 
         {/* Log in Button */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-full bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-[0.99] disabled:opacity-60 text-white font-bold text-[14.5px] sm:text-[15.5px] lg:text-[16px] py-3 sm:py-3.5 lg:py-4 px-6 shadow-[0_6px_18px_rgba(109,72,223,0.28)] flex items-center justify-center gap-2 transition cursor-pointer"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-              <span>Logging in...</span>
-            </>
-          ) : (
-            <span>Log in</span>
-          )}
-        </button>
+        <RevealOnShow variant="pop-scale" delayMs={390}>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full rounded-full bg-[#6D48DF] hover:bg-[#5B36CA] hover:-translate-y-0.5 active:scale-[0.99] disabled:opacity-60 text-white font-bold text-[14.5px] sm:text-[15.5px] lg:text-[16px] py-3 sm:py-3.5 lg:py-4 px-6 shadow-[0_6px_18px_rgba(109,72,223,0.28)] flex items-center justify-center gap-2 transition-all duration-300 ease-out cursor-pointer"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                <span>Logging in...</span>
+              </>
+            ) : (
+              <span>Log in</span>
+            )}
+          </button>
+        </RevealOnShow>
       </form>
     </section>
   );

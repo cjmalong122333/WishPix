@@ -14,45 +14,26 @@ export default function AppleIcon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           background: "linear-gradient(135deg, #231B3B 0%, #6D48DF 100%)",
-          color: "#FFFFFF",
-          fontFamily: "sans-serif",
         }}
       >
-        <div
-          style={{
-            fontSize: 72,
-            fontWeight: 900,
-            letterSpacing: "-0.04em",
-            display: "flex",
-            alignItems: "center",
-          }}
+        <svg
+          width="98"
+          height="98"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <span>WP</span>
-          <span
-            style={{
-              width: 14,
-              height: 14,
-              borderRadius: 9999,
-              background: "#DDD6FE",
-              marginLeft: 6,
-            }}
+          <path
+            d="M12 2.75L14.72 8.26L20.8 9.14L16.4 13.43L17.44 19.49L12 16.63L6.56 19.49L7.6 13.43L3.2 9.14L9.28 8.26L12 2.75Z"
+            stroke="#FFFFFF"
+            strokeWidth="2.1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
-        </div>
-        <div
-          style={{
-            marginTop: 4,
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: "0.14em",
-            color: "#EDE7FC",
-          }}
-        >
-          WISHPIX
-        </div>
+        </svg>
       </div>
     ),
     {

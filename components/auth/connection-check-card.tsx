@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import { checkSystemConnectionsAction } from "@/lib/actions";
 import { INITIAL_CONNECTION_CHECKS } from "@/lib/mock-data";
 import type { ConnectionCheckItem } from "@/types/kiosk";
@@ -89,48 +90,81 @@ export function ConnectionCheckCard() {
         );
 
   return (
-    <Link
-      href={targetDashboardUrl}
-      aria-labelledby="system-check-heading"
-      title="Tap to continue to Dashboard"
-      className="block w-full rounded-[24px] bg-white border border-[#F2EEFB] px-6 sm:px-8 pt-6 pb-6 text-[#231B3B] shadow-[0_8px_30px_rgba(109,72,223,0.06)] cursor-pointer no-underline"
-    >
-      {/* Card Top Brand */}
-      <p className="text-[15px] sm:text-[16px] font-extrabold text-[#231B3B] text-center tracking-tight mb-3">
-        WishPix
-      </p>
-
-      {/* Overline & Heading */}
-      <p className="text-[9px] sm:text-[9.5px] font-extrabold tracking-[0.14em] text-[#6D48DF] uppercase">
-        SYSTEM CHECK
-      </p>
-      <h2
-        id="system-check-heading"
-        className="text-[19px] sm:text-[21px] font-extrabold text-[#231B3B] tracking-tight mt-0.5 leading-snug"
+    <RevealOnShow variant="pop-scale" delayMs={40}>
+      <Link
+        href={targetDashboardUrl}
+        aria-labelledby="system-check-heading"
+        title="Tap to continue to Dashboard"
+        className="wishpix-public-card-hover block w-full rounded-[24px] bg-white border border-[#F2EEFB] px-6 sm:px-8 pt-6 pb-6 text-[#231B3B] shadow-[0_8px_30px_rgba(109,72,223,0.06)] cursor-pointer no-underline"
       >
-        Getting ready...
-      </h2>
-      <p className="text-[10.5px] sm:text-[11px] text-[#766F8E] mt-1 font-medium">
-        Making sure everything is connected before starting
-      </p>
+        {/* Card Top Brand */}
+        <RevealOnShow
+          as="p"
+          variant="fade-down"
+          delayMs={80}
+          className="text-[15px] sm:text-[16px] font-extrabold text-[#231B3B] text-center tracking-tight mb-3"
+        >
+          WishPix
+        </RevealOnShow>
 
-      {/* Divider Line */}
-      <hr className="border-t border-[#F3EFFC] my-4" />
+        {/* Overline & Heading */}
+        <RevealOnShow
+          as="p"
+          variant="fade-down"
+          delayMs={115}
+          className="text-[9px] sm:text-[9.5px] font-extrabold tracking-[0.14em] text-[#6D48DF] uppercase"
+        >
+          SYSTEM CHECK
+        </RevealOnShow>
+        <RevealOnShow
+          as="h2"
+          id="system-check-heading"
+          variant="fade-up"
+          delayMs={150}
+          className="text-[19px] sm:text-[21px] font-extrabold text-[#231B3B] tracking-tight mt-0.5 leading-snug"
+        >
+          Getting ready...
+        </RevealOnShow>
+        <RevealOnShow
+          as="p"
+          variant="blur-in"
+          delayMs={185}
+          className="text-[10.5px] sm:text-[11px] text-[#766F8E] mt-1 font-medium"
+        >
+          Making sure everything is connected before starting
+        </RevealOnShow>
 
-      {/* Connection Status Checklist */}
-      <ul className="space-y-3.5">
-        {items.map((item) => (
-          <ConnectionRow key={item.id} item={item} />
-        ))}
-      </ul>
+        {/* Divider Line */}
+        <hr className="border-t border-[#F3EFFC] my-4" />
 
-      {/* Bottom Note */}
-      <p className="text-[9.5px] sm:text-[10px] font-semibold text-[#7A7393] mt-4">
-        {isAllReady
-          ? "All systems are ready, redirecting to dashboard..."
-          : "This only takes a moment."}
-      </p>
-    </Link>
+        {/* Connection Status Checklist */}
+        <ul className="space-y-3.5">
+          {items.map((item, idx) => (
+            <RevealOnShow
+              as="li"
+              key={item.id}
+              variant="fade-up"
+              delayMs={220 + idx * 55}
+              className="flex items-center gap-3"
+            >
+              <ConnectionRow item={item} />
+            </RevealOnShow>
+          ))}
+        </ul>
+
+        {/* Bottom Note */}
+        <RevealOnShow
+          as="p"
+          variant="blur-in"
+          delayMs={440}
+          className="text-[9.5px] sm:text-[10px] font-semibold text-[#7A7393] mt-4"
+        >
+          {isAllReady
+            ? "All systems are ready, redirecting to dashboard..."
+            : "This only takes a moment."}
+        </RevealOnShow>
+      </Link>
+    </RevealOnShow>
   );
 }
 
@@ -138,10 +172,10 @@ function ConnectionRow({ item }: { item: ConnectionCheckItem }) {
   const isOnline = item.state === "online";
 
   return (
-    <li className="flex items-center gap-3">
+    <>
       <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
         {isOnline && (
-          <span className="w-5 h-5 rounded-full bg-[#22C55E] flex items-center justify-center text-white shadow-[0_0_8px_rgba(34,197,94,0.35)]">
+          <span className="wishpix-reveal-pop-scale w-5 h-5 rounded-full bg-[#22C55E] flex items-center justify-center text-white shadow-[0_0_8px_rgba(34,197,94,0.35)]">
             <Check className="w-3 h-3 stroke-[3]" aria-hidden="true" />
           </span>
         )}
@@ -164,13 +198,13 @@ function ConnectionRow({ item }: { item: ConnectionCheckItem }) {
           {item.label}
         </p>
         <p
-          className={`text-[10px] sm:text-[10.5px] mt-0.5 font-medium ${
+          className={`text-[10px] sm:text-[10.5px] mt-0.5 font-medium transition-colors duration-300 ${
             isOnline ? "text-[#16A34A]" : "text-[#766F8E]"
           }`}
         >
           {item.statusText}
         </p>
       </div>
-    </li>
+    </>
   );
 }

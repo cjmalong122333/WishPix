@@ -13,7 +13,29 @@ import {
 } from "@/lib/actions";
 
 export type DisplayLanguage = "English" | "Filipino";
-export type DisplayThemeId = "deep-blue" | "ocean" | "midnight" | "slate";
+export type DisplayThemeId =
+  | "deep-blue"
+  | "amethyst"
+  | "orchid"
+  | "midnight-violet";
+
+function normalizeThemeId(raw?: string | null): DisplayThemeId {
+  switch (raw) {
+    case "deep-blue":
+      return "deep-blue";
+    case "amethyst":
+    case "ocean":
+      return "amethyst";
+    case "orchid":
+    case "slate":
+      return "orchid";
+    case "midnight-violet":
+    case "midnight":
+      return "midnight-violet";
+    default:
+      return "deep-blue";
+  }
+}
 
 interface AppSettingsState {
   displayLanguage: DisplayLanguage;
@@ -66,13 +88,7 @@ function readStoredSettings(): AppSettingsState {
         parsed.displayLanguage === "Filipino"
           ? parsed.displayLanguage
           : DEFAULT_SETTINGS.displayLanguage,
-      themeId:
-        parsed.themeId === "deep-blue" ||
-        parsed.themeId === "ocean" ||
-        parsed.themeId === "midnight" ||
-        parsed.themeId === "slate"
-          ? parsed.themeId
-          : DEFAULT_SETTINGS.themeId,
+      themeId: normalizeThemeId(parsed.themeId),
       volume:
         typeof parsed.volume === "number"
           ? parsed.volume
@@ -175,12 +191,7 @@ export function AppSettingsProvider({
               dbSettings.displayLanguage === "Filipino"
                 ? "Filipino"
                 : "English",
-            themeId:
-              dbSettings.themeId === "ocean" ||
-              dbSettings.themeId === "midnight" ||
-              dbSettings.themeId === "slate"
-                ? dbSettings.themeId
-                : "deep-blue",
+            themeId: normalizeThemeId(dbSettings.themeId),
             volume: dbSettings.volume ?? prev.volume,
             autoSleepEnabled: dbSettings.autoSleepEnabled,
             autoSleepDuration: dbSettings.autoSleepDuration,

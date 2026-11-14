@@ -9,6 +9,7 @@ import {
 } from "@/lib/actions";
 import { REPORT_TYPES } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { GeneratedReportItem } from "@/types/kiosk";
 
 export default function ReportsPage() {
@@ -88,7 +89,12 @@ export default function ReportsPage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top White Insights Header Card */}
-      <section className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+      <RevealOnShow
+        as="section"
+        variant="fade-down"
+        delayMs={30}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+      >
         <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#6D48DF]">
           {t("INSIGHTS", "MGA INSIGHT")}
         </p>
@@ -101,15 +107,18 @@ export default function ReportsPage() {
             "Gumawa ng mga ulat sa sesyon at pagsusuri sa pananaliksik."
           )}
         </p>
-      </section>
+      </RevealOnShow>
 
       {/* Responsive Split: Stacked on Mobile, 2 Columns on Desktop */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Generate a Report Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-reports-selector"
-          aria-labelledby="generate-report-heading"
-          className="lg:col-span-6 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="generate-report-heading"
+          variant="slide-left"
+          delayMs={100}
+          className="wishpix-public-card-hover lg:col-span-6 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <h2
             id="generate-report-heading"
@@ -163,13 +172,16 @@ export default function ReportsPage() {
           >
             {t("Generate Report", "Gumawa ng Ulat")}
           </button>
-        </section>
+        </RevealOnShow>
 
         {/* Recent Reports Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-reports-recent"
-          aria-labelledby="recent-reports-heading"
-          className="lg:col-span-6 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          ariaLabelledBy="recent-reports-heading"
+          variant="slide-right"
+          delayMs={150}
+          className="wishpix-public-card-hover lg:col-span-6 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="flex items-start justify-between gap-2">
             <div>
@@ -220,7 +232,7 @@ export default function ReportsPage() {
               {generatedReports.map((item) => (
                 <article
                   key={item.id}
-                  className="rounded-[12px] border border-[#F2EEFB] bg-[#FAF8FF] p-3.5 flex items-center justify-between gap-3"
+                  className="wishpix-reveal-fade-up wishpix-public-card-hover rounded-[12px] border border-[#F2EEFB] bg-[#FAF8FF] p-3.5 flex items-center justify-between gap-3"
                 >
                   <div className="flex items-start gap-3 min-w-0">
                     <div className="w-8 h-8 rounded-[9px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -251,7 +263,7 @@ export default function ReportsPage() {
               ))}
             </div>
           )}
-        </section>
+        </RevealOnShow>
       </div>
     </div>
   );

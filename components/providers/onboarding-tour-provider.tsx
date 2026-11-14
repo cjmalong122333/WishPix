@@ -1569,8 +1569,8 @@ export function OnboardingTourProvider({
               advanceOnSelector: "#tour-settings-display button",
               advanceOnEvent: "click",
               interactionHint: t(
-                "Hands-on: Click any color swatch (Deep Blue, Ocean, Midnight, Slate)!",
-                "Subukan: Pumili ng kulay ng tema (Deep Blue, Ocean, Midnight, Slate)!"
+                "Hands-on: Click any violet palette swatch (WishPix Violet, Royal Amethyst, Orchid Berry, Midnight Plum)!",
+                "Subukan: Pumili ng kulay sa violet palette (WishPix Violet, Royal Amethyst, Orchid Berry, Midnight Plum)!"
               ),
               popover: {
                 title: t(
@@ -1578,8 +1578,8 @@ export function OnboardingTourProvider({
                   "Mga Kulay ng Tema sa Display"
                 ),
                 description: t(
-                  "Personalize your workspace with Deep Blue, Ocean, Midnight, or Slate color themes.",
-                  "Pumili ng paborito mong tema ng kulay para sa Teacher App."
+                  "Personalize your workspace with WishPix Violet, Royal Amethyst, Orchid Berry, or Midnight Plum color themes.",
+                  "Pumili ng paborito mong violet na tema ng kulay para sa Teacher App."
                 ),
                 side: "top",
                 align: "start",

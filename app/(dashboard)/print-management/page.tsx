@@ -19,6 +19,7 @@ import {
 } from "@/lib/actions";
 import { KIOSK_INFO, REPRINT_HISTORY } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { PrinterHardwareState, ReprintItem } from "@/types/kiosk";
 
 export default function PrintManagementPage() {
@@ -86,7 +87,12 @@ export default function PrintManagementPage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top White Hardware Header Card */}
-      <section className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+      <RevealOnShow
+        as="section"
+        variant="fade-down"
+        delayMs={30}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+      >
         <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#6D48DF]">
           <Printer className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           <span>{t("HARDWARE", "KAGAMITAN")}</span>
@@ -100,12 +106,15 @@ export default function PrintManagementPage() {
             "Subaybayan ang pag-print at muling i-print ang mga naunang aktibidad."
           )}
         </p>
-      </section>
+      </RevealOnShow>
 
       {/* Deep Plum Connected Kiosk Banner */}
-      <section
+      <RevealOnShow
+        as="section"
         aria-label="Connected Kiosk"
-        className="relative overflow-hidden rounded-[18px] bg-[#231B3B] px-4 sm:px-5 py-4 text-white flex items-center justify-between gap-3 shadow-[0_10px_28px_rgba(35,27,59,0.18)] transition-colors duration-200"
+        variant="pop-scale"
+        delayMs={90}
+        className="wishpix-public-card-hover relative overflow-hidden rounded-[18px] bg-[#231B3B] px-4 sm:px-5 py-4 text-white flex items-center justify-between gap-3 shadow-[0_10px_28px_rgba(35,27,59,0.18)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
@@ -135,7 +144,7 @@ export default function PrintManagementPage() {
         <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] bg-white/10 border border-white/10 text-white/90 flex items-center justify-center flex-shrink-0">
           <Volume2 className="w-4 h-4 stroke-[2]" aria-hidden="true" />
         </div>
-      </section>
+      </RevealOnShow>
 
       {/* Print Counters */}
       <div
@@ -143,7 +152,12 @@ export default function PrintManagementPage() {
         className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
       >
         {/* Today's Prints */}
-        <article className="col-span-2 lg:col-span-1 rounded-[18px] bg-white border border-[#F2EEFB] border-r-[4px] border-r-[#6D48DF] p-4 sm:p-5 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={150}
+          className="wishpix-public-card-hover col-span-2 lg:col-span-1 rounded-[18px] bg-white border border-[#F2EEFB] border-r-[4px] border-r-[#6D48DF] p-4 sm:p-5 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <div>
             <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]">
               {t("TODAY'S PRINTS", "PRINT NGAYONG ARAW")}
@@ -160,10 +174,15 @@ export default function PrintManagementPage() {
           <div className="w-10 h-10 rounded-[12px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
             <Printer className="w-5 h-5 stroke-[2]" aria-hidden="true" />
           </div>
-        </article>
+        </RevealOnShow>
 
         {/* Weekly Prints */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={205}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]">
             {t("WEEKLY PRINTS", "LINGGUHANG PRINT")}
           </p>
@@ -173,10 +192,15 @@ export default function PrintManagementPage() {
           <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-2">
             {t("Last 7 days", "Nakaraang 7 araw")}
           </p>
-        </article>
+        </RevealOnShow>
 
         {/* Monthly Prints */}
-        <article className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+        <RevealOnShow
+          as="article"
+          variant="fade-up"
+          delayMs={260}
+          className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        >
           <p className="text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]">
             {t("MONTHLY PRINTS", "BUWANANG PRINT")}
           </p>
@@ -186,7 +210,7 @@ export default function PrintManagementPage() {
           <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-2">
             October 2026
           </p>
-        </article>
+        </RevealOnShow>
       </div>
 
       {/* Responsive Split Grid */}
@@ -194,10 +218,13 @@ export default function PrintManagementPage() {
         {/* Left Column: Printer Status + Print Queue */}
         <div className="space-y-4 lg:col-span-5">
           {/* Printer Status Card */}
-          <section
+          <RevealOnShow
+            as="section"
             id="tour-printer-status"
             aria-labelledby="printer-status-heading"
-            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+            variant="slide-left"
+            delayMs={310}
+            className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <h2
               id="printer-status-heading"
@@ -308,13 +335,16 @@ export default function PrintManagementPage() {
                 </span>
               </p>
             </div>
-          </section>
+          </RevealOnShow>
 
           {/* Print Queue Card */}
-          <section
+          <RevealOnShow
+            as="section"
             id="tour-print-queue"
             aria-labelledby="print-queue-heading"
-            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+            variant="slide-left"
+            delayMs={370}
+            className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <div className="flex items-center justify-between mb-3">
               <h2
@@ -345,14 +375,17 @@ export default function PrintManagementPage() {
                 </p>
               )}
             </div>
-          </section>
+          </RevealOnShow>
         </div>
 
         {/* Right Column: Reprint Output */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-reprint-list"
           aria-labelledby="reprint-output-heading"
-          className="lg:col-span-7 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          variant="slide-right"
+          delayMs={340}
+          className="wishpix-public-card-hover lg:col-span-7 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#F2EEFB]">
             <div>
@@ -382,7 +415,7 @@ export default function PrintManagementPage() {
               return (
                 <div
                   key={item.id}
-                  className="py-3 sm:py-3.5 flex items-center justify-between gap-3"
+                  className="py-3 sm:py-3.5 flex items-center justify-between gap-3 transition-colors hover:bg-[#FAF8FF]/60 rounded-[10px] px-1 -mx-1"
                 >
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5">
@@ -421,7 +454,7 @@ export default function PrintManagementPage() {
                   <button
                     type="button"
                     onClick={() => handleReprint(item)}
-                    className="inline-flex items-center gap-1 rounded-[10px] bg-[#FAF8FF] hover:bg-[#EFE9FC] border border-[#E2DCF3] px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] transition flex-shrink-0 cursor-pointer"
+                    className="inline-flex items-center gap-1 rounded-[10px] bg-[#FAF8FF] hover:bg-[#EFE9FC] active:scale-95 border border-[#E2DCF3] px-3 py-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] transition flex-shrink-0 cursor-pointer"
                   >
                     <RotateCcw className="w-3 h-3 stroke-[2.2]" />
                     <span>{t("Reprint", "I-reprint")}</span>
@@ -430,7 +463,7 @@ export default function PrintManagementPage() {
               );
             })}
           </div>
-        </section>
+        </RevealOnShow>
       </div>
     </div>
   );

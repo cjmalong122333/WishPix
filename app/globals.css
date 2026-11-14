@@ -15,46 +15,46 @@ html[data-theme="deep-blue"] {
   --wp-primary-soft: #efe9fc;
 }
 
-html[data-theme="ocean"] {
-  --background: #eff8f7;
-  --foreground: #0d2e2b;
-  --wp-sidebar-bg: #0f6d66;
-  --wp-sidebar-card: #19827a;
-  --wp-sidebar-avatar: #27968d;
-  --wp-sidebar-muted: #a3ebe4;
-  --wp-banner-bg: #0b4b46;
-  --wp-primary: #14827b;
-  --wp-primary-hover: #0f6d66;
-  --wp-primary-dark: #0d5c56;
-  --wp-primary-soft: #e6f7f5;
+html[data-theme="amethyst"] {
+  --background: #faf5ff;
+  --foreground: #2e1b4e;
+  --wp-sidebar-bg: #2e1b4e;
+  --wp-sidebar-card: #3d2466;
+  --wp-sidebar-avatar: #8b5cf6;
+  --wp-sidebar-muted: #d8b4fe;
+  --wp-banner-bg: #271543;
+  --wp-primary: #7c3aed;
+  --wp-primary-hover: #6d28d9;
+  --wp-primary-dark: #5b21b6;
+  --wp-primary-soft: #f3e8ff;
 }
 
-html[data-theme="midnight"] {
-  --background: #f1f4f9;
-  --foreground: #18263a;
-  --wp-sidebar-bg: #2b4465;
-  --wp-sidebar-card: #3b5980;
-  --wp-sidebar-avatar: #4d6d96;
-  --wp-sidebar-muted: #adc6e5;
-  --wp-banner-bg: #1d2f47;
-  --wp-primary: #3b5980;
-  --wp-primary-hover: #2e4769;
-  --wp-primary-dark: #253b59;
-  --wp-primary-soft: #edf2f8;
+html[data-theme="orchid"] {
+  --background: #fdf7ff;
+  --foreground: #331342;
+  --wp-sidebar-bg: #3b144a;
+  --wp-sidebar-card: #511c66;
+  --wp-sidebar-avatar: #a855f7;
+  --wp-sidebar-muted: #e9d5ff;
+  --wp-banner-bg: #31103e;
+  --wp-primary: #9333ea;
+  --wp-primary-hover: #7e22ce;
+  --wp-primary-dark: #6b21a8;
+  --wp-primary-soft: #fae8ff;
 }
 
-html[data-theme="slate"] {
-  --background: #f2f5f7;
-  --foreground: #1e2930;
-  --wp-sidebar-bg: #3f515c;
-  --wp-sidebar-card: #546875;
-  --wp-sidebar-avatar: #667b89;
-  --wp-sidebar-muted: #bfd0db;
-  --wp-banner-bg: #2b3840;
-  --wp-primary: #546875;
-  --wp-primary-hover: #43545f;
-  --wp-primary-dark: #374650;
-  --wp-primary-soft: #eef2f5;
+html[data-theme="midnight-violet"] {
+  --background: #f6f4fe;
+  --foreground: #18112b;
+  --wp-sidebar-bg: #18112b;
+  --wp-sidebar-card: #261b42;
+  --wp-sidebar-avatar: #5333b8;
+  --wp-sidebar-muted: #b9a6f8;
+  --wp-banner-bg: #140e24;
+  --wp-primary: #5333b8;
+  --wp-primary-hover: #43279c;
+  --wp-primary-dark: #3b208c;
+  --wp-primary-soft: #ede7fc;
 }
 
 @theme inline {
@@ -70,117 +70,129 @@ body {
 }
 
 /* Theme-aware overrides for brand utility classes across all pages */
-html[data-theme="ocean"] .bg-\[\#F2F6FA\],
-html[data-theme="midnight"] .bg-\[\#F2F6FA\],
-html[data-theme="slate"] .bg-\[\#F2F6FA\],
-html[data-theme="ocean"] .bg-\[\#FAF8FF\],
-html[data-theme="midnight"] .bg-\[\#FAF8FF\],
-html[data-theme="slate"] .bg-\[\#FAF8FF\] {
+html[data-theme="amethyst"] .bg-\[\#F2F6FA\],
+html[data-theme="orchid"] .bg-\[\#F2F6FA\],
+html[data-theme="midnight-violet"] .bg-\[\#F2F6FA\],
+html[data-theme="amethyst"] .bg-\[\#FAF8FF\],
+html[data-theme="orchid"] .bg-\[\#FAF8FF\],
+html[data-theme="midnight-violet"] .bg-\[\#FAF8FF\] {
   background-color: var(--background) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#085081\],
-html[data-theme="midnight"] .bg-\[\#085081\],
-html[data-theme="slate"] .bg-\[\#085081\],
-html[data-theme="ocean"] .bg-\[\#231B3B\],
-html[data-theme="midnight"] .bg-\[\#231B3B\],
-html[data-theme="slate"] .bg-\[\#231B3B\] {
+html[data-theme="amethyst"] .bg-\[\#085081\],
+html[data-theme="orchid"] .bg-\[\#085081\],
+html[data-theme="midnight-violet"] .bg-\[\#085081\],
+html[data-theme="amethyst"] .bg-\[\#231B3B\],
+html[data-theme="orchid"] .bg-\[\#231B3B\],
+html[data-theme="midnight-violet"] .bg-\[\#231B3B\] {
   background-color: var(--wp-sidebar-bg) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#1D6393\],
-html[data-theme="midnight"] .bg-\[\#1D6393\],
-html[data-theme="slate"] .bg-\[\#1D6393\],
-html[data-theme="ocean"] .bg-\[\#312552\],
-html[data-theme="midnight"] .bg-\[\#312552\],
-html[data-theme="slate"] .bg-\[\#312552\] {
+html[data-theme="amethyst"] .bg-\[\#1D6393\],
+html[data-theme="orchid"] .bg-\[\#1D6393\],
+html[data-theme="midnight-violet"] .bg-\[\#1D6393\],
+html[data-theme="amethyst"] .bg-\[\#312552\],
+html[data-theme="orchid"] .bg-\[\#312552\],
+html[data-theme="midnight-violet"] .bg-\[\#312552\] {
   background-color: var(--wp-sidebar-card) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#35749F\],
-html[data-theme="midnight"] .bg-\[\#35749F\],
-html[data-theme="slate"] .bg-\[\#35749F\] {
+html[data-theme="amethyst"] .bg-\[\#35749F\],
+html[data-theme="orchid"] .bg-\[\#35749F\],
+html[data-theme="midnight-violet"] .bg-\[\#35749F\] {
   background-color: var(--wp-sidebar-avatar) !important;
 }
 
-html[data-theme="ocean"] .text-\[\#085081\],
-html[data-theme="midnight"] .text-\[\#085081\],
-html[data-theme="slate"] .text-\[\#085081\],
-html[data-theme="ocean"] .text-\[\#231B3B\],
-html[data-theme="midnight"] .text-\[\#231B3B\],
-html[data-theme="slate"] .text-\[\#231B3B\] {
+html[data-theme="amethyst"] .text-\[\#C4B5FD\],
+html[data-theme="orchid"] .text-\[\#C4B5FD\],
+html[data-theme="midnight-violet"] .text-\[\#C4B5FD\] {
+  color: var(--wp-sidebar-muted) !important;
+}
+
+html[data-theme="amethyst"] .text-\[\#085081\],
+html[data-theme="orchid"] .text-\[\#085081\],
+html[data-theme="midnight-violet"] .text-\[\#085081\],
+html[data-theme="amethyst"] .text-\[\#231B3B\],
+html[data-theme="orchid"] .text-\[\#231B3B\],
+html[data-theme="midnight-violet"] .text-\[\#231B3B\] {
   color: var(--wp-sidebar-bg) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#0F233A\],
-html[data-theme="midnight"] .bg-\[\#0F233A\],
-html[data-theme="slate"] .bg-\[\#0F233A\] {
+html[data-theme="amethyst"] .bg-\[\#0F233A\],
+html[data-theme="orchid"] .bg-\[\#0F233A\],
+html[data-theme="midnight-violet"] .bg-\[\#0F233A\] {
   background-color: var(--wp-banner-bg) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#0077C8\],
-html[data-theme="midnight"] .bg-\[\#0077C8\],
-html[data-theme="slate"] .bg-\[\#0077C8\],
-html[data-theme="ocean"] .bg-\[\#6D48DF\],
-html[data-theme="midnight"] .bg-\[\#6D48DF\],
-html[data-theme="slate"] .bg-\[\#6D48DF\] {
+html[data-theme="amethyst"] .bg-\[\#0077C8\],
+html[data-theme="orchid"] .bg-\[\#0077C8\],
+html[data-theme="midnight-violet"] .bg-\[\#0077C8\],
+html[data-theme="amethyst"] .bg-\[\#6D48DF\],
+html[data-theme="orchid"] .bg-\[\#6D48DF\],
+html[data-theme="midnight-violet"] .bg-\[\#6D48DF\] {
   background-color: var(--wp-primary) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#0B5384\],
-html[data-theme="midnight"] .bg-\[\#0B5384\],
-html[data-theme="slate"] .bg-\[\#0B5384\],
-html[data-theme="ocean"] .bg-\[\#004E89\],
-html[data-theme="midnight"] .bg-\[\#004E89\],
-html[data-theme="slate"] .bg-\[\#004E89\],
-html[data-theme="ocean"] .bg-\[\#5333B8\],
-html[data-theme="midnight"] .bg-\[\#5333B8\],
-html[data-theme="slate"] .bg-\[\#5333B8\],
-html[data-theme="ocean"] .bg-\[\#5B36CA\],
-html[data-theme="midnight"] .bg-\[\#5B36CA\],
-html[data-theme="slate"] .bg-\[\#5B36CA\] {
+html[data-theme="amethyst"] .hover\:bg-\[\#5B36CA\]:hover,
+html[data-theme="orchid"] .hover\:bg-\[\#5B36CA\]:hover,
+html[data-theme="midnight-violet"] .hover\:bg-\[\#5B36CA\]:hover {
+  background-color: var(--wp-primary-hover) !important;
+}
+
+html[data-theme="amethyst"] .bg-\[\#0B5384\],
+html[data-theme="orchid"] .bg-\[\#0B5384\],
+html[data-theme="midnight-violet"] .bg-\[\#0B5384\],
+html[data-theme="amethyst"] .bg-\[\#004E89\],
+html[data-theme="orchid"] .bg-\[\#004E89\],
+html[data-theme="midnight-violet"] .bg-\[\#004E89\],
+html[data-theme="amethyst"] .bg-\[\#5333B8\],
+html[data-theme="orchid"] .bg-\[\#5333B8\],
+html[data-theme="midnight-violet"] .bg-\[\#5333B8\],
+html[data-theme="amethyst"] .bg-\[\#5B36CA\],
+html[data-theme="orchid"] .bg-\[\#5B36CA\],
+html[data-theme="midnight-violet"] .bg-\[\#5B36CA\] {
   background-color: var(--wp-primary-dark) !important;
 }
 
-html[data-theme="ocean"] .bg-\[\#EFE9FC\],
-html[data-theme="midnight"] .bg-\[\#EFE9FC\],
-html[data-theme="slate"] .bg-\[\#EFE9FC\],
-html[data-theme="ocean"] .bg-\[\#EDE7FC\],
-html[data-theme="midnight"] .bg-\[\#EDE7FC\],
-html[data-theme="slate"] .bg-\[\#EDE7FC\] {
+html[data-theme="amethyst"] .bg-\[\#EFE9FC\],
+html[data-theme="orchid"] .bg-\[\#EFE9FC\],
+html[data-theme="midnight-violet"] .bg-\[\#EFE9FC\],
+html[data-theme="amethyst"] .bg-\[\#EDE7FC\],
+html[data-theme="orchid"] .bg-\[\#EDE7FC\],
+html[data-theme="midnight-violet"] .bg-\[\#EDE7FC\] {
   background-color: var(--wp-primary-soft) !important;
 }
 
-html[data-theme="ocean"] .text-\[\#0077C8\],
-html[data-theme="midnight"] .text-\[\#0077C8\],
-html[data-theme="slate"] .text-\[\#0077C8\],
-html[data-theme="ocean"] .text-\[\#005A9C\],
-html[data-theme="midnight"] .text-\[\#005A9C\],
-html[data-theme="slate"] .text-\[\#005A9C\],
-html[data-theme="ocean"] .text-\[\#0066B2\],
-html[data-theme="midnight"] .text-\[\#0066B2\],
-html[data-theme="slate"] .text-\[\#0066B2\],
-html[data-theme="ocean"] .text-\[\#6D48DF\],
-html[data-theme="midnight"] .text-\[\#6D48DF\],
-html[data-theme="slate"] .text-\[\#6D48DF\],
-html[data-theme="ocean"] .text-\[\#5333B8\],
-html[data-theme="midnight"] .text-\[\#5333B8\],
-html[data-theme="slate"] .text-\[\#5333B8\] {
+html[data-theme="amethyst"] .text-\[\#0077C8\],
+html[data-theme="orchid"] .text-\[\#0077C8\],
+html[data-theme="midnight-violet"] .text-\[\#0077C8\],
+html[data-theme="amethyst"] .text-\[\#005A9C\],
+html[data-theme="orchid"] .text-\[\#005A9C\],
+html[data-theme="midnight-violet"] .text-\[\#005A9C\],
+html[data-theme="amethyst"] .text-\[\#0066B2\],
+html[data-theme="orchid"] .text-\[\#0066B2\],
+html[data-theme="midnight-violet"] .text-\[\#0066B2\],
+html[data-theme="amethyst"] .text-\[\#6D48DF\],
+html[data-theme="orchid"] .text-\[\#6D48DF\],
+html[data-theme="midnight-violet"] .text-\[\#6D48DF\],
+html[data-theme="amethyst"] .text-\[\#5333B8\],
+html[data-theme="orchid"] .text-\[\#5333B8\],
+html[data-theme="midnight-violet"] .text-\[\#5333B8\] {
   color: var(--wp-primary) !important;
 }
 
-html[data-theme="ocean"] .border-\[\#0077C8\],
-html[data-theme="midnight"] .border-\[\#0077C8\],
-html[data-theme="slate"] .border-\[\#0077C8\],
-html[data-theme="ocean"] .border-\[\#0B5384\],
-html[data-theme="midnight"] .border-\[\#0B5384\],
-html[data-theme="slate"] .border-\[\#0B5384\],
-html[data-theme="ocean"] .border-\[\#6D48DF\],
-html[data-theme="midnight"] .border-\[\#6D48DF\],
-html[data-theme="slate"] .border-\[\#6D48DF\],
-html[data-theme="ocean"] .border-\[\#5333B8\],
-html[data-theme="midnight"] .border-\[\#5333B8\],
-html[data-theme="slate"] .border-\[\#5333B8\] {
+html[data-theme="amethyst"] .border-\[\#0077C8\],
+html[data-theme="orchid"] .border-\[\#0077C8\],
+html[data-theme="midnight-violet"] .border-\[\#0077C8\],
+html[data-theme="amethyst"] .border-\[\#0B5384\],
+html[data-theme="orchid"] .border-\[\#0B5384\],
+html[data-theme="midnight-violet"] .border-\[\#0B5384\],
+html[data-theme="amethyst"] .border-\[\#6D48DF\],
+html[data-theme="orchid"] .border-\[\#6D48DF\],
+html[data-theme="midnight-violet"] .border-\[\#6D48DF\],
+html[data-theme="amethyst"] .border-\[\#5333B8\],
+html[data-theme="orchid"] .border-\[\#5333B8\],
+html[data-theme="midnight-violet"] .border-\[\#5333B8\] {
   border-color: var(--wp-primary) !important;
 }
 
@@ -504,8 +516,13 @@ body.driver-active .wishpix-step-transition,
 body.driver-active .wishpix-scroll-up-reveal,
 body.driver-active .wishpix-scroll-down-reveal,
 body.driver-active .wishpix-scroll-top-boost,
-body.driver-active .wishpix-scroll-item {
+body.driver-active .wishpix-scroll-item,
+body.driver-active .wishpix-reveal-hidden,
+body.driver-active [class*="wishpix-reveal-"],
+body.driver-active .wishpix-public-card-hover,
+body.driver-active .wishpix-public-card-hover:hover {
   animation: none !important;
+  opacity: 1 !important;
   transform: none !important;
   will-change: auto !important;
 }

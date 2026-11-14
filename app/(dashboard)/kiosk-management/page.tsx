@@ -19,6 +19,7 @@ import {
 } from "@/lib/actions";
 import { KIOSK_CONTROLS, KIOSK_INFO } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { KioskControlItem } from "@/types/kiosk";
 
 export default function KioskManagementPage() {
@@ -79,7 +80,12 @@ export default function KioskManagementPage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top White Hardware Header Card */}
-      <section className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+      <RevealOnShow
+        as="section"
+        variant="fade-down"
+        delayMs={30}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+      >
         <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#6D48DF]">
           <Monitor className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           <span>{t("HARDWARE", "KAGAMITAN")}</span>
@@ -93,13 +99,16 @@ export default function KioskManagementPage() {
             "Suriin ang kalagayan ng hardware at kontrolin ang kiosk."
           )}
         </p>
-      </section>
+      </RevealOnShow>
 
       {/* Deep Plum Registered Kiosk Banner */}
-      <section
+      <RevealOnShow
+        as="section"
         id="tour-kiosk-registered"
         aria-label="Registered Kiosk"
-        className="relative overflow-hidden rounded-[18px] bg-[#231B3B] px-4 sm:px-5 py-4 sm:py-5 text-white flex items-start justify-between gap-3 shadow-[0_10px_28px_rgba(35,27,59,0.18)] transition-colors duration-200"
+        variant="pop-scale"
+        delayMs={90}
+        className="wishpix-public-card-hover relative overflow-hidden rounded-[18px] bg-[#231B3B] px-4 sm:px-5 py-4 sm:py-5 text-white flex items-start justify-between gap-3 shadow-[0_10px_28px_rgba(35,27,59,0.18)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
@@ -125,13 +134,13 @@ export default function KioskManagementPage() {
           />
           <span>{kioskPowerState}</span>
         </span>
-      </section>
+      </RevealOnShow>
 
       {controlFeedback && (
         <div
           role="status"
           aria-live="polite"
-          className="rounded-[12px] bg-[#EFE9FC] border border-[#D8CEFA] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#5333B8]"
+          className="wishpix-reveal-pop-scale rounded-[12px] bg-[#EFE9FC] border border-[#D8CEFA] px-4 py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#5333B8]"
         >
           {controlFeedback}
         </div>
@@ -143,7 +152,11 @@ export default function KioskManagementPage() {
         aria-labelledby="health-monitoring-heading"
         className="space-y-3"
       >
-        <div className="flex items-center justify-between">
+        <RevealOnShow
+          variant="fade-up"
+          delayMs={150}
+          className="flex items-center justify-between"
+        >
           <h2
             id="health-monitoring-heading"
             className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
@@ -165,12 +178,17 @@ export default function KioskManagementPage() {
             />
             <span>{t("Live Diagnostics", "Live na Diyagnostiko")}</span>
           </button>
-        </div>
+        </RevealOnShow>
 
         {/* 5 Health Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-3.5">
           {/* 1. Printer */}
-          <article className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]">
+          <RevealOnShow
+            as="article"
+            variant="fade-up"
+            delayMs={190}
+            className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+          >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                 <Printer className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
@@ -188,10 +206,15 @@ export default function KioskManagementPage() {
             <span className="rounded-full bg-[#DCFCE7] border border-[#BBF7D0] px-3 py-1 text-[10px] sm:text-[11px] font-bold text-[#15803D] flex-shrink-0">
               {t("Ready", "Handa")}
             </span>
-          </article>
+          </RevealOnShow>
 
           {/* 2. Temperature */}
-          <article className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]">
+          <RevealOnShow
+            as="article"
+            variant="fade-up"
+            delayMs={235}
+            className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+          >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                 <Thermometer className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
@@ -214,10 +237,15 @@ export default function KioskManagementPage() {
                 Normal
               </p>
             </div>
-          </article>
+          </RevealOnShow>
 
           {/* 3. Paper Status */}
-          <article className="lg:col-span-2 rounded-[16px] bg-[#FFFDF5] border border-[#FDE68A] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(217,119,6,0.05)]">
+          <RevealOnShow
+            as="article"
+            variant="fade-up"
+            delayMs={280}
+            className="wishpix-public-card-hover lg:col-span-2 rounded-[16px] bg-[#FFFDF5] border border-[#FDE68A] p-3.5 sm:p-4 shadow-[0_2px_8px_rgba(217,119,6,0.05)]"
+          >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] bg-[#FEF3C7] text-[#B45309] flex items-center justify-center flex-shrink-0">
@@ -248,10 +276,15 @@ export default function KioskManagementPage() {
             >
               <div className="h-full w-[18%] rounded-full bg-[#F59E0B]" />
             </div>
-          </article>
+          </RevealOnShow>
 
           {/* 4. Audio (reflects live volume setting) */}
-          <article className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]">
+          <RevealOnShow
+            as="article"
+            variant="fade-up"
+            delayMs={325}
+            className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+          >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                 <Volume2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
@@ -274,10 +307,15 @@ export default function KioskManagementPage() {
                 {t("Speaker output", "Speaker output")}
               </p>
             </div>
-          </article>
+          </RevealOnShow>
 
           {/* 5. Network */}
-          <article className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]">
+          <RevealOnShow
+            as="article"
+            variant="fade-up"
+            delayMs={370}
+            className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+          >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[11px] bg-[#EDE7FC] text-[#6D48DF] flex items-center justify-center flex-shrink-0">
                 <Wifi className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
@@ -295,7 +333,7 @@ export default function KioskManagementPage() {
             <span className="rounded-full bg-[#DCFCE7] border border-[#BBF7D0] px-3 py-1 text-[10px] sm:text-[11px] font-bold text-[#15803D] flex-shrink-0">
               {t("Excellent", "Napakahusay")}
             </span>
-          </article>
+          </RevealOnShow>
         </div>
       </section>
 
@@ -305,15 +343,18 @@ export default function KioskManagementPage() {
         aria-labelledby="controls-heading"
         className="space-y-3"
       >
-        <h2
+        <RevealOnShow
+          as="h2"
           id="controls-heading"
+          variant="fade-up"
+          delayMs={410}
           className="text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
         >
           {t("CONTROLS", "MGA KONTROL")}
-        </h2>
+        </RevealOnShow>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {KIOSK_CONTROLS.map((control) => {
+          {KIOSK_CONTROLS.map((control, idx) => {
             const iconStyles =
               control.accent === "blue"
                 ? "bg-[#EDE7FC] text-[#6D48DF]"
@@ -324,38 +365,44 @@ export default function KioskManagementPage() {
                     : "bg-[#DCFCE7] text-[#15803D]";
 
             return (
-              <button
+              <RevealOnShow
                 key={control.id}
-                type="button"
-                onClick={() => handleControlAction(control)}
-                className="rounded-[16px] bg-white hover:bg-[#FAF8FF] active:scale-[0.99] border border-[#F2EEFB] hover:border-[#D8CEFA] p-4 text-left flex flex-col justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)] transition cursor-pointer"
+                variant="fade-up"
+                delayMs={445 + idx * 50}
+                className="flex"
               >
-                <div
-                  className={`w-9 h-9 rounded-[10px] flex items-center justify-center ${iconStyles}`}
+                <button
+                  type="button"
+                  onClick={() => handleControlAction(control)}
+                  className="group wishpix-public-card-hover w-full rounded-[16px] bg-white hover:bg-[#FAF8FF] active:scale-[0.99] border border-[#F2EEFB] hover:border-[#D8CEFA] p-4 text-left flex flex-col justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)] transition cursor-pointer"
                 >
-                  {control.id === "restart" && (
-                    <RotateCcw className="w-4 h-4 stroke-[2.2]" />
-                  )}
-                  {control.id === "shutdown" && (
-                    <Power className="w-4 h-4 stroke-[2.2]" />
-                  )}
-                  {control.id === "sleep" && (
-                    <Moon className="w-4 h-4 stroke-[2.2]" />
-                  )}
-                  {control.id === "wakeup" && (
-                    <Sun className="w-4 h-4 stroke-[2.2]" />
-                  )}
-                </div>
+                  <div
+                    className={`w-9 h-9 rounded-[10px] flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${iconStyles}`}
+                  >
+                    {control.id === "restart" && (
+                      <RotateCcw className="w-4 h-4 stroke-[2.2]" />
+                    )}
+                    {control.id === "shutdown" && (
+                      <Power className="w-4 h-4 stroke-[2.2]" />
+                    )}
+                    {control.id === "sleep" && (
+                      <Moon className="w-4 h-4 stroke-[2.2]" />
+                    )}
+                    {control.id === "wakeup" && (
+                      <Sun className="w-4 h-4 stroke-[2.2]" />
+                    )}
+                  </div>
 
-                <div>
-                  <p className="text-[12.5px] sm:text-[13.5px] font-bold text-[#231B3B]">
-                    {control.title}
-                  </p>
-                  <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-0.5">
-                    {control.description}
-                  </p>
-                </div>
-              </button>
+                  <div>
+                    <p className="text-[12.5px] sm:text-[13.5px] font-bold text-[#231B3B]">
+                      {control.title}
+                    </p>
+                    <p className="text-[10px] sm:text-[11px] text-[#8881A3] mt-0.5">
+                      {control.description}
+                    </p>
+                  </div>
+                </button>
+              </RevealOnShow>
             );
           })}
         </div>

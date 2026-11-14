@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { NAVIGATION_SECTIONS } from "@/config/navigation";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { usePublicDisplay } from "@/components/public/reveal-on-show";
 import type { KioskInfo, NavIconName } from "@/types/kiosk";
 
 interface NavigationDrawerProps {
@@ -128,6 +129,14 @@ function SidebarContent({
 }) {
   const pathname = usePathname();
   const { t } = useAppSettings();
+  const { triggerDisplayReplay } = usePublicDisplay();
+
+  const handleItemClick = (targetHref: string) => {
+    if (pathname === targetHref) {
+      triggerDisplayReplay();
+    }
+    onNavigate?.();
+  };
 
   return (
     <>
@@ -223,7 +232,7 @@ function SidebarContent({
                       <Link
                         href={item.href}
                         prefetch
-                        onClick={onNavigate}
+                        onClick={() => handleItemClick(item.href)}
                         className={`flex items-center justify-between rounded-[12px] px-3 py-2.5 text-[12.5px] transition-all duration-200 ease-out active:scale-[0.98] ${
                           isActive
                             ? "bg-[#6D48DF] text-white font-bold shadow-[0_4px_14px_rgba(109,72,223,0.35)]"

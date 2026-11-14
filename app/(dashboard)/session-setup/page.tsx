@@ -32,6 +32,7 @@ import {
 } from "@/lib/mock-data";
 import { createSessionAction } from "@/lib/actions";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { SafetyRuleMode, ThemeOption } from "@/types/kiosk";
 
 const SETUP_STEPS = [
@@ -184,27 +185,44 @@ export default function SessionSetupPage() {
       {/* Page Title & Step Badge */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight">
+          <RevealOnShow
+            as="h1"
+            variant="fade-down"
+            delayMs={30}
+            className="text-[18px] sm:text-[22px] lg:text-[26px] font-extrabold text-[#231B3B] tracking-tight"
+          >
             {t("Session Setup", "Pag-setup ng Sesyon")}
-          </h1>
-          <p className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5">
+          </RevealOnShow>
+          <RevealOnShow
+            as="p"
+            variant="blur-in"
+            delayMs={70}
+            className="text-[11px] sm:text-[13px] text-[#766F8E] mt-0.5"
+          >
             {t(
               "Choose activity, theme and safety, then start.",
               "Pumili ng aktibidad, tema at kaligtasan, pagkatapos ay magsimula."
             )}
-          </p>
+          </RevealOnShow>
         </div>
 
-        <span className="rounded-full bg-[#EFE9FC] border border-[#D5C5F7] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] flex-shrink-0">
+        <RevealOnShow
+          as="span"
+          variant="pop-scale"
+          delayMs={100}
+          className="rounded-full bg-[#EFE9FC] border border-[#D5C5F7] px-3 py-1 text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF] flex-shrink-0"
+        >
           {t(`Step ${currentStep} of 4`, `Hakbang ${currentStep} ng 4`)}
-        </span>
+        </RevealOnShow>
       </div>
 
       {/* 4-Step Segmented Progress Bar */}
-      <div
+      <RevealOnShow
         id="tour-setup-stepper"
         role="tablist"
         aria-label="Session setup steps"
+        variant="fade-up"
+        delayMs={135}
         className="rounded-[14px] bg-[#EFE9FC] p-1 grid grid-cols-4 gap-1"
       >
         {SETUP_STEPS.map((step) => {
@@ -247,14 +265,16 @@ export default function SessionSetupPage() {
             </button>
           );
         })}
-      </div>
+      </RevealOnShow>
 
       {/* Responsive Split Layout: Stacked on Mobile, 2-Column on Desktop (lg+) */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column: Active Step Content */}
-        <div
+        <RevealOnShow
           id="tour-setup-active-panel"
           key={`step-${currentStep}`}
+          variant="fade-up"
+          delayMs={185}
           className="wishpix-step-transition lg:col-span-7 space-y-4"
         >
           {/* STEP 1: ACTIVITY SETUP */}
@@ -279,7 +299,7 @@ export default function SessionSetupPage() {
               </div>
 
               {/* Primary Activity Cards */}
-              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 sm:space-y-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+              <div className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 sm:space-y-3 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 {SESSION_ACTIVITIES.map((activity) => {
                   const isSelected = activity.id === selectedActivityId;
 
@@ -295,15 +315,15 @@ export default function SessionSetupPage() {
                       key={activity.id}
                       type="button"
                       onClick={() => handleSelectActivity(activity.id)}
-                      className={`w-full rounded-[14px] p-3.5 sm:p-4 text-left flex items-center justify-between gap-3 transition cursor-pointer ${
+                      className={`group w-full rounded-[14px] p-3.5 sm:p-4 text-left flex items-center justify-between gap-3 transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
-                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
+                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF] hover:-translate-y-0.5"
                       }`}
                     >
                       <div className="flex items-center gap-3.5 min-w-0">
                         <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 ${iconBoxClasses}`}
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${iconBoxClasses}`}
                         >
                           {activity.icon === "palette" && (
                             <Palette
@@ -359,7 +379,7 @@ export default function SessionSetupPage() {
               {/* Sub-Options Card */}
               {selectedActivity?.subOptions &&
                 selectedActivity.subOptions.length > 0 && (
-                  <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+                  <div className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-3 sm:p-4 space-y-2.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                     {selectedActivity.subOptions.map((sub) => {
                       const isSubSelected = sub.id === selectedSubOptionId;
                       return (
@@ -371,10 +391,10 @@ export default function SessionSetupPage() {
                               prev === sub.id ? null : sub.id
                             )
                           }
-                          className={`w-full rounded-[12px] p-3 sm:p-3.5 text-left flex items-center gap-3 transition cursor-pointer ${
+                          className={`w-full rounded-[12px] p-3 sm:p-3.5 text-left flex items-center gap-3 transition-all duration-200 cursor-pointer ${
                             isSubSelected
                               ? "bg-[#FAF8FF] border-[1.5px] border-[#6D48DF]"
-                              : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
+                              : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF] hover:-translate-y-0.5"
                           }`}
                         >
                           <span
@@ -405,7 +425,7 @@ export default function SessionSetupPage() {
           {currentStep === 2 && (
             <section
               aria-labelledby="theme-setup-heading"
-              className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+              className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
             >
               <div>
                 <h2
@@ -430,10 +450,10 @@ export default function SessionSetupPage() {
                       key={theme.id}
                       type="button"
                       onClick={() => setSelectedThemeId(theme.id)}
-                      className={`rounded-[14px] p-3 sm:p-3.5 text-left flex flex-col justify-between gap-2.5 transition cursor-pointer ${
+                      className={`group rounded-[14px] p-3 sm:p-3.5 text-left flex flex-col justify-between gap-2.5 transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
-                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
+                          : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF] hover:-translate-y-0.5"
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -463,10 +483,10 @@ export default function SessionSetupPage() {
                 {/* + Custom Theme Card */}
                 <div
                   onClick={() => setSelectedThemeId("custom")}
-                  className={`rounded-[14px] p-3 sm:p-3.5 flex flex-col justify-between gap-2.5 transition cursor-pointer ${
+                  className={`rounded-[14px] p-3 sm:p-3.5 flex flex-col justify-between gap-2.5 transition-all duration-200 cursor-pointer ${
                     selectedThemeId === "custom"
                       ? "bg-[#FAF8FF] border-[1.75px] border-dashed border-[#6D48DF]"
-                      : "bg-[#FAF8FF] border-[1.5px] border-dashed border-[#D5C5F7] hover:border-[#A78BFA]"
+                      : "bg-[#FAF8FF] border-[1.5px] border-dashed border-[#D5C5F7] hover:border-[#A78BFA] hover:-translate-y-0.5"
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -516,7 +536,7 @@ export default function SessionSetupPage() {
                 </p>
               </div>
 
-              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+              <div className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 {/* 3 Safety Mode Cards */}
                 <div className="space-y-2.5 sm:space-y-3">
                   {SAFETY_MODES.map((mode) => {
@@ -526,10 +546,10 @@ export default function SessionSetupPage() {
                         key={mode.id}
                         type="button"
                         onClick={() => setSafetyMode(mode.id)}
-                        className={`w-full rounded-[14px] p-3.5 sm:p-4 text-left transition cursor-pointer ${
+                        className={`w-full rounded-[14px] p-3.5 sm:p-4 text-left transition-all duration-200 cursor-pointer ${
                           isSelected
                             ? "bg-[#FAF8FF] border-[1.75px] border-[#6D48DF] shadow-[0_2px_10px_rgba(109,72,223,0.08)]"
-                            : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF]"
+                            : "bg-white border border-[#F2EEFB] hover:bg-[#FAF8FF] hover:-translate-y-0.5"
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -801,7 +821,7 @@ export default function SessionSetupPage() {
                 </p>
               </div>
 
-              <div className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+              <div className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 space-y-3.5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
                 <div>
                   <h3 className="text-[14px] sm:text-[16px] font-extrabold text-[#6D48DF]">
                     {t("Start Session", "Simulan ang Sesyon")}
@@ -912,13 +932,16 @@ export default function SessionSetupPage() {
               </div>
             </section>
           )}
-        </div>
+        </RevealOnShow>
 
         {/* Right Column: Persistent Session Summary Card */}
-        <section
+        <RevealOnShow
+          as="section"
           id="tour-setup-summary"
           aria-labelledby="session-summary-heading"
-          className="lg:col-span-5 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+          variant="slide-right"
+          delayMs={245}
+          className="wishpix-public-card-hover lg:col-span-5 rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
         >
           <h2
             id="session-summary-heading"
@@ -1011,13 +1034,15 @@ export default function SessionSetupPage() {
               )}
             </span>
           </div>
-        </section>
+        </RevealOnShow>
       </div>
 
       {/* Bottom Back / Continue Footer for Steps 1 & 2 */}
       {(currentStep === 1 || currentStep === 2) && (
-        <div
+        <RevealOnShow
           id="tour-setup-continue"
+          variant="fade-up"
+          delayMs={310}
           className="pt-2 flex items-center justify-between gap-3"
         >
           <button
@@ -1032,7 +1057,7 @@ export default function SessionSetupPage() {
           <button
             type="button"
             onClick={handleNext}
-            className="inline-flex items-center gap-1.5 rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_14px_rgba(109,72,223,0.28)] transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[12px] bg-[#6D48DF] hover:bg-[#5B36CA] hover:-translate-y-0.5 active:scale-[0.98] text-white px-5 py-2.5 text-[11.5px] sm:text-[12.5px] font-bold shadow-[0_4px_14px_rgba(109,72,223,0.28)] transition-all duration-300 ease-out cursor-pointer"
           >
             <span>{t("Continue", "Magpatuloy")}</span>
             <ArrowRight
@@ -1040,7 +1065,7 @@ export default function SessionSetupPage() {
               aria-hidden="true"
             />
           </button>
-        </div>
+        </RevealOnShow>
       )}
     </div>
   );

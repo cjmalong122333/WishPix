@@ -41,7 +41,7 @@ export function KioskStatusBanner({
     <section
       id="tour-kiosk-status"
       aria-label="Kiosk Status"
-      className="relative overflow-hidden w-full rounded-[20px] bg-[#231B3B] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(35,27,59,0.2)] transition-colors duration-200"
+      className="wishpix-public-card-hover relative overflow-hidden w-full rounded-[20px] bg-[#231B3B] px-4 sm:px-5 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(35,27,59,0.2)] transition-colors duration-200"
     >
       {/* Subtle Violet Radial Glow in Bottom-Right */}
       <div

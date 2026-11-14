@@ -5,6 +5,7 @@ import { ChevronDown, Download, History } from "lucide-react";
 import { getActivityLogsDataAction } from "@/lib/actions";
 import { ACTIVITY_LOGS_DATA } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { ActivityLogRecord } from "@/types/kiosk";
 
 const PAGE_SIZE = 8;
@@ -100,7 +101,12 @@ export default function ActivityLogsPage() {
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* Top White Insights Header Card */}
-      <section className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+      <RevealOnShow
+        as="section"
+        variant="fade-down"
+        delayMs={30}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+      >
         <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#6D48DF]">
           <History className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
           <span>{t("INSIGHTS", "MGA INSIGHT")}</span>
@@ -114,13 +120,16 @@ export default function ActivityLogsPage() {
             "Talaan ng paggamit nang walang pangalan ng mga bata."
           )}
         </p>
-      </section>
+      </RevealOnShow>
 
       {/* Filter & Export CSV Card */}
-      <section
+      <RevealOnShow
+        as="section"
         id="tour-logs-filter-bar"
         aria-label="Filter and export activity logs"
-        className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+        variant="fade-up"
+        delayMs={90}
+        className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
       >
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -136,7 +145,7 @@ export default function ActivityLogsPage() {
             id="tour-logs-export-btn"
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#6D48DF] hover:bg-[#5B36CA] active:scale-95 text-white px-3.5 py-2 text-[11px] sm:text-[12px] font-bold shadow-xs transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
             <span>{t("Export CSV", "I-export ang CSV")}</span>
@@ -205,14 +214,14 @@ export default function ActivityLogsPage() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealOnShow>
 
       {/* Log Record Cards */}
       <div
         id="tour-logs-grid"
         className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3"
       >
-        {paginatedRecords.map((record) => {
+        {paginatedRecords.map((record, idx) => {
           const isSuccess = record.safetyStatus === "Success";
 
           const printBadgeStyle =
@@ -223,9 +232,12 @@ export default function ActivityLogsPage() {
                 : "bg-[#FAF8FF] border border-[#E2DCF3] text-[#4A4168]";
 
           return (
-            <article
-              key={record.id}
-              className="rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+            <RevealOnShow
+              as="article"
+              key={`${safePage}-${activityFilter}-${themeFilter}-${record.id}`}
+              variant="fade-up"
+              delayMs={140 + idx * 35}
+              className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
             >
               {/* Top Row */}
               <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#F2EEFB]">
@@ -282,15 +294,17 @@ export default function ActivityLogsPage() {
                   </p>
                 </div>
               </div>
-            </article>
+            </RevealOnShow>
           );
         })}
       </div>
 
       {/* Pagination Footer Card */}
-      <div
+      <RevealOnShow
         id="tour-logs-pagination"
-        className="rounded-[16px] bg-white border border-[#F2EEFB] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
+        variant="fade-up"
+        delayMs={420}
+        className="wishpix-public-card-hover rounded-[16px] bg-white border border-[#F2EEFB] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_4px_20px_rgba(109,72,223,0.03)]"
       >
         <p className="text-[10.5px] sm:text-[11.5px] text-[#766F8E]">
           {t("Showing", "Ipinapakita")}{" "}
@@ -321,7 +335,7 @@ export default function ActivityLogsPage() {
             {t("Next", "Susunod")}
           </button>
         </div>
-      </div>
+      </RevealOnShow>
     </div>
   );
 }

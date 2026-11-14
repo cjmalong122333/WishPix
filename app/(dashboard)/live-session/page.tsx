@@ -24,6 +24,7 @@ import {
   LIVE_STATUS_STAGES,
 } from "@/lib/mock-data";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import type { LiveFeedItem } from "@/types/kiosk";
 
 export default function LiveSessionPage() {
@@ -73,10 +74,13 @@ export default function LiveSessionPage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
       {/* Top Deep Plum Live Session Monitor Banner */}
-      <section
+      <RevealOnShow
+        as="section"
         id="tour-live-banner"
         aria-label="Live Session Monitor"
-        className="relative overflow-hidden rounded-[20px] bg-[#231B3B] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(35,27,59,0.2)] transition-colors duration-200"
+        variant="pop-scale"
+        delayMs={40}
+        className="wishpix-public-card-hover relative overflow-hidden rounded-[20px] bg-[#231B3B] px-4 sm:px-6 py-4 sm:py-5 text-white shadow-[0_8px_24px_rgba(35,27,59,0.2)] transition-colors duration-200"
       >
         <div
           aria-hidden="true"
@@ -151,17 +155,20 @@ export default function LiveSessionPage() {
             </Link>
           )}
         </div>
-      </section>
+      </RevealOnShow>
 
       {/* Responsive Content Grid */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
         {/* Left Column on Desktop: Status Pipeline + Queue */}
         <div className="space-y-4 lg:col-span-5">
           {/* Current Status Card */}
-          <section
+          <RevealOnShow
+            as="section"
             id="tour-live-pipeline"
             aria-labelledby="current-status-heading"
-            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+            variant="slide-left"
+            delayMs={120}
+            className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <div className="flex items-center justify-between">
               <h2
@@ -190,10 +197,10 @@ export default function LiveSessionPage() {
                     className="flex flex-col items-center cursor-pointer group"
                   >
                     <div
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center transition ${
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[11px] sm:text-[12px] font-bold flex items-center justify-center transition-all duration-200 ${
                         isActive
-                          ? "bg-[#6D48DF] text-white shadow-xs"
-                          : "bg-[#F5F1FE] text-[#8881A3] group-hover:bg-[#EDE7FC]"
+                          ? "bg-[#6D48DF] text-white shadow-xs scale-105"
+                          : "bg-[#F5F1FE] text-[#8881A3] group-hover:bg-[#EDE7FC] group-hover:scale-105"
                       }`}
                     >
                       {stage.step}
@@ -211,13 +218,16 @@ export default function LiveSessionPage() {
                 );
               })}
             </div>
-          </section>
+          </RevealOnShow>
 
           {/* Current Queue Card */}
-          <section
+          <RevealOnShow
+            as="section"
             id="tour-live-queue"
             aria-labelledby="current-queue-heading"
-            className="rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+            variant="slide-left"
+            delayMs={185}
+            className="wishpix-public-card-hover rounded-[18px] bg-white border border-[#F2EEFB] p-4 sm:p-5 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
           >
             <div className="flex items-center justify-between mb-3">
               <h2
@@ -253,7 +263,7 @@ export default function LiveSessionPage() {
                 "Naka-numero lamang ang mga bata ayon sa pila. Walang pangalang iniimbak."
               )}
             </p>
-          </section>
+          </RevealOnShow>
         </div>
 
         {/* Right Column on Desktop: Live Generation Feed */}
@@ -262,7 +272,11 @@ export default function LiveSessionPage() {
           aria-labelledby="live-feed-heading"
           className="lg:col-span-7"
         >
-          <div className="flex items-center justify-between mb-2.5 sm:mb-3">
+          <RevealOnShow
+            variant="fade-up"
+            delayMs={140}
+            className="flex items-center justify-between mb-2.5 sm:mb-3"
+          >
             <h2
               id="live-feed-heading"
               className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.08em] text-[#766F8E]"
@@ -272,10 +286,10 @@ export default function LiveSessionPage() {
             <span className="text-[10.5px] sm:text-[11.5px] font-bold text-[#6D48DF]">
               {t("Updated live", "Live na ina-update")}
             </span>
-          </div>
+          </RevealOnShow>
 
           <div className="space-y-2.5 sm:space-y-3">
-            {feedItems.map((item) => {
+            {feedItems.map((item, idx) => {
               const isDanger = item.badgeVariant === "danger";
 
               const badgeClass =
@@ -293,9 +307,12 @@ export default function LiveSessionPage() {
                     : "bg-[#EDE7FC] text-[#6D48DF]";
 
               return (
-                <article
+                <RevealOnShow
+                  as="article"
                   key={item.id}
-                  className={`rounded-[16px] bg-white p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)] ${
+                  variant="fade-up"
+                  delayMs={190 + idx * 60}
+                  className={`wishpix-public-card-hover rounded-[16px] bg-white p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(109,72,223,0.03)] ${
                     isDanger
                       ? "border-[1.5px] border-[#FDA4AF]"
                       : "border border-[#F2EEFB]"
@@ -363,7 +380,7 @@ export default function LiveSessionPage() {
                       </Link>
                     </div>
                   )}
-                </article>
+                </RevealOnShow>
               );
             })}
           </div>

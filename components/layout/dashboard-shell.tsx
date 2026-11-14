@@ -14,6 +14,10 @@ import { NavigationDrawer } from "@/components/layout/navigation-drawer";
 import { PageTransition } from "@/components/layout/page-transition";
 import { useAppSettings } from "@/components/providers/app-settings-provider";
 import { OnboardingTourProvider } from "@/components/providers/onboarding-tour-provider";
+import {
+  PublicDisplayProvider,
+  RevealOnShow,
+} from "@/components/public/reveal-on-show";
 import { logoutEducatorAction } from "@/lib/actions";
 import { KIOSK_INFO } from "@/lib/mock-data";
 import type { KioskInfo } from "@/types/kiosk";
@@ -200,98 +204,104 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <OnboardingTourProvider>
-      <div className="relative flex-1 flex min-h-screen w-full bg-[#FAF8FF] text-[#231B3B] selection:bg-[#EDE7FC] selection:text-[#6D48DF]">
-        {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
-        <NavigationDrawer
-          isOpen={isMobileDrawerOpen}
-          isDesktopSidebarOpen={effectiveDesktopSidebarOpen}
-          onCloseMobile={handleCloseMobileDrawer}
-          onLogout={handleRequestLogout}
-          kiosk={kioskInfo}
-        />
-
-        {/* Right Main Column */}
-        <div className="flex-1 flex flex-col min-w-0 min-h-screen">
-          {/* Top Educator App Bar */}
-          <TopNavbar
-            kiosk={kioskInfo}
-            onOpenMenu={handleToggleMenu}
+    <PublicDisplayProvider>
+      <OnboardingTourProvider>
+        <div className="relative flex-1 flex min-h-screen w-full bg-[#FAF8FF] text-[#231B3B] selection:bg-[#EDE7FC] selection:text-[#6D48DF]">
+          {/* Responsive Navigation: Docked Left Sidebar on Desktop (lg+), Slide-Over Drawer on Mobile/Tablet */}
+          <NavigationDrawer
+            isOpen={isMobileDrawerOpen}
+            isDesktopSidebarOpen={effectiveDesktopSidebarOpen}
+            onCloseMobile={handleCloseMobileDrawer}
             onLogout={handleRequestLogout}
+            kiosk={kioskInfo}
           />
 
-          {/* Main Responsive Content Container */}
-          <main className="wishpix-page-stage flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-            <PageTransition>{children}</PageTransition>
-          </main>
-        </div>
+          {/* Right Main Column */}
+          <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+            {/* Top Educator App Bar */}
+            <TopNavbar
+              kiosk={kioskInfo}
+              onOpenMenu={handleToggleMenu}
+              onLogout={handleRequestLogout}
+            />
 
-        {/* Logout Confirmation Modal */}
-        {isLogoutModalOpen && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231B3B]/60 backdrop-blur-[2px]"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="logout-modal-title"
-          >
-            <div className="w-full max-w-sm rounded-[22px] bg-white border border-[#F2EEFB] p-5 sm:p-6 shadow-[0_20px_50px_rgba(35,27,59,0.25)] text-[#231B3B]">
-              <div className="flex items-start justify-between gap-3">
-                <div className="w-10 h-10 rounded-[12px] bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] flex items-center justify-center shrink-0">
-                  <LogOut className="w-5 h-5 stroke-[2.2]" aria-hidden="true" />
+            {/* Main Responsive Content Container */}
+            <main className="wishpix-page-stage flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+              <PageTransition>{children}</PageTransition>
+            </main>
+          </div>
+
+          {/* Logout Confirmation Modal */}
+          {isLogoutModalOpen && (
+            <div
+              className="wishpix-backdrop-fade fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231B3B]/60 backdrop-blur-[2px]"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="logout-modal-title"
+            >
+              <RevealOnShow
+                variant="pop-scale"
+                delayMs={0}
+                className="w-full max-w-sm rounded-[22px] bg-white border border-[#F2EEFB] p-5 sm:p-6 shadow-[0_20px_50px_rgba(35,27,59,0.25)] text-[#231B3B]"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="w-10 h-10 rounded-[12px] bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] flex items-center justify-center shrink-0">
+                    <LogOut className="w-5 h-5 stroke-[2.2]" aria-hidden="true" />
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={isLoggingOut}
+                    onClick={() => setIsLogoutModalOpen(false)}
+                    aria-label={t("Close dialog", "Isara ang dialog")}
+                    className="p-1.5 rounded-lg text-[#766F8E] hover:bg-[#F5F1FE] hover:text-[#231B3B] transition cursor-pointer disabled:opacity-50"
+                  >
+                    <X className="w-4 h-4" aria-hidden="true" />
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  disabled={isLoggingOut}
-                  onClick={() => setIsLogoutModalOpen(false)}
-                  aria-label={t("Close dialog", "Isara ang dialog")}
-                  className="p-1.5 rounded-lg text-[#766F8E] hover:bg-[#F5F1FE] hover:text-[#231B3B] transition cursor-pointer disabled:opacity-50"
+                <h2
+                  id="logout-modal-title"
+                  className="mt-3.5 text-[16px] sm:text-[17px] font-extrabold text-[#231B3B] tracking-tight"
                 >
-                  <X className="w-4 h-4" aria-hidden="true" />
-                </button>
-              </div>
+                  {t("Log out of WishPix?", "Mag-logout sa WishPix?")}
+                </h2>
+                <p className="mt-1.5 text-[12px] sm:text-[12.5px] text-[#766F8E] leading-relaxed">
+                  {t(
+                    "You will be returned to the Educator Login screen. Any active classroom kiosk activity will continue running until paused or ended.",
+                    "Ibabalik ka sa screen ng Login ng Guro. Ang anumang aktibong sesyon sa kiosk ay magpapatuloy hanggang sa i-pause o tapusin."
+                  )}
+                </p>
 
-              <h2
-                id="logout-modal-title"
-                className="mt-3.5 text-[16px] sm:text-[17px] font-extrabold text-[#231B3B] tracking-tight"
-              >
-                {t("Log out of WishPix?", "Mag-logout sa WishPix?")}
-              </h2>
-              <p className="mt-1.5 text-[12px] sm:text-[12.5px] text-[#766F8E] leading-relaxed">
-                {t(
-                  "You will be returned to the Educator Login screen. Any active classroom kiosk activity will continue running until paused or ended.",
-                  "Ibabalik ka sa screen ng Login ng Guro. Ang anumang aktibong sesyon sa kiosk ay magpapatuloy hanggang sa i-pause o tapusin."
-                )}
-              </p>
+                <div className="mt-5 flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    disabled={isLoggingOut}
+                    onClick={() => setIsLogoutModalOpen(false)}
+                    className="rounded-[12px] bg-[#F5F1FE] hover:bg-[#EDE7FC] text-[#231B3B] font-bold text-[12px] px-4 py-2.5 transition cursor-pointer disabled:opacity-50"
+                  >
+                    {t("Cancel", "Kanselahin")}
+                  </button>
 
-              <div className="mt-5 flex items-center justify-end gap-2.5">
-                <button
-                  type="button"
-                  disabled={isLoggingOut}
-                  onClick={() => setIsLogoutModalOpen(false)}
-                  className="rounded-[12px] bg-[#F5F1FE] hover:bg-[#EDE7FC] text-[#231B3B] font-bold text-[12px] px-4 py-2.5 transition cursor-pointer disabled:opacity-50"
-                >
-                  {t("Cancel", "Kanselahin")}
-                </button>
-
-                <button
-                  type="button"
-                  disabled={isLoggingOut}
-                  onClick={() => void executeLogout()}
-                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#DC2626] hover:bg-[#B91C1C] active:scale-[0.98] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer disabled:opacity-60"
-                >
-                  <LogOut className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
-                  <span>
-                    {isLoggingOut
-                      ? t("Logging out...", "Nagla-logout...")
-                      : t("Log Out", "Mag-logout")}
-                  </span>
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    disabled={isLoggingOut}
+                    onClick={() => void executeLogout()}
+                    className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#DC2626] hover:bg-[#B91C1C] active:scale-[0.98] text-white font-bold text-[12px] px-4 py-2.5 shadow-xs transition cursor-pointer disabled:opacity-60"
+                  >
+                    <LogOut className="w-3.5 h-3.5 stroke-[2.2]" aria-hidden="true" />
+                    <span>
+                      {isLoggingOut
+                        ? t("Logging out...", "Nagla-logout...")
+                        : t("Log Out", "Mag-logout")}
+                    </span>
+                  </button>
+                </div>
+              </RevealOnShow>
             </div>
-          </div>
-        )}
-      </div>
-    </OnboardingTourProvider>
+          )}
+        </div>
+      </OnboardingTourProvider>
+    </PublicDisplayProvider>
   );
 }

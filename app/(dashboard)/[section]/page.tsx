@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { NAVIGATION_SECTIONS } from "@/config/navigation";
 import { KioskStatusBanner } from "@/components/dashboard/kiosk-status-banner";
+import { RevealOnShow } from "@/components/public/reveal-on-show";
 import { KIOSK_INFO } from "@/lib/mock-data";
 
 export default async function SectionPage({
@@ -27,9 +28,16 @@ export default async function SectionPage({
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-8">
-      <KioskStatusBanner kiosk={KIOSK_INFO} />
+      <RevealOnShow variant="pop-scale" delayMs={40}>
+        <KioskStatusBanner kiosk={KIOSK_INFO} />
+      </RevealOnShow>
 
-      <section className="rounded-[18px] sm:rounded-[20px] bg-white border border-[#F2EEFB] p-5 sm:p-7 shadow-[0_4px_20px_rgba(109,72,223,0.04)]">
+      <RevealOnShow
+        as="section"
+        variant="fade-up"
+        delayMs={110}
+        className="wishpix-public-card-hover rounded-[18px] sm:rounded-[20px] bg-white border border-[#F2EEFB] p-5 sm:p-7 shadow-[0_4px_20px_rgba(109,72,223,0.04)]"
+      >
         <div className="flex items-center gap-2 text-[10.5px] sm:text-[11.5px] font-bold uppercase tracking-[0.14em] text-[#6D48DF]">
           <Sparkles className="w-4 h-4" aria-hidden="true" />
           <span>{matchedItem.category}</span>
@@ -63,7 +71,7 @@ export default async function SectionPage({
             Open Menu
           </Link>
         </div>
-      </section>
+      </RevealOnShow>
     </div>
   );
 }
